@@ -10,7 +10,7 @@ YPay开源支付系统PHP版
 
 <div align="center" >
     <a href="https://www.yfx.top">
-        <img src="https://img.shields.io/badge/YPay-1.1.2-blue.svg" />
+        <img src="https://img.shields.io/badge/YPay-1.1.3-blue.svg" />
     </a>
     <a href="https://www.yfx.top">
         <img src="https://img.shields.io/badge/Licence-Apache2.0-green.svg?style=flat" />
