@@ -1,0 +1,108 @@
+
+            <div class="content-backdrop fade"></div>
+          </div>
+          <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+      </div>
+
+      <!-- Overlay -->
+      <div class="layout-overlay layout-menu-toggle"></div>
+
+      <!-- Drag Target Area To SlideIn Menu On Small Screens -->
+      <div class="drag-target"></div>
+    </div>
+    <!-- / Layout wrapper -->
+
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/popper/popper.js"></script>
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/js/bootstrap.js"></script>
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/hammer/hammer.js"></script>
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/i18n/i18n.js"></script>
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/typeahead-js/typeahead.js"></script>
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/js/menu.js"></script>
+    <!-- endbuild -->
+
+    <!-- Vendors JS -->
+
+    <!-- Form JS -->
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js"></script>
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js"></script>
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js"></script>
+    <!-- Other JS -->
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/cleavejs/cleave.js"></script>
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/cleavejs/cleave-phone.js"></script>
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/apex-charts/apexcharts.js"></script>
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/sweetalert2/sweetalert2.js"></script>
+    <link rel="stylesheet" href="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/toastr/toastr.js" />
+    <script type="text/javascript" src="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/clipboard/clipboard.js"></script>
+        <!-- Database JS -->
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/datatables/jquery.dataTables.js"></script>
+    <!--<script src="/static/index/user/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js"></script>-->
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/datatables-responsive/datatables.responsive.js"></script>
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.js"></script>
+    <!-- Fixed columns -->
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/datatables-fixedcolumns/datatables.fixedcolumns.js"></script>
+    <!-- Main JS -->
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/js/main.js"></script>
+    <script src="/static/component/layui/layui.js"></script>
+    <script src="/static/component/pear/pear.js"></script>
+    <!-- Nav JS -->
+    <script>
+    var menus = $(".menu-item");
+    var temp = 0;
+    var nav_index = 0;
+    if(window.location.href.indexOf("/User/Index") > -1){
+        sessionStorage.clear();
+    }
+    if(sessionStorage.getItem('nav_index')){
+          temp = sessionStorage.getItem('nav_index');
+          var item = sessionStorage.getItem('nav_item');
+          if(item > 0){
+             menus.eq(item).addClass('active');
+             menus.eq(item).addClass('open'); 
+          }
+    }
+        var nav = 
+        [
+            [2 ,  '/My/UserPro'],
+            [3 ,  '/My/Security'],
+            [4 ,  '/My/Notifications'],
+            [5 ,  '/My/Connections'],
+            [6 , '/Deal/Recharge'],
+            [7 , '/Deal/Vip'],
+            [9 , '/Channel/Index'],
+            [11 , '/Deal/OrderLog'],
+        ];
+
+    for(var i =0;i < nav.length;i++){
+        if(window.location.href.indexOf(nav[i][1]) > -1){
+            temp = nav[i][0];
+            if(window.location.href.indexOf("#Api") > -1){
+                setTimeout(function(){
+	                $("html,body").scrollTop($('#Api').offset().top);
+                }, 1000);
+            }else if(nav[i][0] == 7){
+                menus.eq(6).removeClass('active');
+                menus.eq(6).removeClass('open');
+            }
+        }
+    }
+    menus.eq(temp).addClass('active');
+          $(".menu-item").click(function(){
+            nav_index= $(".menu-item").index(this);
+            sessionStorage.setItem("nav_item",nav_index);
+            if(nav_index == 1  || nav_index == 8){
+                
+            }else{
+               sessionStorage.setItem("nav_index",nav_index); 
+            }
+            $(this).addClass('active').siblings().removeClass('active');
+        });
+    </script>
+    {:getConfig()['diy_js']}
+  </body>
+</html>

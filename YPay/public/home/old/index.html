@@ -1,0 +1,327 @@
+
+  <!DOCTYPE html>
+  <html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>{:getConfig()['sitename']} - {:getConfig()['title']}</title>
+    <meta name="keywords" content="{:getConfig()['key']}">
+    <meta name="description" content="{:getConfig()['desc']}">
+    <link href="{:getConfig()['favicon']}" rel="icon">
+    <link rel="stylesheet" type="text/css" href="/home/{$resource}/css/index/style.css" id="theme-opt"/>
+    <link rel="stylesheet" type="text/css" href="/home/{$resource}/css/index/index.css" id="theme-opt"/>
+    <style>
+    #topnav .navigation-menu{
+        float: left;
+    }
+    #topnav .login-menu {
+    float: right;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+#topnav .login-menu>li {
+    float: left;
+    display: block;
+    position: relative;
+    margin: 0 10px;
+}
+
+@media (min-width: 992px){
+#topnav .login-menu>li>a {
+    padding-top: 25px;
+    padding-bottom: 25px;
+    min-height: 62px;
+    
+}
+}
+    #topnav .login-menu>li>a {
+    display: block;
+    color: #3c4858;
+    font-size: 13px;
+    background-color: transparent!important;
+    font-weight: 700;
+    letter-spacing: 1px;
+    line-height: 24px;
+    text-transform: uppercase;
+    transition: all .5s;
+    font-family: Nunito,sans-serif;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+@media (max-width: 991px){
+#topnav .navigation-menu {
+    margin-bottom: 40px;
+}
+#topnav .login-menu {
+    position: absolute;
+    bottom: 0;
+}
+#topnav .login-menu>li>a{
+    padding: 10px 20px;
+}
+}
+    </style>
+  </head>
+
+  <body>
+
+<header id="topnav" class="defaultscroll sticky">
+    <div class="container">
+        <div>
+            <a class="logo" href="/">
+                <img src="{:getConfig()['logo']}" height="24" alt="{:getConfig()['sitename']}">
+            </a>
+        </div>
+        <div class="menu-extras">
+            <div class="menu-item">
+                <a class="navbar-toggle">
+                    <div class="lines">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div id="navigation">
+            <ul class="navigation-menu">
+                {volist name="nav" id="vo"}
+                    <li><a {if condition="$vo.is_target == 1"} target="_bank" {/if}   href="{$vo.url}">{$vo.name}</a></li>
+                {/volist}
+            </ul>
+            <ul class="login-menu">
+                {if condition="$is_login == 1"}
+                <li><a href="/User/Index" class="user-btn a-head-btn bdr-5 bg-color-white">用户中心</a></li>
+                {else}
+                <li><a href="/User/Login" class="login-btn a-head-btn bdr-5 bg-color-white">登录</a></li>
+                <li><a href="/User/Reg" class="registered-btn a-head-btn bdr-5 bg-color-0055ff">注册</a></li>
+                {/if}
+            </ul>
+        </div>
+    </div>
+</header>
+
+<section class="bg-half bg-light d-table w-100" id="home">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-md-6">
+                <div class="title-heading mt-4">
+                    <h1 class="heading mb-3">{:getConfig()['sitename']}<small class="text-success" style="font-size: 50%"> [ˈheɪloʊ]</small></h1>
+                    <p class="para-desc text-muted">{:getConfig()['title']}。</p>
+                    <div class="mt-4 pt-2">
+                        <a href="/User/Login" class="btn btn-primary mr-2"><i class="iconify w-5 h-5 mr-2" data-icon="ri:flashlight-line"></i>快速开始</a>
+                        <a href="/doc" class="btn btn-outline-primary" target="_blank"><i class="iconify w-5 h-5 mr-2" data-icon="ri:book-read-line"></i>官方文档</a>
+                        <p class="text-muted mb-0 mt-3">当前版本: {$ver}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 mt-4 pt-2 mt-sm-0 pt-sm-0">
+                <img src="/static/index/images/index/support-team.svg" class="img-fluid" alt="hero image">
+            </div>
+        </div>
+    </div>
+</section>
+    <section class="section">
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 text-center">
+            <div class="section-title mb-4 pb-2">
+                <h4 class="title mb-4">特性</h4>
+                <p class="para-desc mx-auto text-muted mb-0">我们会一直探索，追求更好的使用体验。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 col-6 mt-5">
+            <div class="features">
+                <div class="image position-relative d-inline-block">
+                  <i class="iconify h1 text-primary" data-icon="wpf:security-checked"></i>
+                </div>
+                <div class="content mt-4">
+                    <h5>接口安全</h5>
+                    <p class="text-muted mb-0">采用国内服务器，接口稳定传输，给顾客快速流畅的体验，安全可靠的服务您的每一笔订单</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-6 mt-5">
+            <div class="features">
+                <div class="image position-relative d-inline-block">
+                  <i class="iconify h1 text-primary" data-icon="fa-solid:money-check-alt"></i>
+                </div>
+
+                <div class="content mt-4">
+                    <h5>资金保障</h5>
+                    <p class="text-muted mb-0">商户订单信息，全部加密处理，专业技术24小时实时运维，您的帐户安全将得到充分的保障。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-6 mt-5">
+            <div class="features">
+                <div class="image position-relative d-inline-block">
+                  <i class="iconify h1 text-primary" data-icon="ri:code-box-line"></i>
+                </div>
+
+                <div class="content mt-4">
+                    <h5>REST API</h5>
+                    <p class="text-muted mb-0">提供了完善的API接口，你可以用于平台应用通道接入，开发各种系统的对接通道插件等。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-6 mt-5">
+            <div class="features">
+                <div class="image position-relative d-inline-block">
+                  <i class="iconify h1 text-primary" data-icon="uil:heart-rate"></i>
+                </div>
+
+                <div class="content mt-4">
+                    <h5>费率超低</h5>
+                    <p class="text-muted mb-0">接口渠道直接到自己账户，省去中间商赚差价，因此我们可以给商户提供更低廉的费率。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-6 mt-5">
+            <div class="features">
+                <div class="image position-relative d-inline-block">
+                  <i class="iconify h1 text-primary" data-icon="ic:baseline-no-adult-content"></i>
+                </div>
+
+                <div class="content mt-4">
+                    <h5>拒资金流</h5>
+                    <p class="text-muted mb-0">只负责交易处理不参与资金清算，资金全都实时到您的个人账户上，以此来保障您的资金安全。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-6 mt-5">
+            <div class="features">
+                <div class="image position-relative d-inline-block">
+                  <i class="iconify h1 text-primary" data-icon="ep:service"></i>
+                </div>
+
+                <div class="content mt-4">
+                    <h5>专属客服</h5>
+                    <p class="text-muted mb-0">专业客服团队，专属客服一对一贴心服务，7*24小时全天候在线为你解答。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    </section>
+    {if condition="getConfig()['is_notice'] == 1"}
+<section class="section" style="padding-top: 10px;background-image: url(/static/index/images/index/notice-bg.png);">
+    <div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 text-center">
+            <div class="section-title mb-4 pb-2">
+                <h4 class="title mb-4">官方最新动态</h4>
+                <p class="para-desc mx-auto text-muted mb-0">时刻掌握官方最新动态，全面了解平台讯息</p>
+            </div>
+        </div>
+    </div>
+    <!--PC端三栏模块-->
+    <div class="van-home-file">
+        <div class="van-home-file-box">
+            <div class="van-grid-vansmls van-grid">
+                <ul class="van-width-1-1 van-width-1-3@s">
+            	    <div class="van-home-file-boxmk van-background-default">
+                	    <div class="van-home-file-boxtop van-background-cover van-panel van-flex van-flex-center van-flex-middle" style="background-image: url('/static/index/images/index/notice.jpg')">
+                        	<a href="/News/Index" target="_blank">平台公告</a>
+                        </div>
+                        {volist name='news1' id='vo'}
+                        <li>
+                            <div class="van-flex">
+                            	<a href="/News/Detail?id={$vo.id}" title="{$vo.title}" target="_blank" class="van-flex-1 van-text-truncate">{$vo.title}</a>
+                                <span>{$vo.create_time|date='Y-m-d'}</span>
+                            </div>
+                        </li>
+                        {/volist}
+                        <div class="van-home-file-boxbottom">
+                            <a href="/News/Index" target="_blank">更多</a>
+                        </div>
+                    </div>
+                </ul>
+                <ul class="van-width-1-1 van-width-1-3@s">
+            	    <div class="van-home-file-boxmk van-background-default">
+                	    <div class="van-home-file-boxtop van-background-cover van-panel van-flex van-flex-center van-flex-middle" style="background-image: url('/static/index/images/index/dynamic.jpg')">
+                        	<a href="/News/Index?type=2" target="_blank">行业动态</a>
+                        </div>
+                        {volist name='news2' id='vo'}
+                        <li>
+                            <div class="van-flex">
+                            	<a href="/News/Detail?id={$vo.id}" title="{$vo.title}" target="_blank" class="van-flex-1 van-text-truncate">{$vo.title}</a>
+                                <span>{$vo.create_time|date='Y-m-d'}</span>
+                            </div>
+                        </li>
+                        {/volist}
+                                                <div class="van-home-file-boxbottom">
+                            <a href="/News/Index?type=2" target="_blank">更多</a>
+                        </div>
+                    </div>
+                </ul>
+                            	<ul class="van-width-1-1 van-width-1-3@s">
+            	    <div class="van-home-file-boxmk van-background-default">
+                	    <div class="van-home-file-boxtop van-background-cover van-panel van-flex van-flex-center van-flex-middle" style="background-image: url('/static/index/images/index/problem.jpg')">
+                        	<a href="/News/Index?type=3" target="_blank">常见问题</a>
+                        </div>
+                           {volist name='news3' id='vo'}
+                        <li>
+                            <div class="van-flex">
+                            	<a href="/News/Detail?id={$vo.id}" title="{$vo.title}" target="_blank" class="van-flex-1 van-text-truncate">{$vo.title}</a>
+                                <span>{$vo.create_time|date='Y-m-d'}</span>
+                            </div>
+                        </li>
+                        {/volist}
+                                                <div class="van-home-file-boxbottom">
+                            <a href="/News/Index?type=3" target="_blank">更多</a>
+                        </div>
+                    </div>
+                </ul>
+                            </div>
+        </div>
+</div>
+</div>
+</section>
+    {/if}
+<footer class="footer footer-bar">
+    <div class="container text-center">
+        <div class="row align-items-center">
+            <div>
+                <div class="text-sm-left">
+                  <p class="mb-0">{:getConfig()['copyright']}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+{if condition="getConfig()['index_popup'] != null || getConfig()['index_popup'] != '' "}
+<div class="web_notice" style="position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: rgba(0,0,0,0.3);z-index: 99999;">
+<div style="position: fixed;top: 50%;left: 50%;width: 350px;background: #FFF;transform: translate(-50%, -50%);border-radius: 40px;padding: 50px 40px;">
+<h3 style="font-weight: bold;text-align: center;font-size: 30px;">公告</h3>
+<div style="font-size: 16px;margin-top: 26px;line-height: 30px;color: #999;"><br/>
+<font color="purple">{:getConfig()['index_popup']}
+</div>
+<a style="display: block;background: #98a3ff;color: #FFF;text-align: center;font-weight: bold;font-size: 19px;line-height: 60px;margin: 0 auto;margin-top: 45px;border-radius: 32px;width: 80%;" onclick="javascript:document.querySelector('.web_notice').remove()">好的</a>
+</div>
+</div>
+{/if}
+
+<!-- Back to top -->
+<a href="#" class="btn btn-icon btn-primary back-to-top"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up icons"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg></a>
+<!-- Back to top -->
+  <script type="text/javascript" src="/home/{$resource}/js/index/jquery.min.js"></script>
+  <script type="text/javascript" src="/home/{$resource}/js/index/bootstrap.bundle.min.js"></script>
+  <script type="text/javascript" src="/home/{$resource}/js/index/jquery.easing.min.js"></script>
+  <script type="text/javascript" src="/home/{$resource}/js/index/main.umd.js"></script>
+  {:getConfig()['diy_js']}
+  </body>
+  </html>

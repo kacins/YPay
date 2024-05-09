@@ -1,0 +1,106 @@
+ {include file="public/header" type="other"/}
+<form class="layui-form" action="">
+    <div class="mainBox">
+        <div class="main-container">
+            <div class="layui-form-item">
+                    <label class="layui-form-label">
+                        云端名称
+                    </label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input layui-form-danger" placeholder="请输入云端名称,例:云端" name="name" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">
+                        云端地址
+                    </label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input layui-form-danger" placeholder="记得带http(s)://协议头,后面不需要/" name="address"/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">
+                        云端类别
+                    </label>
+                    <div class="layui-input-block">
+                        <select name="type" lay-filter="type">
+                            <option value="1">微信</option>
+                            <option value="2">QQ</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">
+                        云端类型
+                    </label>
+                    <div class="layui-input-block">
+                        <select name="cloud_type" id="cloud_type">
+                            <option value="1">Mac - V3</option>
+                            <option value="2">Mac - V2</option>
+                            <option value="3">IPad</option>
+                        </select>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="button-container">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit="" lay-filter="save">
+                <i class="layui-icon layui-icon-ok"></i>
+                提交
+            </button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">
+                <i class="layui-icon layui-icon-refresh"></i>
+                重置
+            </button>
+        </div>
+    </div>
+</form>
+ {include file="public/footer"/}
+<script>
+    layui.use(['form', 'jquery',  'uploads'], function () {
+        let form = layui.form;
+        let $ = layui.jquery;
+        
+        //筛选通道类型
+        form.on('select(type)',function(data){
+            if(data.value == 1){
+                $('#cloud_type').html('<option value="1">Mac - V3</option><option value="2">Mac - V2</option><option value="3">IPad</option>');
+            }else{
+                $('#cloud_type').html('<option value="1">QYBot</option>');
+            }
+            form.render('select');
+        });
+        
+        //建立编辑器
+        form.on('submit(save)', function (data) {
+            
+            $.ajax({
+                data: JSON.stringify(data.field),
+                dataType: 'json',
+                contentType: 'application/json',
+                type: 'post',
+                success: function (res) {
+                    //判断有没有权限
+                    if (res && res.code == 999) {
+                        layer.msg(res.msg, {
+                            icon: 5,
+                            time: 2000,
+                        })
+                        return false;
+                    } else if (res.code == 200) {
+                        layer.msg(res.msg,{icon:1,time:1000}, function () {
+                            parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+                            parent.layui.table.reload("cloud");
+                        });
+                    } else {
+                        layer.msg(res.msg,{icon:2,time:1000});
+                    }
+                }
+            })
+            return false;
+        });
+    })
+</script>
+</body>
+</html>

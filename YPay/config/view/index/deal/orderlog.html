@@ -1,0 +1,239 @@
+ {include file="public/user_header" title="订单日志" /}
+  <style>
+     table tbody tr td:last-child{
+         background-color:white;
+     }
+ </style>
+<!-- Content -->
+            <div class="container-xxl flex-grow-1 container-p-y">
+
+              <div class="row">
+                <div class="col-md-12">
+                
+                  <div class="card">
+                    <!-- 订 单 日 志 -->
+                    <h5 class="card-header border-bottom">订 单 日 志</h5>
+                    <div class="card-datatable text-nowrap">
+                      <table class="datatables-basic table border-top">
+                        <thead>
+                          <tr>
+                            <th></th>
+                            <th>订单类型</th>
+                            <th>通道</th>
+                            <th>商户单号</th>
+                            <th>本地单号</th>
+                            <th>商品名称</th>
+                            <th>支付方式</th>
+                            <th>金额</th>
+                            <th>实付金额</th>
+                            <th>费率金额</th>
+                            <th>创建时间</th>
+                            <th>支付时间</th>
+                            <th>状态</th>
+                            <th>回调信息</th>
+                            <th style="background-color:white;">操作</th>
+                          </tr>
+                        </thead>
+                      </table>
+                    </div>
+                    <!--/ 订 单 日 志 -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- / Content -->
+            
+{include file="public/user_footer" /}
+
+ <!-- / Page Js -->
+<script>
+    layui.use([ 'form'], function () {
+            var $ = layui.jquery;
+            var form = layui.form;
+            var dt_basic_table = $('.datatables-basic');
+            // DataTable
+            // --------------------------------------------------------------------
+            if (dt_basic_table.length) {
+              dt_basic_table.DataTable({
+                 ajax: '/Deal/Orderlog',
+                 deferRender: true,
+                 scrollX: true,
+                 columns: [
+                   { data: 'id' },
+                   { data: 'pla_type' },
+                   { data: 'account_id' },
+                   { data: 'trade_no' },
+                   { data: 'out_trade_no' },
+                   { data: 'name'},
+                   { data: 'type' },
+                   { data: 'money' },
+                   { data: 'truemoney' },
+                   { data: 'feilvmoney' },
+                   { data: 'create_time' },
+                   { data: 'end_time' },
+                   { data: 'status' },
+                   { data: 'api_memo' },
+                   { data: 'id' },
+                 ],
+                 columnDefs: [
+                    {
+                        target: 0,
+                        visible: false,
+                        searchable: false,
+                    },
+                    {
+                      // Label
+                      targets: 1,
+                      render: function (data, type, full, meta) {
+                        var $pla_type = full['pla_type'];
+                        var $array = {
+                          1: { title: '本地订单', class: 'bg-label-primary' },
+                          2: { title: '转接订单', class: ' bg-label-dark' },
+                        };
+                        if (typeof $array[$pla_type] === 'undefined') {
+                          return data;
+                        }
+                        return (
+                          '<span class="badge rounded-pill ' +
+                          $array[$pla_type].class +
+                          '">' +
+                          $array[$pla_type].title +
+                          '</span>'
+                        );
+                      }
+                    },
+                    {
+                      // Label
+                      targets: 6,
+                      render: function (data, type, full, meta) {
+                        var $type = full['type'];
+                        var $array = {
+                          qqpay: { title: 'QQ', class: 'bg-label-danger' },
+                          alipay: { title: '支付宝', class: 'bg-label-info' },
+                          wxpay: { title: '微信', class: ' bg-label-success' },
+                          lkl: { title: '拉卡拉', class: ' bg-label-info' },
+                        };
+                        if (typeof $array[$type] === 'undefined') {
+                          return data;
+                        }
+                        return (
+                          '<span class="badge rounded-pill ' +
+                          $array[$type].class +
+                          '">' +
+                          $array[$type].title +
+                          '</span>'
+                        );
+                      }
+                    },
+                    {
+                      // Label
+                      targets: -4,
+                      render: function (data, type, full, meta) {
+                        var $end_time = full['end_time'];
+                        if($end_time == null){
+                           return "未支付";
+                        }else{
+                            return data;
+                        }
+                      }
+                    },
+                    {
+                      // Label
+                      targets: -3,
+                      render: function (data, type, full, meta) {
+                        var $status = full['status'];
+                        var $array = {
+                          1: { title: '已支付', class: 'bg-label-success' },
+                          0: { title: '未支付', class: 'bg-label-warning' },
+                        };
+                        if (typeof $array[$status] === 'undefined') {
+                          return data;
+                        }
+                        return (
+                          '<span class="badge rounded-pill ' +
+                          $array[$status].class +
+                          '">' +
+                          $array[$status].title +
+                          '</span>'
+                        );
+                      }
+                    },
+                    {
+                      // Label
+                      targets: -1,
+                      searchable: false,
+                      orderable: false,
+                      render: function (data, type, full, meta) {
+                        var $status = full['status'];
+                        var id = full['id'];
+                        if($status === 0){
+                           return (
+                                '<button type="button" onclick="add_reback('+id+')" class="btn rounded-pill btn-sm btn-google-plus">手动补单</button>'
+                            ); 
+                        }else if($status === 1){
+                            return (
+                                '<button type="button" onclick="add_reback('+id+')" class="btn rounded-pill btn-sm btn-twitter">重新补单</button>'
+                            ); 
+                        }
+                        
+                      }
+                    },
+                ],
+                 order: [[0, 'desc']],
+                 dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+                 displayLength: 10,
+                 lengthMenu: [10, 20, 50],
+                 scrollX:        true,
+                 deferRender: true,
+                 fixedColumns:   {
+                     left: 0,
+                     right: 1
+                 }
+        
+            });
+            }
+    });
+    function add_reback(id) {
+        Swal.fire({
+            text: '确定要处理此订单吗?确认处理后将进行补单，届时该订单将变更为已支付和进行回调,该通道相应的金额也会计入,已知晓请确认!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: '确 定',
+            cancelButtonText:'取消',
+            customClass: {
+              confirmButton: 'btn btn-primary me-2',
+              cancelButton: 'btn btn-label-secondary'
+            },
+            buttonsStyling: false
+          }).then(function (result) {
+            if (result.value) {
+              $.get("/Deal/Reback", {
+                id: id
+            }, function (res) {
+                
+                if (res.code == 1) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: res.msg,
+                        customClass: {
+                          confirmButton: 'btn btn-primary'
+                        }
+                     }).then(function (result) {
+                         if(result.value){
+                             location.reload();
+                         }
+                     });
+                } else {
+                    Swal.fire({
+                        title: res.msg,
+                        icon: 'error',
+                        customClass: {
+                          confirmButton: 'btn btn-primary'
+                        }
+                    });
+                }
+            }, 'json');
+            }
+          });
+    }
+</script>

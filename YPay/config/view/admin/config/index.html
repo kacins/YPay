@@ -1,0 +1,1860 @@
+{include file="public/header" type='pear-container'/}
+{include file="public/footer"/}
+<style>
+    .layui-form-label{
+        width: unset;
+    }
+    .layui-input-block {
+        margin-left: 115px;
+        margin-right: 5px;
+    }
+</style>
+
+ 	<div class="layui-row layui-col-space15">
+ 		<div class="layui-col-md12">
+ 			<div class="layui-card">
+ 				<form class="layui-form edit-form" method="post" action="">
+ 					<div class="layui-tab" lay-filter="menu">
+ 						<ul class="layui-tab-title">
+ 							<li class="layui-this" lay-id="basic">基本设置</li>
+ 							<li lay-id="code">发信设置</li>
+ 							<li lay-id="upload">上传设置</li>
+ 							<li lay-id="pay">支付设置</li>
+ 							<li lay-id="notice">公告/弹窗</li>
+ 							<li lay-id="cloud">云端设置</li>
+ 							<li lay-id="lr">登录/注册</li>
+ 							<li lay-id="enhance">功能增强</li>
+ 							<li lay-id="secure">安全效验</li>
+ 							<li lay-id="diyFunction">自定义功能</li>
+ 						</ul>
+ 						<div class="layui-tab-content">
+ 							<!--基本设置-->
+ 							<div class="layui-tab-item layui-show">
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">
+ 										网站名称
+ 									</label>
+ 									<div class="layui-input-block">
+ 										<input autocomplete="off" class="layui-input"
+ 											placeholder="简短的名称，用于发信通知等场景，例如：xx平台" name="sitename"
+ 											value="{$data['sitename']??''}" type="text" />
+ 									</div>
+ 								</div>
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">
+ 										网站副标题
+ 									</label>
+ 									<div class="layui-input-block">
+ 										<input autocomplete="off" class="layui-input" name="title"
+ 											value="{$data['title']??''}" type="text" />
+ 									</div>
+ 								</div>
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">
+ 										网站关键词
+ 									</label>
+ 									<div class="layui-input-block">
+ 										<input autocomplete="off" class="layui-input" name="key"
+ 											value="{$data['key']??''}" type="text" />
+ 									</div>
+ 								</div>
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">
+ 										网站描述
+ 									</label>
+ 									<div class="layui-input-block">
+ 										<textarea name="desc" class="layui-textarea">{$data['desc']??''}</textarea>
+ 									</div>
+ 								</div>
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">
+ 										ICP备案号
+ 									</label>
+ 									<div class="layui-input-block">
+ 										<input autocomplete="off" class="layui-input" name="icp"
+ 											value="{$data['icp']??''}" type="text" />
+ 									</div>
+ 								</div>
+ 								<div class="layui-form-item" >
+ 								        <label class="layui-form-label">
+ 								        	站长邮箱
+ 								        </label>
+ 								        <div class="layui-input-block">
+ 								        	<input autocomplete="off" placeholder="请填写通知审核接收的邮箱" class="layui-input"
+ 								        		name="adminMail" value="{$data['adminMail']??''}" type="text" />
+ 								        </div>
+ 								    </div>
+ 								 <hr/>
+ 								<div class="layui-form-item" >
+ 									<label class="layui-form-label">
+ 										首页显示模式
+ 									</label>
+ 									<div class="layui-input-block">
+ 										{if $data['is_weboff'] == 1}
+ 										<input type="radio" name="is_weboff" value="0" lay-filter="is_weboff" title="关闭">
+ 										<input type="radio" name="is_weboff" value="1" lay-filter="is_weboff"title="开启" checked>
+ 										<input type="radio" name="is_weboff" value="2" lay-filter="is_weboff" title="显示其他网址">
+ 										{elseif $data['is_weboff'] == 0}
+ 										<input type="radio" name="is_weboff" value="0" lay-filter="is_weboff" title="关闭" checked>
+ 										<input type="radio" name="is_weboff" value="1" lay-filter="is_weboff" title="开启">
+ 										<input type="radio" name="is_weboff" value="2" lay-filter="is_weboff" title="显示其他网址">
+ 										{else}
+ 										<input type="radio" name="is_weboff" value="0" lay-filter="is_weboff" title="关闭">
+ 										<input type="radio" name="is_weboff" value="1" lay-filter="is_weboff" title="开启">
+ 										<input type="radio" name="is_weboff" value="2" lay-filter="is_weboff" title="显示其他网址" checked>
+ 										{/if}
+ 									</div>
+
+ 								</div>
+ 								 <div class="layui-form-item" id="home_url" {if condition="$data['is_weboff'] neq 2" } style="display: none;"
+ 									{/if}>
+ 									<label class="layui-form-label">
+ 										显示网址
+ 									</label>
+ 									<div class="layui-input-block">
+ 									     <input autocomplete="off" class="layui-input" name="home_url"
+ 											value="{$data['home_url']??''}" placeholder="填写的网址不正确则跳转至登录页" type="text" />
+ 									</div>
+ 								</div>
+ 								<hr/>
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">
+ 										首页公告
+ 									</label>
+ 									<div class="layui-input-block">
+ 										{if $data['is_notice'] == 1}
+ 										<input type="radio" name="is_notice" value="0" title="关闭">
+ 										<input type="radio" name="is_notice" value="1" title="开启" checked>
+ 										{else}
+ 										<input type="radio" name="is_notice" value="0" title="关闭" checked>
+ 										<input type="radio" name="is_notice" value="1" title="开启">
+ 										{/if}
+ 									</div>
+
+ 								</div>
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">
+ 										Favicon
+ 									</label>
+ 									<div class="layui-input-block">
+ 										{:opt_photo('favicon')}
+ 										<button class="pear-btn pear-btn-primary pear-btn-sm  upload-image"
+ 											type="button">
+ 											<i class="fa fa-image">
+ 											</i>
+ 											上传图片
+ 										</button>
+ 										<input lay-verify="uploadfavicon" name="favicon" type="hidden"
+ 											value="{$data['favicon']??''}" />
+ 										<div class="upload-image">
+ 											<span>
+ 											</span>
+ 											<img class="upload-image" src="{$data['favicon']??''}" />
+ 										</div>
+ 									</div>
+ 								</div>
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">
+ 										网站LOGO
+ 									</label>
+ 									<div class="layui-input-block">
+ 										{:opt_photo('logo')}
+ 										<button class="pear-btn pear-btn-primary pear-btn-sm  upload-image"
+ 											type="button">
+ 											<i class="fa fa-image">
+ 											</i>
+ 											上传图片
+ 										</button>
+ 										<input lay-verify="uploadlogo" name="logo" type="hidden"
+ 											value="{$data['logo']??''}" />
+ 										<div class="upload-image">
+ 											<span>
+ 											</span>
+ 											<img class="upload-image" src="{$data['logo']??''}" />
+ 										</div>
+ 									</div>
+ 								</div>
+                                
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">
+ 										自定义JS
+ 									</label>
+ 									<div class="layui-input-block">
+ 										<textarea name="diy_js" class="layui-textarea"
+ 											placeholder="例如：<script>Js代码</script>">{$data['diy_js']??''}</textarea>
+ 									</div>
+ 								</div>
+ 							</div>
+ 							<!--发信设置-->
+ 							<div class="layui-tab-item">
+ 								<!--邮箱发信-->
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">启用邮箱服务</label>
+ 									<div class="layui-input-block">
+ 										<input type="checkbox" id="email_switch" value="{$data['email_switch']??''}"
+ 											name="email_switch" lay-skin="switch" lay-filter="email_switch"
+ 											lay-text="开|关" {if condition="$data['email_switch'] eq 1" } checked {/if}>
+ 									</div>
+ 								</div>
+ 								<div id="email" {if condition="$data['email_switch'] neq 1" } style="display: none;"
+ 									{/if}>
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">
+ 											SMTP主机
+ 										</label>
+ 										<div class="layui-input-block">
+ 											<input autocomplete="off" class="layui-input" name="smtp-host"
+ 												value="{$data['smtp-host']??''}" type="text" />
+ 										</div>
+ 									</div>
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">加密类型</label>
+ 										<div class="layui-input-block">
+ 										    <input type="radio" name="SmtpSecure" lay-filter="SmtpSecure" value="none"
+ 												title="无" {if condition="$data['SmtpSecure'] eq 'none'" } checked
+ 												{/if}>
+ 											<input type="radio" name="SmtpSecure" lay-filter="SmtpSecure" value="ssl"
+ 												title="SSL/TLS" {if condition="$data['SmtpSecure'] eq 'ssl'" } checked
+ 												{/if}>
+ 											<input type="radio" name="SmtpSecure" lay-filter="SmtpSecure" value="tls"
+ 												title="STARTTLS" {if condition="$data['SmtpSecure'] eq 'tls'" } checked
+ 												{/if}>
+ 										</div>
+ 									</div>
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">
+ 											SMTP端口
+ 										</label>
+ 										<div class="layui-input-block">
+ 											<input autocomplete="off" class="layui-input" name="smtp-port"
+ 												value="{$data['smtp-port']??''}" type="text" />
+ 										</div>
+ 									</div>
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">
+ 											SMTP用户名
+ 										</label>
+ 										<div class="layui-input-block">
+ 											<input autocomplete="off" class="layui-input" name="smtp-user"
+ 												value="{$data['smtp-user']??''}" type="text" />
+ 										</div>
+ 									</div>
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">
+ 											SMTP密码
+ 										</label>
+ 										<div class="layui-input-block">
+ 											<input autocomplete="off" class="layui-input" name="smtp-pass"
+ 												value="{$data['smtp-pass']??''}" type="text" />
+ 										</div>
+ 									</div>
+
+ 								</div>
+ 								<hr />
+ 								<!--短信发信-->
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">启用短信服务</label>
+ 									<div class="layui-input-block">
+ 										<input type="checkbox" id="code_switch" value="{$data['code_switch']??''}"
+ 											name="code_switch" lay-skin="switch" lay-filter="code_switch"
+ 											lay-text="开|关" {if condition="$data['code_switch'] eq 1" } checked {/if}>
+ 									</div>
+ 								</div>
+ 								<div id="code" {if condition="$data['code_switch'] neq 1" } style="display: none;"
+ 									{/if}>
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">短信配置</label>
+ 										<div class="layui-input-block">
+ 											<input type="radio" name="smstype" lay-filter="smstype" value="aliyun" title="阿里云"
+ 												{if condition='$data["smstype"] eq "aliyun"' } checked {/if}>
+ 											<input type="radio" name="smstype" lay-filter="smstype" value="qcloud" title="腾讯云"
+ 												{if condition='$data["smstype"] eq "qcloud"' } checked {/if}>
+ 											<input type="radio" name="smstype" lay-filter="smstype" value="smsbao" title="短信宝"
+ 												{if condition='$data["smstype"] eq "smsbao"' } checked {/if}>
+ 										</div>
+ 									</div>
+
+ 									<div class="layui-form-item" id="alisms" {if condition="$data['smstype'] neq 'aliyun'" }
+ 										style="display: none;" {/if}>
+ 										<div class="layui-form-item">
+ 											<label class="layui-form-label">AccessKeyId</label>
+ 											<div class="layui-input-block">
+ 												<input type="text" name="alisms-accessKeyId"
+ 													value="{$data['alisms-accessKeyId']??''}"
+ 													placeholder="请输入AccessKeyId" class="layui-input">
+ 											</div>
+ 										</div>
+ 										<div class="layui-form-item">
+ 											<label class="layui-form-label">Secret</label>
+ 											<div class="layui-input-block">
+ 												<input type="text" name="alisms-Secret"
+ 													value="{$data['alisms-Secret']??''}" placeholder="请输入Secret"
+ 													class="layui-input">
+ 											</div>
+ 										</div>
+ 										<div class="layui-form-item">
+ 											<label class="layui-form-label">短信签名</label>
+ 											<div class="layui-input-block">
+ 												<input type="text" name="alisms-SignName"
+ 													value="{$data['alisms-SignName']??''}" placeholder="请输入短信签名"
+ 													class="layui-input">
+ 											</div>
+ 										</div>
+ 										<div class="layui-form-item">
+ 											<label class="layui-form-label">登录模板ID</label>
+ 											<div class="layui-input-block">
+ 												<input type="text" name="alisms-LoginCodeId"
+ 													value="{$data['alisms-LoginCodeId']??''}" placeholder="请输入登录模板ID"
+ 													class="layui-input">
+ 											</div>
+ 										</div>
+ 										<div class="layui-form-item">
+ 											<label class="layui-form-label">注册模板ID</label>
+ 											<div class="layui-input-block">
+ 												<input type="text" name="alisms-RegCodeId"
+ 													value="{$data['alisms-RegCodeId']??''}" placeholder="请输入注册模板ID"
+ 													autocomplete="off" class="layui-input">
+ 											</div>
+ 										</div>
+ 									</div>
+
+ 									<div class="layui-form-item" id="tencentsms" {if condition="$data['smstype'] neq 'qcloud'"
+ 										} style="display: none;" {/if}>
+ 										<div class="layui-form-item">
+ 											<label class="layui-form-label">SecretId</label>
+ 											<div class="layui-input-block">
+ 												<input type="text" name="tensms-accessKeyId"
+ 													value="{$data['tensms-accessKeyId']??''}" placeholder="请输入SecretId"
+ 													autocomplete="off" class="layui-input">
+ 											</div>
+ 										</div>
+ 										<div class="layui-form-item">
+ 											<label class="layui-form-label">SecretKey</label>
+ 											<div class="layui-input-block">
+ 												<input type="text" name="tensms-Secret"
+ 													value="{$data['tensms-Secret']??''}" placeholder="请输入SecretKey"
+ 													autocomplete="off" class="layui-input">
+ 											</div>
+ 										</div>
+ 										<div class="layui-form-item">
+ 											<label class="layui-form-label">短信签名</label>
+ 											<div class="layui-input-block">
+ 												<input type="text" name="tensms-SignName"
+ 													value="{$data['tensms-SignName']??''}" placeholder="请输入短信签名"
+ 													autocomplete="off" class="layui-input">
+ 											</div>
+ 										</div>
+ 										<div class="layui-form-item">
+ 											<label class="layui-form-label">应用ID</label>
+ 											<div class="layui-input-block">
+ 												<input type="text" name="tensms-AppId"
+ 													value="{$data['tensms-AppId']??''}" placeholder="请输入应用ID"
+ 													autocomplete="off" class="layui-input">
+ 											</div>
+ 										</div>
+ 										<div class="layui-form-item">
+ 											<label class="layui-form-label">登录模板ID</label>
+ 											<div class="layui-input-block">
+ 												<input type="text" name="tensms-LoginCodeId"
+ 													value="{$data['tensms-LoginCodeId']??''}" placeholder="请输入登录模板ID"
+ 													autocomplete="off" class="layui-input">
+ 											</div>
+ 										</div>
+ 										<div class="layui-form-item">
+ 											<label class="layui-form-label">注册模板ID</label>
+ 											<div class="layui-input-block">
+ 												<input type="text" name="tensms-RegCodeId"
+ 													value="{$data['tensms-RegCodeId']??''}" placeholder="请输入注册模板ID"
+ 													autocomplete="off" class="layui-input">
+ 											</div>
+ 										</div>
+ 									</div>
+
+ 									<div class="layui-form-item" id="smsbao" {if condition="$data['smstype'] neq 'smsbao'" }
+ 										style="display: none;" {/if}>
+ 										<div class="layui-form-item">
+ 											<label class="layui-form-label">用户名</label>
+ 											<div class="layui-input-block">
+ 												<input type="text" name="smsbao-user"
+ 													value="{$data['smsbao-user']??''}" placeholder="请输入用户名"
+ 													autocomplete="off" class="layui-input">
+ 											</div>
+ 										</div>
+ 										<div class="layui-form-item">
+ 											<label class="layui-form-label">账户密码</label>
+ 											<div class="layui-input-block">
+ 												<input type="text" name="smsbao-pass"
+ 													value="{$data['smsbao-pass']??''}" placeholder="请输入账户密码"
+ 													autocomplete="off" class="layui-input">
+ 											</div>
+ 										</div>
+ 										<div class="layui-form-item">
+ 											<label class="layui-form-label">短信签名</label>
+ 											<div class="layui-input-block">
+ 												<input type="text" name="smsbao-SignName"
+ 													value="{$data['smsbao-SignName']??''}" placeholder="请输入短信签名"
+ 													autocomplete="off" class="layui-input">
+ 											</div>
+ 										</div>
+ 									</div>
+ 								</div>
+ 								<hr />
+ 								<!--WxPusher-->
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">WxPusher</label>
+ 									<div class="layui-input-block">
+ 										<input type="checkbox" id="wxpusher_switch" value="{$data['wxpusher_switch']??''}"
+ 											name="wxpusher_switch" lay-skin="switch" lay-filter="wxpusher_switch"
+ 											lay-text="开|关" {if condition="$data['wxpusher_switch'] eq 1" } checked {/if}>
+ 									</div>
+ 								</div>
+ 								<div id="wxpusher" {if condition="$data['wxpusher_switch'] neq 1" } style="display: none;"
+ 									{/if}>
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">
+ 											APPToken
+ 										</label>
+ 										<div class="layui-input-block">
+ 											<input autocomplete="off" class="layui-input" name="wxpusher_appToken"
+ 												value="{$data['wxpusher_appToken']??''}" type="text" />
+ 										</div>
+ 									</div>
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">
+ 											回调地址:
+ 										</label>
+ 										<div class="layui-input-block">
+ 										    <span class="layui-form-label" style="margin-left:-15px;">{$Request.domain}/Notify/wxpusher</span>
+ 										</div>
+ 									</div>
+ 								</div>
+ 								<hr />
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">
+ 										验证码模板
+ 									</label>
+ 									<div class="layui-input-block">
+ 										<textarea name="diy_codeTemp" id="diy_codeTemp"
+ 											class="layui-textarea">{$data['diy_codeTemp']??''}</textarea>
+ 									</div>
+ 									<div class="layui-input-block" style="margin-top: 10px;margin-bottom: -10px;">
+ 										<button type="button" id="diy_codeTemp_content1" value="[code]"
+ 											class="layui-btn layui-btn-sm layui-btn-normal">验证码</button>
+ 									</div>
+ 								</div>
+ 								<hr />
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">
+ 										订单通知模板
+ 									</label>
+ 									<div class="layui-input-block">
+ 										<textarea name="diy_orderTips" id="diy_orderTips"
+ 											class="layui-textarea">{$data['diy_orderTips']??''}</textarea>
+ 									</div>
+ 									<div class="layui-input-block" style="margin-top: 10px;margin-bottom: -10px;">
+ 										<button type="button" id="diy_orderTips_content1" value="[out_trade_no]"
+ 											class="layui-btn layui-btn-sm layui-btn-normal">订单号</button>
+ 										<button type="button" id="diy_orderTips_content2" value="[type]"
+ 											class="layui-btn layui-btn-sm layui-btn-normal">收款方式</button>
+ 											<button type="button" id="diy_orderTips_content3" value="[account]"
+ 											class="layui-btn layui-btn-sm layui-btn-normal">收款通道</button>
+ 										<button type="button" id="diy_orderTips_content4" value="[name]"
+ 											class="layui-btn layui-btn-sm layui-btn-normal">商品名称</button>
+ 										<button type="button" id="diy_orderTips_content5" value="[money]"
+ 											class="layui-btn layui-btn-sm layui-btn-normal">订单金额</button>
+ 										<button type="button" id="diy_orderTips_content6" value="[create_time]"
+ 											class="layui-btn layui-btn-sm layui-btn-normal">下单时间</button>
+ 											<button type="button" id="diy_orderTips_content7" value="[end_time]"
+ 											class="layui-btn layui-btn-sm layui-btn-normal">支付时间</button>
+ 									</div>
+ 								</div>
+ 								<hr />
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">
+ 										登录通知模板
+ 									</label>
+ 									<div class="layui-input-block">
+ 										<textarea name="diy_loginTips" id="diy_loginTips"
+ 											class="layui-textarea">{$data['diy_loginTips']??''}</textarea>
+ 									</div>
+ 									<div class="layui-input-block" style="margin-top: 10px;margin-bottom: -10px;">
+ 										<button type="button" id="diy_loginTips_content1" value="[login_time]"
+ 											class="layui-btn layui-btn-sm layui-btn-normal">登录时间</button>
+ 										<button type="button" id="diy_loginTips_content2" value="[login_ip]"
+ 											class="layui-btn layui-btn-sm layui-btn-normal">登录IP</button>
+ 										<button type="button" id="diy_loginTips_content3" value="[login_uid]"
+ 											class="layui-btn layui-btn-sm layui-btn-normal">登录UID</button>
+ 										<button type="button" id="diy_loginTips_content4" value="[login_name]"
+ 											class="layui-btn layui-btn-sm layui-btn-normal">登录用户名</button>
+ 									</div>
+ 								</div>
+ 								<hr />
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">
+ 										注册通知模板
+ 									</label>
+ 									<div class="layui-input-block">
+ 										<textarea name="diy_regTips" id="diy_regTips"
+ 											class="layui-textarea">{$data['diy_regTips']??''}</textarea>
+ 									</div>
+ 									<div class="layui-input-block" style="margin-top: 10px;margin-bottom: -10px;">
+ 										<button type="button" id="diy_regTips_content1" value="[userId]"
+ 											class="layui-btn layui-btn-sm layui-btn-normal">用户UID</button>
+ 										<button type="button" id="diy_regTips_content2" value="[userName]"
+ 											class="layui-btn layui-btn-sm layui-btn-normal">用户名</button>
+ 										<button type="button" id="diy_regTips_content3" value="[register_ip]"
+ 											class="layui-btn layui-btn-sm layui-btn-normal">注册IP</button>
+ 									</div>
+ 								</div>
+ 								<hr />
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">
+ 										通道掉线模板
+ 									</label>
+ 									<div class="layui-input-block">
+ 										<textarea name="diy_loseTips" id="diy_loseTips"
+ 											class="layui-textarea">{$data['diy_loseTips']??''}</textarea>
+ 									</div>
+ 									<div class="layui-input-block" style="margin-top: 10px;margin-bottom: -10px;">
+ 										<button type="button" id="diy_loseTips_content1" value="[account_id]"
+ 											class="layui-btn layui-btn-sm layui-btn-normal">通道ID</button>
+ 										<button type="button" id="diy_loseTips_content2" value="[account_type]"
+ 											class="layui-btn layui-btn-sm layui-btn-normal">通道类型</button>
+ 										<button type="button" id="diy_loseTips_content3" value="[account_code]"
+ 											class="layui-btn layui-btn-sm layui-btn-normal">通道标识</button>
+ 										<button type="button" id="diy_loseTips_content3" value="[lose_time]"
+ 											class="layui-btn layui-btn-sm layui-btn-normal">掉线时间</button>
+ 									</div>
+ 								</div>
+ 								<hr />
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">
+ 										余额不足模板
+ 									</label>
+ 									<div class="layui-input-block">
+ 										<textarea name="diy_moneyTips" id="diy_moneyTips"
+ 											class="layui-textarea">{$data['diy_moneyTips']??''}</textarea>
+ 									</div>
+ 									<div class="layui-input-block" style="margin-top: 10px;margin-bottom: -10px;">
+ 									    <button type="button" id="diy_moneyTips_content2" value="[userName]"
+ 											class="layui-btn layui-btn-sm layui-btn-normal">用户名</button>
+ 										<button type="button" id="diy_moneyTips_content1" value="[userId]"
+ 											class="layui-btn layui-btn-sm layui-btn-normal">用户UID</button>
+ 										<button type="button" id="diy_moneyTips_content1" value="[money]"
+ 											class="layui-btn layui-btn-sm layui-btn-normal">剩余金额</button>
+ 									</div>
+ 								</div>
+ 							</div>
+ 							<!--上传设置-->
+ 							<div class="layui-tab-item">
+ 							    <div class="layui-form-item">
+ 									<label class="layui-form-label">
+ 										上传限制(KB)
+ 									</label>
+ 									<div class="layui-input-block">
+ 										<input autocomplete="off" class="layui-input"
+ 											placeholder="图片上传限制大小为KB" name="imageSize"
+ 											value="{$data['imageSize']??''}" type="text" />
+ 									</div>
+ 								</div>
+ 								<hr/>
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">存储方式</label>
+ 									<div class="layui-input-block">
+ 										<input type="radio" name="file-type" value="1" title="本地" {if
+ 											condition="$data['file-type'] eq 1" } checked {/if} lay-filter="type">
+ 										<input type="radio" name="file-type" value="2" title="阿里云" {if
+ 											condition="$data['file-type'] eq 2" } checked {/if} lay-filter="type">
+ 										<input type="radio" name="file-type" value="3" title="七牛云" {if
+ 											condition="$data['file-type'] eq 3" } checked {/if} lay-filter="type">
+ 									</div>
+ 								</div>
+ 								<div class="layui-form-item" id="oss" {if condition="$data['file-type'] neq 2" }
+ 									style="display: none;" {/if}>
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">Oss地址</label>
+ 										<div class="layui-input-block">
+ 											<input type="text" name="file-endpoint"
+ 												value="{$data['file-endpoint']??''}" placeholder="请输入Oss地址"
+ 												autocomplete="off" class="layui-input">
+ 										</div>
+ 									</div>
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">空间名称</label>
+ 										<div class="layui-input-block">
+ 											<input type="text" name="file-OssName" value="{$data['file-OssName']??''}"
+ 												placeholder="请输入空间名称" autocomplete="off" class="layui-input">
+ 										</div>
+ 									</div>
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">KeyId</label>
+ 										<div class="layui-input-block">
+ 											<input type="text" name="file-accessKeyId"
+ 												value="{$data['file-accessKeyId']??''}" placeholder="请输入KeyId"
+ 												autocomplete="off" class="layui-input">
+ 										</div>
+ 									</div>
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">KeySecret</label>
+ 										<div class="layui-input-block">
+ 											<input type="text" name="file-accessKeySecret"
+ 												value="{$data['file-accessKeySecret']??''}" placeholder="请输入KeySecret"
+ 												autocomplete="off" class="layui-input">
+ 										</div>
+ 									</div>
+ 								</div>
+
+ 								<div class="layui-form-item" id="qiniu" {if condition="$data['file-type'] neq 3" }
+ 									style="display: none;" {/if}>
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">空间域名</label>
+ 										<div class="layui-input-block">
+ 											<input type="text" name="qiniu-Domain" value="{$data['qiniu-Domain']??''}"
+ 												placeholder="请输入绑定空间域名" autocomplete="off" class="layui-input">
+ 										</div>
+ 									</div>
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">BUCKET</label>
+ 										<div class="layui-input-block">
+ 											<input type="text" name="qiniu-Bucket" value="{$data['qiniu-Bucket']??''}"
+ 												placeholder="请输入空间BUCKET" autocomplete="off" class="layui-input">
+ 										</div>
+ 									</div>
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">AK</label>
+ 										<div class="layui-input-block">
+ 											<input type="text" name="qiniu-AK" value="{$data['qiniu-AK']??''}"
+ 												placeholder="请输入AK" autocomplete="off" class="layui-input">
+ 										</div>
+ 									</div>
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">SK</label>
+ 										<div class="layui-input-block">
+ 											<input type="text" name="qiniu-SK" value="{$data['qiniu-SK']??''}"
+ 												placeholder="请输入SK" autocomplete="off" class="layui-input">
+ 										</div>
+ 									</div>
+ 								</div>
+ 							</div>
+						    <!--支付设置-->
+ 							<div class="layui-tab-item">
+ 							     							    <!--订单数据展示功能-->
+ 								<div>
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">
+ 											订单显示条数
+ 										</label>
+ 										<div class="layui-input-block">
+ 										    <input name="orderDisplay" value="{$data['orderDisplay']??''}" type="text" class="layui-input" placeholder="请输入前台订单记录展示条数">
+ 										</div>
+ 									</div>
+ 								</div>
+ 								<hr />
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">
+ 										订单金额限制
+ 									</label>
+ 									<div class="layui-input-block">
+ 										<div class="layui-input-inline">
+ 											<input type="text" name="min_orderprice" required lay-verify="required"
+ 												value="{$data['min_orderprice']??''}" placeholder="最小订单金额"
+ 												autocomplete="off" class="layui-input">
+ 										</div>
+
+ 										<div class="layui-input-inline">
+ 											<input type="text" name="max_orderprice" required lay-verify="required"
+ 												value="{$data['max_orderprice']??''}" placeholder="最大订单金额"
+ 												autocomplete="off" class="layui-input">
+ 										</div>
+ 									</div>
+ 								</div>
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">
+ 										屏蔽关键字
+ 									</label>
+ 									<div class="layui-input-block">
+ 										<textarea name="shield_key" placeholder="请输入内容,内容格式为:示例一|示例二|示例三"
+ 											class="layui-textarea">{$data['shield_key']??''}</textarea>
+ 									</div>
+ 								</div>
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">
+ 										提示内容
+ 									</label>
+ 									<div class="layui-input-block">
+ 										<input autocomplete="off" placeholder="屏蔽提示内容" class="layui-input"
+ 											name="shield_tips" value="{$data['shield_tips']??''}" type="text" />
+ 									</div>
+ 								</div>
+ 								<hr />
+ 								<div class="layui-form-item">
+ 								    <label class="layui-form-label">支付顺序排序</label>
+ 								    
+ 								    <div class="layui-input-block" id='diy_recharge'>
+ 									</div>
+ 								<hr/>
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">支付配置</label>
+ 									<div class="layui-input-block">
+ 										<input type="radio" name="paytype" lay-filter="paytype" value="0" title="前台充值"
+ 											checked>
+ 										<input type="radio" name="paytype" lay-filter="paytype" value="1" title="支付测试">
+ 									</div>
+ 								</div>
+ 								<div id="front_pay">
+ 									<!--充值金额限制-->
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">
+ 											充值金额限制
+ 										</label>
+ 										<div class="layui-input-block">
+ 											<div class="layui-input-inline">
+ 												<input type="text" name="min_recharge" required lay-verify="required"
+ 													value="{$data['min_recharge']??''}" placeholder="最小充值金额"
+ 													autocomplete="off" class="layui-input">
+ 											</div>
+
+ 											<div class="layui-input-inline">
+ 												<input type="text" name="max_recharge" required lay-verify="required"
+ 													value="{$data['max_recharge']??''}" placeholder="最大充值金额"
+ 													autocomplete="off" class="layui-input">
+ 											</div>
+ 										</div>
+ 									</div>
+ 									<hr />
+ 									<!--QQ前台充值通道设置-->
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">QQ</label>
+ 										<div class="layui-input-block">
+ 										    <select name="qqpay">
+ 										        <option value="0">关闭 - 请到左侧菜单栏 - [支付配置] 配置后选择</option>
+ 										        <?php foreach ($pay as $key => $value): ?>
+ 										            <option value="{$value['id']??0}" {if condition="$value['id'] == $data['qqpay']" }
+ 										selected {/if}>
+ 										                {$value['name']??''}
+ 										            </option>
+ 										        <?php endforeach; ?>
+ 										    </select>
+ 										</div>
+ 									</div>
+ 									<hr />
+ 									<!--微信前台充值通道设置-->
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">微信</label>
+ 										<div class="layui-input-block">
+
+ 										    <select name="wechat">
+ 										        <option value="0">关闭 - 请到左侧菜单栏 - [支付配置] 配置后选择</option>
+ 										        <?php foreach ($pay as $key => $value): ?>
+ 										            <option value="{$value['id']??0}" {if condition="$value['id'] == $data['wechat']" }
+ 										selected {/if}>
+ 										                {$value['name']??''}
+ 										            </option>
+ 										        <?php endforeach; ?>
+ 										    </select>
+ 										</div>
+ 									</div>
+ 									<hr />
+ 									<!--支付宝前台充值通道设置-->
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">支付宝</label>
+ 										<div class="layui-input-block">
+
+ 										    <select name="alipay">
+ 										        <option value="0">关闭 - 请到左侧菜单栏 - [支付配置] 配置后选择</option>
+ 										        <?php foreach ($pay as $key => $value): ?>
+ 										            <option value="{$value['id']??0}" {if condition="$value['id'] == $data['alipay']" }
+ 										selected {/if}>
+ 										                {$value['name']??''}
+ 										            </option>
+ 										        <?php endforeach; ?>
+ 										    </select>
+ 										</div>
+ 									</div>
+ 									
+ 									
+ 								</div>
+ 								<div id="demo_pay" style="display: none;">
+ 								    <div class="layui-form-item">
+ 								        <label class="layui-form-label">测试通道</label>
+ 								        <div class="layui-input-block" id="diy_demoPay" name="diy_demoPay"></div>
+ 								    </div>
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">
+ 											测试金额
+ 										</label>
+ 										<div class="layui-input-block">
+ 											<input placeholder="请输入最低测试金额" class="layui-input"
+ 												name="demopay_money" value="{$data['demopay_money']??''}"
+ 												type="text" />
+ 										</div>
+ 									</div>
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">
+ 											测试商品名称
+ 										</label>
+ 										<div class="layui-input-block">
+ 											<input  placeholder="请输入测试商品名称" class="layui-input"
+ 												name="demopay_name" value="{$data['demopay_name']??''}" type="text" />
+ 										</div>
+ 									</div>
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">
+ 											易支付API
+ 										</label>
+ 										<div class="layui-input-block">
+ 											<input placeholder="易支付API" class="layui-input"
+ 												name="epayurl_demo" value="{$data['epayurl_demo']??''}" type="text" />
+ 										</div>
+ 									</div>
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">
+ 											易支付ID
+ 										</label>
+ 										<div class="layui-input-block">
+ 											<input  placeholder="易支付ID" class="layui-input"
+ 												name="epayid_demo" value="{$data['epayid_demo']??''}" type="text" />
+ 										</div>
+ 									</div>
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">
+ 											易支付KEY
+ 										</label>
+ 										<div class="layui-input-block">
+ 											<input  placeholder="易支付KEY" class="layui-input"
+ 												name="epaykey_demo" value="{$data['epaykey_demo']??''}"
+ 												type="text" />
+ 										</div>
+ 									</div>
+ 								</div>
+ 								<hr/>
+ 								<!--支付界面设置-->
+ 								<div class="layui-form-item">
+ 										<label class="layui-form-label">
+ 											商家举报
+ 										</label>
+ 										<div class="layui-input-block">
+ 											{if $data['reportPos'] == 0}
+ 											<input type="radio" name="reportPos" value="0" 
+ 												title="关闭" checked lay-filter="reportPos">
+ 											<input type="radio" name="reportPos" value="1" 
+ 												title="开启" lay-filter="reportPos">
+ 											{else}
+ 											<input type="radio" name="reportPos" value="0" 
+ 												title="关闭" lay-filter="reportPos">
+ 											<input type="radio" name="reportPos" value="1" 
+ 												title="开启" checked lay-filter="reportPos">
+ 											{/if}
+ 										</div>
+ 									</div>
+ 								<div id='reportPos' {if condition="$data['reportPos'] neq 1" }
+ 									style="display: none;" {/if}>
+ 								    <div class="layui-form-item">
+ 									    <label class="layui-form-label">
+ 									    	按钮标题
+ 									    </label>
+ 									    <div class="layui-input-block">
+ 									    	<input  placeholder="请输入按钮标题" class="layui-input"
+ 									    		name="reportTitle" value="{$data['reportTitle']??''}" type="text" />
+ 									    </div>
+ 								    </div>
+ 								    <div class="layui-form-item">
+ 									    <label class="layui-form-label">
+ 									    	确认按钮标题
+ 									    </label>
+ 									    <div class="layui-input-block">
+ 									    	<input  placeholder="请输入确认按钮标题" class="layui-input"
+ 									    		name="reportYes" value="{$data['reportYes']??''}" type="text" />
+ 									    </div>
+ 								    </div>
+ 								    <div class="layui-form-item">
+ 									    <label class="layui-form-label">
+ 									    	关闭按钮标题
+ 									    </label>
+ 									    <div class="layui-input-block">
+ 									    	<input  placeholder="请输入关闭按钮标题" class="layui-input"
+ 									    		name="reportNo" value="{$data['reportNo']??''}" type="text" />
+ 									    </div>
+ 								    </div>
+ 								    <div class="layui-form-item">
+ 									    <label class="layui-form-label">
+ 									    	跳转链接
+ 									    </label>
+ 									    <div class="layui-input-block">
+ 									    	<input  placeholder="请输入跳转地址" class="layui-input"
+ 									    		name="reportUrl" value="{$data['reportUrl']??''}" type="text" />
+ 									    </div>
+ 								    </div>
+ 								    <div class="layui-form-item">
+ 									    <label class="layui-form-label">
+ 									    	提示内容
+ 									    </label>
+ 									    <div class="layui-input-block">
+ 									    	<textarea class="layui-textarea"
+ 									    		name="reportTips">{$data['reportTips']??''}</textarea>
+ 									    </div>
+ 								    </div>
+ 								</div>
+ 							</div>
+ 						</div>
+ 							<!--公告/弹窗-->
+ 							<div class="layui-tab-item">
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">
+ 										首页弹窗
+ 									</label>
+ 									<div class="layui-input-block">
+ 										<textarea class="textarea" id="index_popup"
+ 											name="index_popup">{$data['index_popup']??''}</textarea>
+ 									</div>
+ 								</div>
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">
+ 										用户中心弹窗
+ 									</label>
+ 									<div class="layui-input-block">
+ 										<textarea class="textarea" id="home_popup"
+ 											name="home_popup">{$data['home_popup']??''}</textarea>
+ 									</div>
+ 								</div>
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">
+ 										注册弹窗
+ 									</label>
+ 									<div class="layui-input-block">
+ 										<textarea class="textarea" id="reg_popup"
+ 											name="reg_popup">{$data['reg_popup']??''}</textarea>
+ 									</div>
+ 								</div>
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">
+ 										商户中心
+ 									</label>
+ 									<div class="layui-input-block">
+ 										<textarea class="textarea" id="sh_notice"
+ 											name="sh_notice">{$data['sh_notice']??''}</textarea>
+ 									</div>
+ 								</div>
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">
+ 										通道列表
+ 									</label>
+ 									<div class="layui-input-block">
+ 										<textarea class="textarea" id="td_notice"
+ 											name="td_notice">{$data['td_notice']??''}</textarea>
+ 									</div>
+ 								</div>
+ 							</div>
+ 							<!--云端设置-->
+ 							<div class="layui-tab-item">
+ 							    <!--生码接口功能-->
+ 								<div>
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">
+ 											生码接口
+ 										</label>
+ 										<div class="layui-input-block">
+ 											{if $data['create_qrCode'] == 1}
+ 											<input type="radio" name="create_qrCode" value="1" 
+ 												title="本地" checked>
+ 											<input type="radio" name="create_qrCode" value="2" 
+ 												title="官方">
+ 											{else}
+ 											<input type="radio" name="create_qrCode" value="1" 
+ 												title="本地">
+ 											<input type="radio" name="create_qrCode" value="2" 
+ 												title="官方" checked>
+ 											{/if}
+ 										</div>
+ 									</div>
+ 								</div>
+ 							    <hr />
+ 							    <div class="layui-form-item">
+ 									<label class="layui-form-label">解码接口</label>
+ 									<div class="layui-input-block">
+ 										<input type="radio" name="qr_codeType"  value="1" title="API解码"
+ 											{if condition="$data['qr_codeType'] eq 1" } checked {/if}>
+ 										<input type="radio" name="qr_codeType"  value="2"
+ 											title="本地解码" {if condition="$data['qr_codeType'] eq 2" } checked {/if}>
+ 									</div>
+ 								</div>
+ 								 <hr />
+ 							    <div class="layui-form-item">
+ 									<label class="layui-form-label">最大超时时间</label>
+ 									<div class="layui-input-block" style="position: relative;">
+ 										<input autocomplete="off" placeholder="订单最大超时时间:输入整数,例如:300 注释:300=5分钟" class="layui-input"
+ 											name="timeout" value="{$data['timeout']??''}" type="text" />
+ 									</div>
+ 								</div>
+ 								 <hr />
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">
+ 										店员密钥
+ 									</label>
+ 									<div class="layui-input-block" style="position: relative;">
+ 										<input autocomplete="off" placeholder="店员免挂的通讯密钥" class="layui-input"
+ 											name="clerk_key" value="{$data['clerk_key']??''}" type="text" />
+ 										<button type="button" id="create_clerkKey" style="position: absolute;top: 0;right: 0;" class="layui-btn layui-btn layui-btn-normal">生成密钥</button>
+ 									</div>
+ 								</div>
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">
+ 										店员通道图片
+ 									</label>
+ 									<div class="layui-input-block">
+ 										{:opt_photo('diy_clerkqr')}
+ 										<button class="pear-btn pear-btn-primary pear-btn-sm  upload-image"
+ 											type="button">
+ 											<i class="fa fa-image">
+ 											</i>
+ 											上传图片
+ 										</button>
+ 										<input lay-verify="uploaddy_bindqr" name="diy_clerkqr" type="hidden"
+ 											value="{$data['diy_clerkqr']??''}" />
+ 										<div class="upload-image">
+ 											<span>
+ 											</span>
+ 											<img class="upload-image" src="{$data['diy_clerkqr']??''}" />
+ 										</div>
+ 									</div>
+ 								</div>
+ 								<hr/>
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">
+ 										计划任务密钥
+ 									</label>
+ 									<div class="layui-input-block" style="position: relative;">
+ 										<input placeholder="自定义计划任务密钥" class="layui-input"
+ 											name="diy_task_key" value="{$data['diy_task_key']??''}" type="text" />
+ 										<button type="button" id="create_taskKey" style="position: absolute;top: 0;right: 0;" class="layui-btn layui-btn layui-btn-normal">生成密钥</button>
+ 									</div>
+ 								</div>
+ 								
+ 								<div {if condition="$data['diy_task_key'] eq ''" } style="display:none"; {/if}>
+ 								    <div class="layui-form-item">
+ 									    <label class="layui-form-label" style="font-size:12px;">
+ 									        支付宝计划任务
+ 									    </label>
+ 									    <div class="layui-input-block" style="position: relative;">
+ 									        <textarea class="layui-textarea" style="height:240px;" readonly>
+#!/bin/bash 
+step=1 #间隔的秒数，不能大于60        
+for (( i = 0; i < 60; i=(i+step) )); do      
+    curl  -sS --connect-timeout 10 -m 60 '{:$domain}/job/test?code=alipay_cron&task_key={$data['diy_task_key']??''}'      
+    echo "----------------------------------------------------------------------------"      
+endDate=`date +"%Y-%m-%d %H:%M:%S"`      
+echo "★\\\\\\\[$endDate\\\\\\\] Successful"      
+echo "----------------------------------------------------------------------------"
+sleep $step      
+done      
+exit 0</textarea>
+ 									    </div>
+ 								    </div>
+ 								</div>
+ 								
+ 							</div>
+ 							<!--登录/注册-->
+ 							<div class="layui-tab-item">
+ 								<!--登录/注册/找回背景设置-->
+ 								<div>
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">背景配置</label>
+ 										<div class="layui-input-block">
+ 											<input type="radio" name="bgtype" lay-filter="bgtype" value="0" title="本地"
+ 												{if condition="$data['bgtype'] eq 0" } checked {/if}>
+ 											<input type="radio" name="bgtype" lay-filter="bgtype" value="1"
+ 												title="自定义API" {if condition="$data['bgtype'] eq 1" } checked {/if}>
+ 										</div>
+ 									</div>
+ 									<div class="layui-form-item" id='local_bg' {if condition="$data['bgtype'] neq 0" }
+ 										style="display: none;" {/if}>
+ 										<label class="layui-form-label">
+ 											本地上传
+ 										</label>
+ 										<div class="layui-input-block">
+ 											{:opt_photo('bg')}
+ 											<button class="pear-btn pear-btn-primary pear-btn-sm upload-image"
+ 												type="button">
+ 												<i class="fa fa-image">
+ 												</i>
+ 												上传图片
+ 											</button>
+ 											<input lay-verify="uploadbg" name="bg" type="hidden"
+ 												value="{$data['bg']??''}" />
+ 											<div class="upload-image">
+ 												<span>
+ 												</span>
+ 												<img class="upload-image" src="{$data['bg']??''}" />
+ 											</div>
+ 										</div>
+ 									</div>
+ 									<div class="layui-form-item" id='api_bg' {if condition="$data['bgtype'] neq 1" }
+ 										style="display: none;" {/if}>
+ 										<label class="layui-form-label">
+ 											API地址
+ 										</label>
+ 										<div class="layui-input-block">
+ 											<input autocomplete="off" placeholder="请输入API地址,尾部需带/" class="layui-input"
+ 												name="api_bg" value="{$data['api_bg']??''}" type="text" />
+ 										</div>
+ 									</div>
+ 								</div>
+ 								<hr />
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">
+ 										注册开关
+ 									</label>
+ 									<div class="layui-input-block">
+ 										{if $data['is_reg'] == 0}
+ 										<input type="radio" name="is_reg" value="0" title="关闭" checked>
+ 										<input type="radio" name="is_reg" value="1" title="开启">
+ 										{else}
+ 										<input type="radio" name="is_reg" value="0" title="关闭">
+ 										<input type="radio" name="is_reg" value="1" title="开启" checked>
+ 										{/if}
+ 									</div>
+ 								</div>
+ 								<!--登录/注册/找回行为验证方式-->
+ 								<hr />
+ 								<!--登录/注册方式-->
+ 								<div id="LoginOrReg">
+ 									<!--找回-->
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">找回方式</label>
+ 										<div class="layui-input-block">
+ 											<input type="radio" name="retrieve-type" value="0" title="关闭" {if
+ 												condition="$data['retrieve-type'] eq 0" } checked {/if}>
+ 											<input type="radio" name="retrieve-type" value="2" title="邮箱验证" {if
+ 												condition="$data['retrieve-type'] eq 2" } checked {/if} {if
+ 												condition="$data['email_switch'] neq 1" } disabled {/if}>
+ 										</div>
+ 									</div>
+
+ 									<!--注册-->
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">注册方式</label>
+ 										<div class="layui-input-block">
+ 											<input type="radio" name="regcode-type" value="0" title="账号密码" {if
+ 												condition="$data['regcode-type'] eq 0" } checked {/if}>
+ 											<input type="radio" name="regcode-type" value="2" title="邮箱验证" {if
+ 												condition="$data['regcode-type'] eq 2" } checked {/if} {if
+ 												condition="$data['email_switch'] neq 1" } disabled {/if}>
+ 										</div>
+ 									</div>
+
+ 									<!--登录-->
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">登录方式</label>
+ 										<div class="layui-input-block">
+ 											<input type="radio" name="logincode-type" value="0" title="账号密码" {if
+ 												condition="$data['logincode-type'] eq 0" } checked {/if}>
+ 											<input type="radio" name="logincode-type" value="2" title="邮箱验证" {if
+ 												condition="$data['logincode-type'] eq 2" } checked {/if} {if
+ 												condition="$data['email_switch'] neq 1" } disabled {/if}>
+ 										</div>
+ 									</div>
+ 								</div>
+ 								<div id="Captcha">
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">验证码</label>
+ 										<div class="layui-input-block">
+ 											<input type="radio" name="captcha-type" value="0" lay-filter="captcha-type"
+ 												title="关闭" {if condition="$data['captcha-type'] eq 0" } checked {/if}>
+ 											<input type="radio" name="captcha-type" value="1" lay-filter="captcha-type"
+ 												title="普通验证码" {if condition="$data['captcha-type'] eq 1" } checked
+ 												{/if}>
+ 										</div>
+ 									</div>
+ 								</div>
+ 								<hr />
+ 								<!--注册协议-->
+ 								<div id="Reg_agreement">
+ 									<div class="layui-form-item">
+ 										<label class="layui-form-label">
+ 											用户协议
+ 										</label>
+ 										<div class="layui-input-block">
+ 										    <textarea class="textarea" id="user_agreement"
+ 											name="user_agreement">{$data['user_agreement']??''}</textarea>
+ 										</div>
+ 									</div>
+ 									<div class="layui-form-item" >
+ 										<label class="layui-form-label">
+ 											隐私政策
+ 										</label>
+ 										<div class="layui-input-block">
+ 										    <textarea class="textarea" id="privacy"
+ 											name="privacy">{$data['privacy']??''}</textarea>
+ 										</div>
+ 									</div>
+ 								</div>
+ 							</div>
+ 							<!--功能增强-->
+ 							<div class="layui-tab-item">
+ 								<!--注册赠送金额-->
+ 								<div class="layui-form-item">
+ 										<label class="layui-form-label">
+ 											注册赠送金额
+ 										</label>
+ 										<div class="layui-input-block">
+ 											{if $data['is_reg_give_price'] == 0}
+ 											<input type="radio" name="is_reg_give_price" value="0" lay-filter="rtype"
+ 												title="关闭" checked>
+ 											<input type="radio" name="is_reg_give_price" value="1" lay-filter="rtype"
+ 												title="开启">
+ 											{else}
+ 											<input type="radio" name="is_reg_give_price" value="0" lay-filter="rtype"
+ 												title="关闭">
+ 											<input type="radio" name="is_reg_give_price" value="1" lay-filter="rtype"
+ 												title="开启" checked>
+ 											{/if}
+ 										</div>
+ 									</div>
+ 								<div class="layui-form-item" id="reg_give" {if
+ 										condition="$data['is_reg_give_price'] == 0" } style="display: none;" {/if}>
+ 										<label class="layui-form-label">
+ 											赠送金额
+ 										</label>
+ 										<div class="layui-input-block">
+ 											<input autocomplete="off" class="layui-input" name="reg_give_price"
+ 												value="{$data['reg_give_price']??''}" type="text" />
+ 										</div>
+ 									</div>
+ 							</div>
+ 							<!-- 安全效验 -->
+ 							<div class="layui-tab-item">
+ 							    <!--账户注销开关-->
+ 							    <div class="layui-form-item">
+ 										<label class="layui-form-label">
+ 											账户注销
+ 										</label>
+ 										<div class="layui-input-block">
+ 											{if $data['is_logOff'] == 0}
+ 											<input type="radio" name="is_logOff" value="0" lay-filter="is_logOff" title="关闭"
+ 												checked>
+ 											<input type="radio" name="is_logOff" value="1" lay-filter="is_logOff" title="开启">
+ 											{else}
+ 											<input type="radio" name="is_logOff" value="0" lay-filter="is_logOff" title="关闭">
+ 											<input type="radio" name="is_logOff" value="1" lay-filter="is_logOff" title="开启"
+ 												checked>
+ 											{/if}
+ 										</div>
+ 									</div>
+ 					        </div>
+ 					        <!-- 自定义功能 -->
+ 							<div class="layui-tab-item">
+ 							    <div class="layui-form-item">
+ 									<label class="layui-form-label">DIY对接API</label>
+ 									<div class="layui-input-block">
+ 										<input type="checkbox" id="is_pay_api" value="{$data['is_pay_api']??''}"
+ 											name="is_pay_api" lay-skin="switch" lay-filter="is_pay_api"
+ 											lay-text="开|关" {if condition="$data['is_pay_api'] eq 1" } checked {/if}>
+ 									</div>
+ 								</div>
+ 								<div id="pay_api" {if condition="$data['is_pay_api'] neq 1" } style="display: none;"
+ 									{/if}>
+ 								    <div class="layui-form-item" >
+ 									    <label class="layui-form-label">
+ 									        API地址
+ 									    </label>
+ 									    <div class="layui-input-block">
+ 									    	<input autocomplete="off" class="layui-input" placeholder="自定义前台API地址"
+ 									    		name="pay_api" value="{$data['pay_api']??''}" type="text" />
+ 									    </div>
+ 								    </div>
+ 								</div>
+ 								<hr/>
+ 								<div class="layui-form-item">
+ 									<label class="layui-form-label">随机语录API</label>
+ 									<div class="layui-input-block">
+ 										<input type="checkbox" id="is_quotations" value="{$data['is_quotations']??''}"
+ 											name="is_quotations" lay-skin="switch" lay-filter="is_quotations"
+ 											lay-text="开|关" {if condition="$data['is_quotations'] eq 1" } checked {/if}>
+ 									</div>
+ 								</div>
+ 								<div class="layui-form-item" id="quotations" {if condition="$data['is_quotations'] neq 1" } style="display: none;"
+ 									{/if}>
+ 									<label class="layui-form-label">
+ 									    API地址
+ 									</label>
+ 									<div class="layui-input-block">
+ 										<input autocomplete="off" class="layui-input" placeholder="只支持直接返回语录的API"
+ 											name="quotations" value="{$data['quotations']??''}" type="text" />
+ 									</div>
+ 								</div>
+ 					    </div>
+ 					    </div>
+ 					    <div class="layui-input-block" style="min-height: 80px;">
+ 						    <button type="submit" lay-submit lay-filter="submit"
+ 						    	class="pear-btn pear-btn-primary">保存</button>
+ 						    <button type="reset" class="pear-btn">重置</button>
+ 					    </div>
+ 					 </div>
+ 				</form>
+ 			</div>
+ 		</div>
+ 	</div>
+	<script>
+
+ 		layui.use(['form', 'jquery', 'uploads', 'element', 'tinymce',  'xmSelect' ,'util'], function() {
+ 			let form = layui.form;
+ 			let $ = layui.jquery;
+ 			var element = layui.element;
+ 			var tinymce = layui.tinymce;
+ 			var xmSelect = layui.xmSelect;
+ 			var util = layui.util;
+ 			
+ 			
+ 			//生成店员密钥
+ 			$('#create_clerkKey').click(function(){
+ 			    let result = '';
+                const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                const charactersLength = characters.length;
+              
+                for (let i = 0; i < 10; i++) {
+                  result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                }
+                $('input[name="clerk_key"]').val(result);
+ 			})
+ 			
+ 			//生成计划任务密钥
+ 			$('#create_taskKey').click(function(){
+ 			    let result = '';
+                const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                const charactersLength = characters.length;
+              
+                for (let i = 0; i < 10; i++) {
+                  result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                }
+                $('input[name="diy_task_key"]').val(result);
+ 			})
+ 			
+ 			//支付顺序绑定
+ 			var diy_recharge = xmSelect.render({
+				el: '#diy_recharge',
+				height: 'auto',
+				data: function(){
+                    return [
+                        {name: 'QQ', value: 'qqpay' },
+                        {name: '微信', value: 'wxpay' },
+                        {name: '支付宝', value: 'alipay' },
+                    ]
+                 }
+
+			})
+ 			
+ 			//获取支付顺序排序
+ 			diy_recharge.setValue([{:strip_tags($data.diy_recharge??0)}]);
+ 			
+ 			 //自定义测试支付开关
+ 			var diy_demoPay = xmSelect.render({
+				el: '#diy_demoPay',
+				height: 'auto',
+				data: function(){
+                    return [
+                        {name: 'QQ', value: 'qqpay' },
+                        {name: '微信', value: 'wxpay' },
+                        {name: '支付宝', value: 'alipay' },
+                    ]
+                 }
+
+			})
+ 			
+ 			//获取自定义测试支付内容
+ 			diy_demoPay.setValue([{:strip_tags($data.diy_demoPay??0)}]);
+ 			
+ 			 			//提交数据
+ 			form.on('submit(submit)', function(data) {
+ 				data.field['index_popup'] = tinymce.get('#index_popup').getContent();
+ 				data.field['home_popup'] = tinymce.get('#home_popup').getContent();
+ 				data.field['reg_popup'] = tinymce.get('#reg_popup').getContent();
+ 				data.field['sh_notice'] = tinymce.get('#sh_notice').getContent();
+ 				data.field['td_notice'] = tinymce.get('#td_notice').getContent();
+ 				data.field['user_agreement'] = tinymce.get('#user_agreement').getContent();
+ 				data.field['privacy'] = tinymce.get('#privacy').getContent();
+
+ 				//获取发信配置邮箱开关参数
+ 				var email_switch = $('#email_switch').val();
+ 				//获取发信配置短信开关参数
+ 				var code_switch = $('#code_switch').val();
+ 				//获取WxPusher开关参数
+ 				var wxpusher_switch = $('#wxpusher_switch').val();
+ 				 //获取支付Api开关参数
+ 				var is_pay_api = $('#is_pay_api').val();
+ 				//获取随机语录开关参数
+ 				var is_quotations = $('#is_quotations').val();
+                
+ 				//判断处理和默认设置登录注册方式开关
+ 				if (email_switch == 0 && code_switch == 0) {
+ 					data.field['logincode-type'] = 0;
+ 					data.field['regcode-type'] = 0;
+ 					data.field['retrieve-type'] = 0;
+ 				} else if (email_switch == 0 && data.field['logincode-type'] == 2) {
+ 					data.field['logincode-type'] = 0;
+ 				} else if (code_switch == 0 && data.field['logincode-type'] == 1) {
+ 					data.field['logincode-type'] = 0;
+ 				} else if (email_switch == 0 && data.field['regcode-type'] == 2) {
+ 					data.field['regcode-type'] = 0;
+ 				} else if (code_switch == 0 && data.field['regcode-type'] == 1) {
+ 					data.field['regcode-type'] = 0;
+ 				} else if (email_switch == 0 && data.field['retrieve-type'] == 2) {
+ 					data.field['retrieve-type'] = 0;
+ 				} else if (code_switch == 0 && data.field['retrieve-type'] == 1) {
+ 					data.field['retrieve-type'] = 0;
+ 				}
+ 				//判断订单数据条数是否设置大于10000条
+ 				if(data.field.orderDisplay >= 10000){
+ 				    layer.msg('订单数据显示调试请勿大于1W条!', {
+ 								icon: 5,
+ 								time: 1000
+ 							});
+ 					return false;
+ 				}else{
+ 				//把参数传入
+ 				data.field.email_switch = email_switch;
+ 				data.field.code_switch = code_switch;
+ 				data.field.wxpusher_switch = wxpusher_switch;
+ 				data.field.diy_recharge = diy_recharge.getValue('value').join(',');
+ 				data.field.diy_demoPay = diy_demoPay.getValue('value').join(',');
+ 				data.field.is_pay_api = is_pay_api;
+ 				data.field.is_quotations = is_quotations;
+
+ 				$.ajax({
+ 					data: JSON.stringify(data.field),
+ 					dataType: 'json',
+ 					contentType: 'application/json',
+ 					type: 'post',
+ 					success: function(res) {
+ 						if (res.code == 200) {
+ 							layer.msg(res.msg, {
+ 								icon: 1,
+ 								time: 1000,
+ 							}, function() {
+ 								$(window.parent.document).find("iframe")[0].contentWindow
+ 									.location.reload(true);
+
+ 							})
+
+ 							return false;
+ 						} else {
+ 							layer.msg(res.msg, {
+ 								icon: 5,
+ 								time: 1000
+ 							});
+ 						}
+ 					}
+ 				})
+ 				}
+ 				
+ 				return false;
+ 			});
+ 			//点击对应按钮为文本添加内容
+ 			$("button[id^='diy_codeTemp_content']").click(function() { //当点击所有的id中包含'diy_codeTemp_content'的input标签时，执行函数
+ 				var btnVal = $.trim($(this).val()); //trim函数，去掉空格
+ 				//设置内容
+ 				message.insertAtCaret($('#diy_codeTemp')[0], btnVal);
+ 			});
+ 			
+ 			//点击对应按钮为文本添加内容
+ 			$("button[id^='diy_orderTips_content']").click(function() { //当点击所有的id中包含'diy_orderInfo_content'的input标签时，执行函数
+ 				var btnVal = $.trim($(this).val()); //trim函数，去掉空格
+ 				//设置内容
+ 				message.insertAtCaret($('#diy_orderTips')[0], btnVal);
+ 			});
+ 			
+ 			//点击对应按钮为文本添加内容
+ 			$("button[id^='diy_loginTips_content']").click(function() { //当点击所有的id中包含'diy_loginTips_content'的input标签时，执行函数
+ 				var btnVal = $.trim($(this).val()); //trim函数，去掉空格
+ 				//设置内容
+ 				message.insertAtCaret($('#diy_loginTips')[0], btnVal);
+ 			});
+ 			
+ 			//点击对应按钮为文本添加内容
+ 			$("button[id^='diy_regTips_content']").click(function() { //当点击所有的id中包含'diy_regTips_content'的input标签时，执行函数
+ 				var btnVal = $.trim($(this).val()); //trim函数，去掉空格
+ 				//设置内容
+ 				message.insertAtCaret($('#diy_regTips')[0], btnVal);
+ 			});
+ 			
+ 			//点击对应按钮为文本添加内容
+ 			$("button[id^='diy_loseTips_content']").click(function() { //当点击所有的id中包含'diy_disconnectionTips_content'的input标签时，执行函数
+ 				var btnVal = $.trim($(this).val()); //trim函数，去掉空格
+ 				//设置内容
+ 				message.insertAtCaret($('#diy_loseTips')[0], btnVal);
+ 			});
+ 			
+ 			//点击对应按钮为文本添加内容
+ 			$("button[id^='diy_moneyTips_content']").click(function() { //当点击所有的id中包含'diy_moneyTips_content'的input标签时，执行函数
+ 				var btnVal = $.trim($(this).val()); //trim函数，去掉空格
+ 				//设置内容
+ 				message.insertAtCaret($('#diy_moneyTips')[0], btnVal);
+ 			});
+
+ 			// 根据菜单栏刷新数据
+ 			var layid = location.hash.replace(/^#menu=/, '');
+ 			element.tabChange('menu', layid);
+ 			element.on('tab(menu)', function() {
+ 				location.hash = 'menu=' + this.getAttribute('lay-id');
+ 			});
+
+ 			// 加载编辑器
+ 			tinymce.render({
+ 				elem: "#index_popup",
+ 				width: "80%",
+ 				height: 250,
+ 				automatic_uploads: false,
+ 				menubar: 'edit insert tools',
+ 				images_upload_handler: function(blobInfo, succFun, failFun) {
+ 					var xhr, formData;
+ 					var file = blobInfo.blob(); //转化为易于理解的file对象
+ 					xhr = new XMLHttpRequest();
+ 					xhr.withCredentials = false;
+ 					xhr.open('POST', '{$Request.root}/index/upload');
+ 					formData = new FormData();
+ 					formData.append('file', file, file.name);
+ 					xhr.send(formData);
+ 				}
+ 			}, (opt, edit) => {
+ 				// 加载完成后回调 opt 是传入的所有参数
+ 				// edit是当前编辑器实例，等同于t.get返回值
+ 			});
+ 			
+ 			// 加载编辑器
+ 			tinymce.render({
+ 				elem: "#home_popup",
+ 				width: "80%",
+ 				height: 250,
+ 				automatic_uploads: false,
+ 				menubar: 'edit insert tools',
+ 				images_upload_handler: function(blobInfo, succFun, failFun) {
+ 					var xhr, formData;
+ 					var file = blobInfo.blob(); //转化为易于理解的file对象
+ 					xhr = new XMLHttpRequest();
+ 					xhr.withCredentials = false;
+ 					xhr.open('POST', '{$Request.root}/index/upload');
+ 					formData = new FormData();
+ 					formData.append('file', file, file.name);
+ 					xhr.send(formData);
+ 				}
+ 			}, (opt, edit) => {
+ 				// 加载完成后回调 opt 是传入的所有参数
+ 				// edit是当前编辑器实例，等同于t.get返回值
+ 			});
+
+ 			tinymce.render({
+ 				elem: "#reg_popup",
+ 				width: "80%",
+ 				height: 250,
+ 				automatic_uploads: false,
+ 				menubar: 'edit insert tools',
+ 				images_upload_handler: function(blobInfo, succFun, failFun) {
+ 					var xhr, formData;
+ 					var file = blobInfo.blob(); //转化为易于理解的file对象
+ 					xhr = new XMLHttpRequest();
+ 					xhr.withCredentials = false;
+ 					xhr.open('POST', '{$Request.root}/index/upload');
+ 					formData = new FormData();
+ 					formData.append('file', file, file.name);
+ 					xhr.send(formData);
+ 				}
+ 			}, (opt, edit) => {
+ 				// 加载完成后回调 opt 是传入的所有参数
+ 				// edit是当前编辑器实例，等同于t.get返回值
+ 			});
+
+ 			tinymce.render({
+ 				elem: "#sh_notice",
+ 				width: "80%",
+ 				height: 250,
+ 				automatic_uploads: false,
+ 				menubar: 'edit insert tools',
+ 				images_upload_handler: function(blobInfo, succFun, failFun) {
+ 					var xhr, formData;
+ 					var file = blobInfo.blob(); //转化为易于理解的file对象
+ 					xhr = new XMLHttpRequest();
+ 					xhr.withCredentials = false;
+ 					xhr.open('POST', '{$Request.root}/index/upload');
+ 					formData = new FormData();
+ 					formData.append('file', file, file.name);
+ 					xhr.send(formData);
+ 				}
+ 			}, (opt, edit) => {
+ 				// 加载完成后回调 opt 是传入的所有参数
+ 				// edit是当前编辑器实例，等同于t.get返回值
+ 			});
+
+ 			tinymce.render({
+ 				elem: "#td_notice",
+ 				width: "80%",
+ 				height: 250,
+ 				automatic_uploads: false,
+ 				menubar: 'edit insert tools',
+ 				images_upload_handler: function(blobInfo, succFun, failFun) {
+ 					var xhr, formData;
+ 					var file = blobInfo.blob(); //转化为易于理解的file对象
+ 					xhr = new XMLHttpRequest();
+ 					xhr.withCredentials = false;
+ 					xhr.open('POST', '{$Request.root}/index/upload');
+ 					formData = new FormData();
+ 					formData.append('file', file, file.name);
+ 					xhr.send(formData);
+ 				}
+ 			}, (opt, edit) => {
+ 				// 加载完成后回调 opt 是传入的所有参数
+ 				// edit是当前编辑器实例，等同于t.get返回值
+ 			});
+ 			tinymce.render({
+ 				elem: "#domain_notice",
+ 				width: "80%",
+ 				height: 250,
+ 				automatic_uploads: false,
+ 				menubar: 'edit insert tools',
+ 				images_upload_handler: function(blobInfo, succFun, failFun) {
+ 					var xhr, formData;
+ 					var file = blobInfo.blob(); //转化为易于理解的file对象
+ 					xhr = new XMLHttpRequest();
+ 					xhr.withCredentials = false;
+ 					xhr.open('POST', '{$Request.root}/index/upload');
+ 					formData = new FormData();
+ 					formData.append('file', file, file.name);
+ 					xhr.send(formData);
+ 				}
+ 			}, (opt, edit) => {
+ 				// 加载完成后回调 opt 是传入的所有参数
+ 				// edit是当前编辑器实例，等同于t.get返回值
+ 			});
+ 			
+ 			//用户协议
+            tinymce.render({
+ 				elem: "#user_agreement",
+ 				width: "80%",
+ 				height: 250,
+ 				automatic_uploads: false,
+ 				menubar: 'edit insert tools',
+ 				images_upload_handler: function(blobInfo, succFun, failFun) {
+ 					var xhr, formData;
+ 					var file = blobInfo.blob(); //转化为易于理解的file对象
+ 					xhr = new XMLHttpRequest();
+ 					xhr.withCredentials = false;
+ 					xhr.open('POST', '{$Request.root}/index/upload');
+ 					formData = new FormData();
+ 					formData.append('file', file, file.name);
+ 					xhr.send(formData);
+ 				}
+ 			}, (opt, edit) => {
+ 				// 加载完成后回调 opt 是传入的所有参数
+ 				// edit是当前编辑器实例，等同于t.get返回值
+ 			});
+ 			
+ 			//隐私政策
+ 			tinymce.render({
+ 				elem: "#privacy",
+ 				width: "80%",
+ 				height: 250,
+ 				automatic_uploads: false,
+ 				menubar: 'edit insert tools',
+ 				images_upload_handler: function(blobInfo, succFun, failFun) {
+ 					var xhr, formData;
+ 					var file = blobInfo.blob(); //转化为易于理解的file对象
+ 					xhr = new XMLHttpRequest();
+ 					xhr.withCredentials = false;
+ 					xhr.open('POST', '{$Request.root}/index/upload');
+ 					formData = new FormData();
+ 					formData.append('file', file, file.name);
+ 					xhr.send(formData);
+ 				}
+ 			}, (opt, edit) => {
+ 				// 加载完成后回调 opt 是传入的所有参数
+ 				// edit是当前编辑器实例，等同于t.get返回值
+ 			});
+            
+ 			//上传存储
+ 			form.on('radio(type)', function(data) {
+ 				if (data.value == 1) {
+ 					$("#oss").hide();
+ 					$("#qiniu").hide();
+ 				}
+ 				if (data.value == 2) {
+ 					$("#oss").show();
+ 					$("#qiniu").hide();
+ 				}
+ 				if (data.value == 3) {
+ 					$("#qiniu").show();
+ 					$("#oss").hide();
+ 				}
+ 			});
+            
+ 			//邮箱发信
+ 			form.on('switch(email_switch)', function(data) {
+ 				var id = this.checked ? 1 : 0;
+ 				if (this.checked) {
+ 					$('#email').show();
+ 				} else {
+ 					$('#email').hide();
+ 				}
+ 				$('#email_switch').val(id);
+
+ 			});
+
+ 			//短信发信
+ 			form.on('switch(code_switch)', function(data) {
+ 				var id = this.checked ? 1 : 0;
+ 				if (this.checked) {
+ 					$('#code').show();
+ 				} else {
+ 					$('#code').hide();
+ 				}
+ 				$('#code_switch').val(id);
+
+ 			});
+
+ 			//短信类型
+ 			form.on('radio(smstype)', function(data) {
+ 				if (data.value == 'aliyun') {
+ 					$("#tencentsms").hide();
+ 					$("#smsbao").hide();
+ 					$("#alisms").show();
+ 				}
+ 				if (data.value == 'qcloud') {
+ 					$("#alisms").hide();
+ 					$("#smsbao").hide();
+ 					$("#tencentsms").show();
+ 				}
+ 				if (data.value == 'smsbao') {
+ 					$("#alisms").hide();
+ 					$("#tencentsms").hide();
+ 					$("#smsbao").show();
+ 				}
+ 			});
+
+
+ 			form.on('select(smsbao_xuanze)', function(data) {
+ 				$('#smsbao-api').val(data.value);
+
+ 			});
+
+            //WxPusher
+ 			form.on('switch(wxpusher_switch)', function(data) {
+ 				var id = this.checked ? 1 : 0;
+ 				if (this.checked) {
+ 					$('#wxpusher').show();
+ 				} else {
+ 					$('#wxpusher').hide();
+ 				}
+ 				$('#wxpusher_switch').val(id);
+
+ 			});
+            
+            
+            // 支付页举报商家切换
+ 			form.on('radio(reportPos)', function(data) {
+ 				if (data.value == 0) {
+ 					$("#reportPos").hide();
+ 				}
+ 				if (data.value == 1) {
+ 					$("#reportPos").show();
+ 				}
+ 			});
+            
+ 			// 支付类型切换
+ 			form.on('radio(paytype)', function(data) {
+ 				if (data.value == 0) {
+ 					$("#front_pay").show();
+ 					$("#demo_pay").hide();
+ 				}
+ 				if (data.value == 1) {
+ 					$("#front_pay").hide();
+ 					$("#demo_pay").show();
+ 				}
+ 			});
+
+ 			// 登录/注册/找回背景
+ 			form.on('radio(bgtype)', function(data) {
+ 				if (data.value == 0) {
+ 					$("#local_bg").show();
+ 					$("#api_bg").hide();
+ 				}
+ 				if (data.value == 1) {
+ 					$("#local_bg").hide();
+ 					$("#api_bg").show();
+ 				}
+ 			});
+            
+
+ 			// 注册赠送金额
+ 			form.on('radio(rtype)', function(data) {
+ 				if (data.value == 1) {
+ 					$("#reg_give").show();
+ 				} else {
+ 					$("#reg_give").hide();
+ 				}
+ 			});
+            
+            //自定义Api路径
+ 			form.on('switch(is_pay_api)', function(data) {
+ 				var id = this.checked ? 1 : 0;
+ 				if (this.checked) {
+ 					$('#pay_api').show();
+ 				} else {
+ 					$('#pay_api').hide();
+ 				}
+ 				$('#is_pay_api').val(id);
+
+ 			});
+ 			
+ 			//自定义随机Api语录
+ 			form.on('switch(is_quotations)', function(data) {
+ 				var id = this.checked ? 1 : 0;
+ 				if (this.checked) {
+ 					$('#quotations').show();
+ 				} else {
+ 					$('#quotations').hide();
+ 				}
+ 				$('#is_quotations').val(id);
+
+ 			});
+
+            //获取自定义订单通知光标
+ 			$('#diy_orderInfo').on('select', function() {
+ 				message.setCaret(this);
+ 			}).on('click', function() {
+ 				message.setCaret(this);
+ 			}).on('keyup', function() {
+ 				message.setCaret(this);
+ 			});
+
+            //初始化光标与设置内容方法
+ 			var message = {
+ 				setCaret: function(textObj) {
+ 					if (textObj.createTextRange) {
+ 						textObj.caretPos = document.selection.createRange().duplicate();
+ 					}
+ 				},
+
+ 				insertAtCaret: function(textObj, textFeildValue) {
+ 					if (document.all) {
+ 						if (textObj.createTextRange && textObj.caretPos) {
+ 							var caretPos = textObj.caretPos;
+ 							caretPos.text = caretPos.text.charAt(caretPos.text.length - 1) == ' ' ?
+ 								textFeildValue + ' ' : textFeildValue;
+ 						} else {
+ 							textObj.value = textFeildValue;
+ 						}
+ 					} else {
+ 						if (textObj.setSelectionRange) {
+ 							var rangeStart = textObj.selectionStart;
+ 							var rangeEnd = textObj.selectionEnd;
+ 							var tempStr1 = textObj.value.substring(0, rangeStart);
+ 							var tempStr2 = textObj.value.substring(rangeEnd);
+ 							textObj.value = tempStr1 + textFeildValue + tempStr2;
+ 						} else {
+ 							alert(
+ 							"This version of Mozilla based browser does not support setSelectionRange");
+ 						}
+ 					}
+ 				}
+ 			}
+ 		});
+ 	</script>
+ </body>
+ </html>

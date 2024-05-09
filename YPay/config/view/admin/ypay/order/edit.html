@@ -1,0 +1,18 @@
+ {include file="public/header" type="other"/}
+ 	<div class="mainBox" style="bottom:unset;">
+ 			<div class="main-container">
+ 				<?php foreach ($temp as $key => $value): ?>
+ 				    <div class="layui-form-item">
+ 					    <label class="layui-form-label">
+ 					    	{$value['name']}
+ 					    </label>
+ 					    <div class="layui-input-block">
+ 					    	<input type="text" class="layui-input layui-form-danger" disabled="disabled" type="text"
+ 					    		value="{$value['value']??""}" />
+ 					    </div>
+ 				    </div>
+ 				<?php endforeach; ?>
+ 			</div>
+ 		</div>
+ </body>
+ </html>

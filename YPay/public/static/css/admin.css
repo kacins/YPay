@@ -1,0 +1,186 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none!important;
+}
+/*控制端头部*/
+.ant-row {
+    display: flex;
+    flex-flow: row wrap;
+}
+.user-header{
+    width: 100%;
+    background-color: #fff;
+    margin-bottom: 10px;
+}
+.ant-page-header-ghost {
+    background-color: inherit;
+}
+.ant-page-header {
+    box-sizing: border-box;
+    margin: 0;
+    color: #000000d9;
+    font-size: 14px;
+    font-variant: tabular-nums;
+    line-height: 1.5715;
+    list-style: none;
+    font-feature-settings: "tnum";
+    position: relative;
+    padding: 16px 24px;
+    background-color: #fff;
+}
+.ant-page-header-heading {
+    display: flex;
+    justify-content: space-between;
+}
+.ant-page-header-heading-left {
+    display: flex;
+    align-items: center;
+    margin: 4px 0;
+    overflow: hidden;
+}
+.ant-page-header-heading-title {
+    margin-right: 12px;
+    margin-bottom: 0;
+    color: #000000d9;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 32px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.ant-tag {
+    box-sizing: border-box;
+    margin: 0 8px 0 0;
+    color: #000000d9;
+    font-size: 14px;
+    font-variant: tabular-nums;
+    line-height: 1.5715;
+    list-style: none;
+    font-feature-settings: "tnum";
+    display: inline-block;
+    height: auto;
+    padding: 0 7px;
+    font-size: 12px;
+    line-height: 20px;
+    white-space: nowrap;
+    background: #fafafa;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    opacity: 1;
+    transition: all .3s;
+}
+.ant-tag-blue {
+    color: #096dd9;
+    background: #e6f7ff;
+    border-color: #91d5ff;
+}
+.ant-tag-success {
+    color: #52c41a;
+    background: #f6ffed;
+    border-color: #b7eb8f;
+}
+.ant-tag-error {
+    color: #ff4d4f;
+    background: #fff2f0;
+    border-color: #ffccc7;
+}
+.ant-page-header-heading-extra {
+    margin: 4px 0;
+    white-space: nowrap;
+}
+.ant-page-header-heading-extra>*:first-child {
+    margin-left: 0;
+}
+.ant-page-header-content {
+    padding-top: 12px;
+}
+
+.user-header .content {
+    display: flex;
+    justify-content: space-between;
+}
+.user-header .heart-sentence {
+    width: calc(100% - 500px);
+}
+.user-header .heart-sentence{
+    color: #000000;
+}
+.user-header .content .weather{
+    width: 420px;
+}
+
+@media(max-width:760px){
+    .user-header .content {
+        display: unset; 
+        justify-content: unset; 
+    }
+    .user-header .content .weather {
+        width: 90%;
+    }
+    .ant-page-header-heading-extra{
+        display: none;
+    }
+}
+
+/*控制端应用快捷块样式*/
+.console-user-group {
+    position: relative;
+    padding: 0px 0px 0px 15px;
+}
+
+.console-user-group .console-user-group-head {
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    margin-top: -16px;
+    border-radius: 50%;
+}
+
+.console-user-group .layui-badge {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    margin-top: -10px;
+}
+
+.console-user-group .console-user-group-name {
+    line-height: 1.2;
+}
+
+.console-user-group .console-user-group-desc {
+    color: #8c8c8c;
+    line-height: 1;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.console-app-group{
+        padding: 16px;
+    border-radius: 4px;
+    text-align: center;
+    background-color: #fff;
+    cursor: pointer;
+    display: block;
+}
+
+.console-app-group .console-app-icon {
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    margin-bottom: 6px;
+    display: inline-block;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    font-size: 32px;
+    color: #69c0ff;
+}
+
+.console-app-group:hover {
+    box-shadow: 0 0 15px rgba(0, 0, 0, .08);
+}

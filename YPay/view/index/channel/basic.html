@@ -1,0 +1,735 @@
+{include file="public/user_header" title="通道配置" /}
+ <style>
+ 	.layui-form-select {
+ 		display: none;
+ 	}
+ </style>
+ <div class="container-xxl flex-grow-1 container-p-y">
+
+ 	<div class="row">
+ 		<div class="col-md-12">
+ 			<div class="col-xl-12">
+ 				<div class="nav-align-top mb-4">
+ 					<ul class="nav nav-pills mb-2 nav-fill" role="tablist">
+ 						<li class="nav-item">
+ 							<button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
+ 								data-bs-target="#navs-pills-justified-home" aria-controls="navs-pills-justified-home"
+ 								aria-selected="true">
+ 								<i class="tf-icons bx bxs-chalkboard me-1"></i> 通 道 配 置
+ 							</button>
+ 						</li>
+ 						<li class="nav-item" id="transfer_li">
+ 							<button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+ 								data-bs-target="#navs-pills-justified-messages"
+ 								aria-controls="navs-pills-justified-messages" aria-selected="false">
+ 								<i class="tf-icons bx bx-transfer-alt me-1"></i>转 接 配 置
+ 							</button>
+ 						</li>
+ 					</ul>
+ 					<div class="tab-content">
+ 					    <!--通道配置-->
+ 						<div class="tab-pane fade show active" id="navs-pills-justified-home" role="tabpanel">
+ 							<form class="layui-form">
+ 							    
+ 								<div class="mb-3">
+ 									<label>语 音 提 醒 :</label>
+ 									<label class="switch">
+ 										<input type="checkbox" name="yuyin_tips" class="switch-input" {if
+ 											condition="$basic.yuyin_tips eq 1" } checked {/if} />
+ 										<span class="switch-toggle-slider">
+ 											<span class="switch-on">
+ 												<i class="bx bx-check"></i>
+ 											</span>
+ 											<span class="switch-off">
+ 												<i class="bx bx-x"></i>
+ 											</span>
+ 										</span>
+ 									</label>
+ 								</div>
+ 								<div class="mb-3">
+ 									<label>付 款 弹 窗 : </label>
+ 									<label class="switch">
+ 										<input type="checkbox" name="is_payPopUp" class="switch-input" {if
+ 											condition="$basic.is_payPopUp eq 1" } checked {/if} />
+ 										<span class="switch-toggle-slider">
+ 											<span class="switch-on">
+ 												<i class="bx bx-check"></i>
+ 											</span>
+ 											<span class="switch-off">
+ 												<i class="bx bx-x"></i>
+ 											</span>
+ 										</span>
+ 									</label>
+ 								</div>
+ 								<div class="mb-3">
+ 									<label>收 银 模 板 : </label>
+ 									<div class="form-check form-check-inline">
+ 										<input class="form-check-input" type="radio" name="console_temp"
+ 											value="console" id="console" {if $basic.console_temp=='console' } checked
+ 											{/if} />
+ 										<label class="form-check-label" for="console">经 典</label>
+ 									</div>
+ 									<div class="form-check form-check-inline">
+ 										<input name="console_temp" value="newpay" class="form-check-input" type="radio"
+ 											id="newpay" {if $basic.console_temp=='newpay' } checked {/if} />
+ 										<label class="form-check-label" for="newpay">新 版</label>
+ 									</div>
+ 									<div class="form-check form-check-inline">
+ 										<input name="console_temp" value="official" class="form-check-input" type="radio"
+ 											id="official" {if $basic.console_temp=='official' } checked {/if} />
+ 										<label class="form-check-label" for="official">仿 官 方</label>
+ 									</div>
+ 								</div>
+ 								<?php if($vip['is_profiteer'] ==1) :?>
+ 								<div class="mb-3">
+ 									<label>手 续 费 承 担: </label>
+ 									<div class="form-check form-check-inline">
+ 										<input class="form-check-input" type="radio" name="is_rate"
+ 											value="0"  {if $basic.is_rate=='0' } checked
+ 											{/if} />
+ 										<label class="form-check-label" for="0">自 己</label>
+ 									</div>
+ 									<div class="form-check form-check-inline">
+ 										<input name="is_rate" value="1" class="form-check-input" type="radio"
+ 											 {if $basic.is_rate=='1' } checked {/if} />
+ 										<label class="form-check-label" for="1">客 户</label>
+ 									</div>
+ 								</div>
+ 								<?php endif; ?>
+ 								<div class="mb-3">
+ 									<label>跳转按钮/自动跳转: </label>
+ 									<div class="form-check form-check-inline">
+ 										<input class="form-check-input" type="radio" name="is_jump"
+ 											value="0"  {if $basic.is_jump=='0' } checked
+ 											{/if} />
+ 										<label class="form-check-label" for="0">关闭</label>
+ 									</div>
+ 									<div class="form-check form-check-inline">
+ 										<input name="is_jump" value="1" class="form-check-input" type="radio"
+ 											 {if $basic.is_jump=='1' } checked {/if} />
+ 										<label class="form-check-label" for="1">开启</label>
+ 									</div>
+ 								</div>
+ 								<div class="mb-3">
+ 									<label>超 时 跳 转 方 式: </label>
+ 									<div class="form-check form-check-inline">
+ 										<input name="timeout_method" value="1"  class="form-check-input" type="radio"
+ 											id="timeout_method_1" {if $basic.timeout_method=='1' } checked {/if} />
+ 										<label class="form-check-label" for="timeout_method_1">源 站</label>
+ 									</div>
+ 									<div class="form-check form-check-inline">
+ 										<input class="form-check-input" type="radio"  name="timeout_method"
+ 											value="2" id="timeout_method_2" {if $basic.timeout_method=='2' } checked
+ 											{/if} />
+ 										<label class="form-check-label" for="timeout_method_2">自 定 义</label>
+ 									</div>
+ 								</div>
+ 								<div class="mb-3" id="timeout_url" {if condition="$basic['timeout_method'] neq 2" } style="display: none;"
+ 									{/if}>
+ 									<label>超 时 跳 转 地 址</label>
+ 									<input type="text" class="form-control" name="timeout_url"
+ 										value="{$basic.timeout_url}" placeholder="请输入订单超时跳转地址" />
+ 								</div>
+ 								<div class="mb-3">
+ 									<label>支 付 宝 收 银 模 式 : </label>
+ 									<select name="cashierMode" id="cashierMode" class="form-select color-dropdown">
+ 										<?php foreach ($cashierMode as $key => $value): ?>
+ 										<option value="{$value.id}" {if condition="$basic.cashierMode eq $value.id" }
+ 											selected {/if}>{$value.name}</option>
+ 										<?php endforeach; ?>
+ 									</select>
+ 								</div>
+ 								<div class="mb-3">
+ 									<label>支 付 宝 跳 转 模 式 : </label>
+ 									<select name="channelMode" id="channelMode" class="form-select color-dropdown">
+ 										<?php foreach ($channelMode as $key => $value): ?>
+ 										{if condition="$basic.cashierMode eq $value.cashierType or $value.cashierType eq 'all'" }
+ 										<option value="{$value.id}" {if condition="$basic.channelMode eq $value.id" }
+ 											selected {/if}>{$value.name}</option>
+ 										{/if}
+ 										<?php endforeach; ?>
+ 									</select>
+ 								</div>
+ 								<div class="mb-3">
+ 									<label>收 银 提 示</label>
+ 									<input type="text" class="form-control" name="console_notity"
+ 										value="{$basic.console_notity??''}" placeholder="请输入收银台的提示信息" />
+ 								</div>
+ 								<div class="mb-3">
+ 									<label>收 款 浮 动 金 额</label>
+ 									<input type="text" class="form-control" name="floating_amount"
+ 										value="{$basic.floating_amount??''}" placeholder="浮动金额请用英文,隔开" />
+ 								</div>
+ 								<div class="mb-3">
+ 									<label>订 单 超 时 时 间</label>
+ 									<input type="text" class="form-control" name="timeout_time"
+ 										value="{$basic.timeout_time}" placeholder="订单超时时间,如不设置默认为180秒" />
+ 								</div>
+ 								<div class="mb-3" style="position: relative;">
+ 									<label>软 件 通 讯 密 钥</label>
+ 									<input type="text" class="form-control" name="appkey" value="{$basic.appkey??''}"
+ 										placeholder="该密钥为个人自挂APP/PC软件所用" />
+ 									<button id="create_key"  type="button" class="btn btn-primary d-block" style="position: absolute;top: 24px;right: 0;">生 成 密 钥</button>
+ 								</div>
+ 								<button type="submit" class="btn btn-primary" lay-filter="formBasSubmit" lay-submit>保 存
+ 									配 置</button>
+ 							</form>
+
+ 						</div>
+                        <!--转接配置-->
+ 						<div class="tab-pane fade " id="navs-pills-justified-messages" role="tabpanel">
+ 							<div class="card">
+                    <!-- 通 道 列 表 -->
+                    <h5 class="card-header border-bottom">
+                        <span style="float:left;">转 接 列 表</span> 
+                    <button id="add" type="button" style="float:right;" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#addTransfer">
+                        <i class="bx bx-plus me-sm-1"></i> <span>新 增</span>
+                    </button>
+                    </h5>
+                    <div class="card-datatable text-nowrap">
+                      <table class="datatables-basic table border-top">
+                        <thead>
+                          <tr>
+                            <th></th>
+                            <th>通道类型</th>
+                            <th>通道名称</th>
+                            <th>状态</th>
+                            <th>创建时间</th>
+                            <th style="background-color:white;">操作</th>
+                          </tr>
+                        </thead>
+                      </table>
+                    </div>
+                    <!--/ 通 道 列 表 -->
+                    
+                    <!--  添 加 通 道 -->
+                    <div class="modal fade" id="addTransfer" tabindex="-1" aria-hidden="true">
+                       <div class="modal-dialog modal-dialog-centered1 modal-simple">
+                        <div class="modal-content p-3 p-md-5">
+                            <div class="modal-body">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <div class="text-center">
+                                  <h3 class="mb-2">新 增 通 道</h3>
+                                  <p>在此添加你想要添加的通道吧.</p>
+                                </div>
+                                <form id="transfer_form" class="row g-3" onsubmit="return false">
+                                    <div class="col-12">
+                                      <label class="form-label">通 道 类 型</label>
+                                      <select
+                                        id="type"
+                                        name="type"
+                                        class="form-select"
+                                      >
+                                        <option value="epay">易支付</option>
+                                      </select>
+                                    </div>
+                                    <div class="col-12">
+                                      <label class="form-label">通道名称</label>
+                                      <input
+                                        type="text"
+                                        name="name"
+                                        class="form-control"
+                                        placeholder="通道名称"
+                                      />
+                                    </div>
+                                    <div class="col-12">
+                                      <label class="form-label">API</label>
+                                      <input
+                                        type="text"
+                                        name="url"
+                                        class="form-control"
+                                        placeholder="请输入API地址"
+                                      />
+                                    </div>
+                                    <div class="col-12">
+                                      <label class="form-label">PID</label>
+                                      <input
+                                        type="text"
+                                        name="pid"
+                                        class="form-control"
+                                        placeholder="请输入PID"
+                                      />
+                                    </div>
+                                    <div class="col-12">
+                                      <label class="form-label">KEY</label>
+                                      <input
+                                        type="text"
+                                        name="key"
+                                        class="form-control"
+                                        placeholder="请输入Key"
+                                      />
+                                    </div>
+                                    <div class="col-12 text-center">
+                                      <button type="submit" id="transfer_Submit" class="btn btn-primary me-sm-3 me-1">提 交</button>
+                                      <button
+                                        type="reset"
+                                        class="btn btn-label-secondary"
+                                      >
+                                        重 置
+                                      </button>
+                                    </div>
+                             </form>
+                            </div>
+                  </div>
+                </div>
+              </div>
+                    <!--/  添 加 通 道 -->
+                    
+                    
+                    <!--  修 改 通 道 -->
+                    <div class="modal fade" id="edit" tabindex="-1" aria-hidden="true">
+                       <div class="modal-dialog modal-dialog-centered1 modal-simple">
+                        <div class="modal-content p-3 p-md-5">
+                            <div class="modal-body">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <div class="text-center">
+                                  <h3 class="mb-2">修 改 通 道</h3>
+                                  <p>在此修改你的通道吧.</p>
+                                </div>
+                                <form id="editTransfer_form" class="row g-3" onsubmit="return false">
+                                    <input name="id" style="display:none;">
+                                    <div class="col-12">
+                                      <label class="form-label">通 道 类 型</label>
+                                      <select
+                                        id="type"
+                                        name="type"
+                                        class="form-select"
+                                      >
+                                        <option value="epay">易支付</option>
+                                      </select>
+                                    </div>
+                                    <div class="col-12">
+                                      <label class="form-label">通道名称</label>
+                                      <input
+                                        type="text"
+                                        name="name"
+                                        class="form-control"
+                                        placeholder="通道名称"
+                                      />
+                                    </div>
+                                    <div class="col-12">
+                                      <label class="form-label">API</label>
+                                      <input
+                                        type="text"
+                                        name="url"
+                                        class="form-control"
+                                        placeholder="请输入API地址"
+                                      />
+                                    </div>
+                                    <div class="col-12">
+                                      <label class="form-label">PID</label>
+                                      <input
+                                        type="text"
+                                        name="pid"
+                                        class="form-control"
+                                        placeholder="请输入PID"
+                                      />
+                                    </div>
+                                    <div class="col-12">
+                                      <label class="form-label">KEY</label>
+                                      <input
+                                        type="text"
+                                        name="key"
+                                        class="form-control"
+                                        placeholder="请输入Key"
+                                      />
+                                    </div>
+                                    <div class="col-12 text-center">
+                                      <button type="submit" id="editTransfer" class="btn btn-primary me-sm-3 me-1">提 交</button>
+                                      <button
+                                        type="reset"
+                                        class="btn btn-label-secondary"
+                                      >
+                                        重 置
+                                      </button>
+                                    </div>
+                             </form>
+                            </div>
+                  </div>
+                </div>
+              </div>
+                    <!--/  修 改 通 道 -->
+                    
+                  </div>
+ 						</div>
+ 					</div>
+ 				</div>
+ 			</div>
+ 		</div>
+ 	</div>
+ </div>
+ {include file="public/user_footer" /}
+ <!-- Page Js -->
+ <script>
+ 	layui.use(['layer', 'form', 'laydate', 'notice'], function() {
+ 		var $ = layui.jquery;
+ 		var form = layui.form;
+ 		$('.layui-form-radio').css('display', 'none');
+ 		
+ 		//超时跳转模式
+ 		 $("#timeout_method_1").click(function(){
+ 		    $("#timeout_url").hide();
+ 		});
+ 		
+ 		$("#timeout_method_2").click(function(){
+ 		    $("#timeout_url").show();
+ 		});
+ 		
+ 		//收银模式筛选
+    //     $('#cashierMode').change(() => {
+				// var postdata ={
+    //                 id: $('#cashierMode').val()
+    //             }
+    //             $.getJSON("/Channel/cashierMode",postdata,function(data){
+    //                 if (data.code) {
+    //                         var list= data.channelMode;
+    //                         var nr= '';
+    //                         if(list){
+    //                             for(var i = 0; i < list.length; i++) {
+    //                                     nr += "<option value='" + list[i].id + "'>" + list[i].name + "</option>"
+    //                             };
+    //                         }
+    //                         $("#channelMode").html(nr);
+    //                         form.render('select');
+    //                 }
+    //             },true);
+    //         });
+ 		
+ 		/* 监听表单提交 */
+ 		form.on('submit(formBasSubmit)', function(obj) {
+ 			if (obj.field.is_payPopUp == 'on') {
+ 				obj.field.is_payPopUp = 1;
+ 			} else {
+ 				obj.field.is_payPopUp = 0;
+ 			}
+ 			if (obj.field.yuyin_tips == 'on') {
+ 				obj.field.yuyin_tips = 1;
+ 			} else {
+ 				obj.field.yuyin_tips = 0;
+ 			}
+ 			$.post('/Channel/edit_basic', obj.field, function(res) {
+ 				//layer.close(loadIndex);
+ 				if (res.code === 200) {
+ 					Swal.fire({
+ 						icon: 'success',
+ 						title: res.msg,
+ 						customClass: {
+ 							confirmButton: 'btn btn-success'
+ 						}
+ 					}).then(function (result) {
+                        if(result.value){
+                            location.reload(true);
+                        }
+                    });
+ 					
+ 				} else {
+ 					Swal.fire({
+ 						icon: 'error',
+ 						title: res.msg,
+ 						customClass: {
+ 							confirmButton: 'btn btn-danger'
+ 						}
+ 					});
+ 				}
+ 			}, 'json');
+ 			return false;
+ 		});
+        
+        // 转接通道提交
+		$('#transfer_Submit').click(function(){
+		        let data = {};
+		        let value = $('#transfer_form').serializeArray();
+                $.each(value, function (index, item) {
+                    data[item.name] = item.value;
+                });
+                $.post('/Channel/addtransfer', data, function (res) {
+                                if (200 == res.code) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: res.msg,
+                                        customClass: {
+                                          confirmButton: 'btn btn-primary'
+                                        }
+                                    }).then(function (result) {
+                                        if(result.value){
+                                            reload();
+                                            $(".btn-close").trigger("click");
+                                            
+                                        }
+                                    });
+                                    } else {
+                                        Swal.fire({
+                                            title: res.msg,
+                                            icon: 'error',
+                                            customClass: {
+                                              confirmButton: 'btn btn-primary'
+                                            }
+                                        });
+                                    }
+                            }, 'json');
+                            return false;
+		    });
+   
+ 	});
+ 	
+ 			var dt_basic_table = $('.datatables-basic');
+     // DataTable
+            // --------------------------------------------------------------------
+    if (dt_basic_table.length) {
+             var table =  dt_basic_table.DataTable({
+                 ajax: '/Channel/basic',
+                 columns: [
+                   { data: 'id' },
+                   { data: 'type' },
+                   { data: 'name' },
+                   { data: 'status' },
+                   { data: 'create_time' },
+                   { data: 'id' },
+                 ],
+                 
+                 columnDefs: [
+                    {
+                        targets: 0,
+                        searchable: false,
+                        visible: false
+                    },
+                    {
+                      // Label
+                      targets: 1,
+                      render: function (data, type, full, meta) {
+                        var $type = full['type'];
+                        var $array = {
+                            epay: { title: '易支付', class: 'btn-info' },
+                        };
+                        return (
+                          '<span class="badge rounded-pill ' +
+                          $array[$type].class +
+                          '">' +
+                          $array[$type].title +
+                          '</span>'
+                        );
+                      }
+                    },
+                    {
+                      // Label
+                      targets: 3,
+                      render: function (data, type, full, meta) {
+                        var is_status = full['status'];
+                        var id = full['id'];
+                        var checked = '';
+                        if(is_status == 1){
+                            checked = 'checked';
+                        }
+                        return (
+                          '<label class="switch">'+
+                            '<input type="checkbox" id="up_status_'+ id +'" name="'+ id +'" class="switch-input" '+ checked +'/>'+
+                            '<span class="switch-toggle-slider">'+
+                              '<span class="switch-on">'+
+                                '<i class="bx bx-check"></i>'+
+                              '</span>'+
+                              '<span class="switch-off">'+
+                               '<i class="bx bx-x"></i>'+
+                              '</span>'+
+                            '</span>'+
+                          '</label>'
+                        );
+                      }
+                    },
+                    {
+                      // Label
+                      targets: -1,
+                      searchable: false,
+                      orderable: false,
+                      render: function (data, type, full, meta) {
+                        var id = full['id'];
+                        var editArr = [id,"'" + full['name'] + "'","'" + full['url'] + "'","'" + full['pid'] + "'","'" + full['key'] + "'"];
+                        return (
+                                '<button type="button" data-bs-toggle="modal" data-bs-target="#edit" onclick="edit('+editArr+')" class="btn rounded-pill btn-sm btn-info">修改</button>&nbsp;' +
+                                '<button type="button" onclick="del('+id+')" class="btn rounded-pill btn-sm btn-google-plus">删除</button>'
+                            ); 
+                        
+                      }
+                    },
+                ],
+                 order: [[0, 'desc']],
+                 dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+                 displayLength: 10,
+                 lengthMenu: [10, 20, 50],
+                 scrollX:  true,
+                 deferRender: true,
+                 fixedColumns:   {
+                     right: 1
+                 }
+            });
+            }
+ 	
+ 	//刷新表单
+    function reload(){
+        table.ajax.reload();
+        // window.location.reload();
+    }
+ 	
+ 	$('#transfer_li').click(function(){
+ 	    reload();
+ 	});
+ 	//更改收款状态
+    $(document).on('click', 'input[type="checkbox"][id^="up_status"]', function() {
+      const id = $(this).attr("name");
+      const status = $(this).is(':checked') ? 1 : 0;
+    
+      $.post("/Channel/editTransferStatus", { id, status }, function (res) {
+        if (res.code == 200) {
+          handleSuccess(res.msg, reload);
+        } else {
+          handleError(res.msg);
+        }
+      }, 'json');
+    });
+    
+    function handleSuccess(msg, callback) {
+      Swal.fire({
+        icon: 'success',
+        title: msg,
+        customClass: {
+          confirmButton: 'btn btn-primary'
+        }
+      }).then(function (result) {
+        if (result.value && typeof callback === 'function') {
+          callback();
+        }
+      });
+    }
+
+    function handleError(msg) {
+      Swal.fire({
+        title: msg,
+        icon: 'error',
+        customClass: {
+          confirmButton: 'btn btn-primary'
+        }
+      });
+    }
+ 	
+ 	//生成通讯密钥
+ 	$('#create_key').click(function(){
+ 	    Swal.fire({
+            text: '确定要生成通讯密钥吗?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: '确 定',
+            cancelButtonText:'取消',
+            customClass: {
+              confirmButton: 'btn btn-primary me-2',
+              cancelButton: 'btn btn-label-secondary'
+            },
+            buttonsStyling: false
+          }).then(function (result) {
+            if (result.value) {
+              let result = '';
+              const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+              const charactersLength = characters.length;
+              
+              for (let i = 0; i < 10; i++) {
+                result += characters.charAt(Math.floor(Math.random() * charactersLength));
+              }
+              $('input[name="appkey"]').val(result);
+              
+            }
+          });
+ 	})
+ 	
+ 	//点击添加按钮清除input框中的数据
+ 	$('#add').click(function(){
+ 	    $('input').val('');
+ 	})
+ 	
+ 	//点击修改提交按钮提交数据进行修改
+ 	$('#editTransfer').click(function(){
+ 	    let data = {};
+ 	    let value = $('#editTransfer_form').serializeArray();
+                $.each(value, function (index, item) {
+                    data[item.name] = item.value;
+                });
+ 	    $.post('/Channel/editTransfer', data, function (res) {
+                                if (200 == res.code) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: res.msg,
+                                        customClass: {
+                                          confirmButton: 'btn btn-primary'
+                                        }
+                                    }).then(function (result) {
+                                        if(result.value){
+                                            reload();
+                                            $(".btn-close").trigger("click");
+                                            
+                                        }
+                                    });
+                                    } else {
+                                        Swal.fire({
+                                            title: res.msg,
+                                            icon: 'error',
+                                            customClass: {
+                                              confirmButton: 'btn btn-primary'
+                                            }
+                                        });
+                                    }
+                            }, 'json');
+                            return false;
+ 	})
+ 	
+ 	//修改转接通道
+ 	function edit(id,name,url,pid,key){
+ 	    $('input[name="id"]').val(id);
+ 	    $('input[name="name"]').val(name);
+ 	    $('input[name="url"]').val(url);
+ 	    $('input[name="pid"]').val(pid);
+ 	    $('input[name="key"]').val(key);
+ 	}
+ 	
+ 	 //删除转接通道
+    function del(id) {
+        Swal.fire({
+            text: '确定要删除吗?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: '确 定',
+            cancelButtonText:'取消',
+            customClass: {
+              confirmButton: 'btn btn-primary me-2',
+              cancelButton: 'btn btn-label-secondary'
+            },
+            buttonsStyling: false
+          }).then(function (result) {
+            if (result.value) {
+              $.get("/Channel/delTransfer", {
+                id: id
+            }, function (res) {
+                
+                if (res.code == 200) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: res.msg,
+                        customClass: {
+                          confirmButton: 'btn btn-primary'
+                        }
+                     }).then(function (result) {
+                         if(result.value){
+                             reload();
+                         }
+                     });
+                } else {
+                    Swal.fire({
+                        title: res.msg,
+                        icon: 'error',
+                        customClass: {
+                          confirmButton: 'btn btn-primary'
+                        }
+                    });
+                }
+            }, 'json');
+            }
+          });
+            }
+ </script>

@@ -1,0 +1,153 @@
+ {include file="public/header" type="other"/}
+    <style>
+        td,.layui-table th{
+           text-align: center;
+        }
+        td{
+           min-width: 80px;
+           max-width: 150px;
+        }
+    </style>
+    <form class="layui-form" action="">
+        <div class="mainBox">
+            <div class="main-container">
+                <div class="layui-form-item">
+                    <div class="layui-form-item layui-inline">
+                        <label class="layui-form-label">中文名称</label>
+                        <div class="layui-input-inline">
+                            <input autocomplete="off" class="layui-input" name="ename" lay-verify="required" value="{$desc??''}" type="text"/>
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-inline">
+                        <label class="layui-form-label">生成菜单</label>
+                        <div class="layui-input-inline">
+                            <select name="menu" lay-verify="requried">
+                                <option value="">不生成</option>
+                                <option value="0">顶级菜单</option>
+                                {foreach $permissions as $k1=>$p1}
+                                    <option value="{$p1.id}">{$p1.title}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form">
+                <table cellspacing="0" cellpadding="0" border="0" class="layui-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <span>字段</span>
+                            </th>
+                            <th>
+                                <span>类型</span>
+                            </th>
+                            <th>
+                                <span>注释</span>
+                            </th>
+                            <th>
+                                <span>可空</span>
+                            </th>
+                            <th>
+                                <span>列表</span>
+                            </th>
+                            <th>
+                                <span>搜索</span>
+                            </th>
+                            <th>
+                                <span>表单</span>
+                            </th>
+                            <th>
+                                <span>表单类型</span>
+                            </th>
+                        </tr>
+                        </thead>
+                    <tbody>
+                    {foreach $data as $k=>$v}
+                    <tr>
+                        <input type="hidden" name="name[]" value="{$v.name}">
+                        <input type="hidden" name="type[]" value="{$v.type}">
+                        <input type="hidden" name="desc[]" value="{$v.comment}">
+                        <input type="hidden" name="null[]" value="{$v.notnull}">
+                        <td>
+                            {$v.name}
+                        </td>
+                        <td>
+                            {$v.type}
+                        </td>
+                        <td>
+                            {$v.comment}
+                        </td>
+                        <td>
+                            {if $v.notnull=="1"}是{else}否{/if}
+                        </td>
+                        <td>
+                            <input type="checkbox" name="list[]" title="列表" lay-skin="primary" {if $v.notnull=="true"}checked{/if}>
+                        </td>
+                        <td>
+                            <input type="checkbox" name="search[]" title="搜索" lay-skin="primary">
+                        </td>
+                        <td>
+                            <input type="checkbox" name="form[]" title="表单" lay-skin="primary" {if $v.notnull=="true" && $v.name!="id"}checked{/if}>
+                        </td>
+                        <td>
+                            <select name="formType[]">
+                                <option value="1">文本</option>
+                                <option value="2">编辑器</option>
+                                <option value="3">图片</option>
+                                <option value="4">开关(选列表展示)</option>
+                                <option value="5">文本域</option>
+                            </select>
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                </div>
+            </div> 
+        </div>
+        <div class="bottom">
+        <div class="button-container">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit="" lay-filter="save">
+                <i class="layui-icon layui-icon-ok"></i>
+                提交
+            </button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">
+                <i class="layui-icon layui-icon-refresh"></i>
+                重置
+            </button>
+        </div>
+    </div>
+    </form>
+    {include file="public/footer"/}
+<script>
+layui.use(['form','jquery'],function(){
+    let form = layui.form;
+    let $ = layui.jquery;
+    form.on('submit(save)', function(data){
+        $.ajax({
+            data:data.field,
+            type:'post',
+            success:function(res){
+               //判断有没有权限
+                if(res && res.code==999){
+                    layer.msg(res.msg, {
+                        icon: 5,
+                        time: 2000, 
+                    })
+                    return false;
+                }else if(res.code==200){
+                    layer.msg(res.msg,{icon:1,time:1000},function(){
+                        if(res.data) window.top.document.location.reload();
+                        parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+                    });
+                }else{
+                    layer.msg(res.msg,{icon:2,time:1000});
+                }
+            }
+        })
+        return false;
+    });
+})
+</script>
+</body>
+</html>

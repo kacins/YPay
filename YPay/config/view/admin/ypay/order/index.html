@@ -1,0 +1,518 @@
+{include file="public/header" type='pear-container'/}
+    <!--根据条件查询订单-->
+ 	<div class="layui-card">
+ 		<div class="layui-card-body">
+ 			<form class="layui-form" action="">
+ 				<div class="layui-form-item">
+ 					<div class="layui-form-item layui-inline">
+ 						<label class="layui-form-label">支付状态</label>
+ 						<div class="layui-input-inline">
+ 							<select name="status">
+ 								<option value="">请选择一个状态</option>
+ 								<option value="0">未支付</option>
+ 								<option value="1">已支付</option>
+ 							</select>
+ 						</div>
+ 					</div>
+ 						<div class="layui-form-item layui-inline">
+ 						<label class="layui-form-label">商品名</label>
+ 						<div class="layui-input-inline">
+ 							<input type="text" name="name" placeholder="" class="layui-input">
+ 						</div>
+ 					</div>
+ 					<div class="layui-form-item layui-inline">
+ 						<label class="layui-form-label">用户ID</label>
+ 						<div class="layui-input-inline">
+ 							<input type="text" name="user_id" placeholder="" class="layui-input">
+ 						</div>
+ 					</div>
+ 					<div class="layui-form-item layui-inline">
+ 						<label class="layui-form-label">通道ID</label>
+ 						<div class="layui-input-inline">
+ 							<input type="text" name="account_id" placeholder="" class="layui-input">
+ 						</div>
+ 					</div>
+ 					<div class="layui-form-item layui-inline">
+ 						<label class="layui-form-label">商户单号</label>
+ 						<div class="layui-input-inline">
+ 							<input type="text" name="trade_no" placeholder="" class="layui-input">
+ 						</div>
+ 					</div>
+ 					<div class="layui-form-item layui-inline">
+ 						<label class="layui-form-label">本地单号</label>
+ 						<div class="layui-input-inline">
+ 							<input type="text" name="out_trade_no" placeholder="" class="layui-input">
+ 						</div>
+ 					</div>
+ 					<div class="layui-form-item layui-inline">
+ 						<label class="layui-form-label">订单金额</label>
+ 						<div class="layui-input-inline">
+ 							<input type="text" name="truemoney" placeholder="" class="layui-input">
+ 						</div>
+ 					</div>
+ 				<div class="layui-form-item layui-inline">
+                   <label class="layui-form-label">创建时间</label>
+                   <div class="layui-input-inline">
+                       <input type="text" class="layui-input" id="create_time-start" name="create_time-start" placeholder="开始时间" autocomplete="off">
+                   </div>
+                   <div class="layui-input-inline">
+                        <input type="text" class="layui-input" id="create_time-end" name="create_time-end" placeholder="结束时间" autocomplete="off">
+                    </div>
+               </div>
+ 					<div class="layui-form-item layui-inline">
+ 						<button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="query">
+ 							<i class="layui-icon layui-icon-search"></i>
+ 							查询
+ 						</button>
+ 						<button type="reset" class="pear-btn pear-btn-md">
+ 							<i class="layui-icon layui-icon-refresh"></i>
+ 							重置
+ 						</button>
+ 					</div>
+ 				</div>
+ 			</form>
+ 		</div>
+ 	</div>
+ 	
+ 	<!--显示订单数据表格-->
+ 	<div class="layui-card">
+ 		<div class="layui-card-body">
+ 			<table id="dataTable" lay-filter="dataTable"></table>
+ 		</div>
+ 	</div>
+    
+    <!--根据条件执行对应删除操作-->
+ 	<script type="text/html" id="toolbar">
+ 		<button class="pear-btn pear-btn-primary pear-btn-md" lay-event="batchRemove">
+ 			<i class="layui-icon layui-icon-delete"></i>
+ 			批量删除
+ 		</button>
+ 		<button class="pear-btn pear-btn-warming pear-btn-md" lay-event="daysRemove">
+ 			<i class="layui-icon layui-icon-delete"></i>
+ 			清理指定天数订单
+ 		</button>
+ 		<button class="pear-btn pear-btn-danger pear-btn-md" lay-event="allRemove">
+ 			<i class="layui-icon layui-icon-delete"></i>
+ 			一键清理未支付订单
+ 		</button>
+ 	</script>
+    
+    <!--查看与删除操作-->
+ 	<script type="text/html" id="options">
+ 	    <button class="layui-btn layui-bg-blue pear-btn-sm" lay-event="reback"><i
+ 				class="layui-icon layui-icon-refresh"></i></button>
+ 		<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i
+ 				class="layui-icon layui-icon-tips-fill"></i></button>
+ 		<button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i
+ 				class="layui-icon layui-icon-delete"></i></button>
+ 	</script>
+ 	
+ 	{include file="public/footer"/}
+ 	<script>
+ 		layui.use(['table', 'form', 'jquery','soulTable','laydate'], function() {
+ 			let table = layui.table;
+ 			let form = layui.form;
+ 			let $ = layui.jquery;
+ 			let laydate = layui.laydate;
+ 			let MODULE_PATH = "{$Request.root}/ypay.order/";
+            let soulTable = layui.soulTable;
+            laydate.render({elem: "#create_time-start"});laydate.render({elem: "#create_time-end"});
+ 			let cols = [
+ 				[{
+ 						type: 'checkbox'
+ 					}, {
+ 						field: "out_trade_no",
+ 						title: "本地单号",
+ 						minWidth: 200,
+ 						unresize: "true",
+ 						align: "center"
+ 					}, {
+ 						field: "trade_no",
+ 						title: "商户单号",
+ 						minWidth: 200,
+ 						unresize: "true",
+ 						align: "center"
+ 					}, {
+ 						field: "user_id",
+ 						title: "用户ID",
+ 						unresize: "true",
+ 						align: "center"
+ 					}, {
+ 						field: "name",
+ 						title: "商品名称",
+
+ 						minWidth: 150,
+ 						align: "center"
+ 					}, {
+ 						field: "truemoney",
+ 						title: "实付金额",
+ 						unresize: "true",
+ 						align: "center"
+ 					}, {
+ 						field: "feilvmoney",
+ 						title: "费率金额",
+ 						unresize: "true",
+ 						align: "center"
+ 					}, {
+ 						field: "create_time",
+ 						title: "创建时间",
+ 						unresize: "true",
+ 						minWidth: 100,
+ 						align: "center"
+ 					}, {
+ 						field: "type",
+ 						title: "支付类型",
+ 						unresize: "true",
+ 						align: "center",
+ 						templet: function(d) {
+ 							var strs = {
+ 								'alipay': '支付宝',
+ 								'wxpay': '微信',
+ 								'qqpay': 'QQ',
+ 								'lkl':'拉卡拉',
+
+ 							};
+ 							return strs[d.type];
+ 						}
+ 					},
+ 					{
+ 						field: "status",
+ 						title: "状态",
+ 						unresize: "true",
+ 						align: "center",
+ 						templet: function(d) {
+ 							var strs = {
+ 								1: '<span style="color:#16b777;">已支付</span>',
+                                0: '<span style="color:#ff5722;">未支付</span>'
+ 							};
+ 							return strs[d.status];
+ 						}
+ 					}, {
+ 						field: "end_time",
+ 						title: "支付时间",
+ 						unresize: "true",
+ 						minWidth: 100,
+ 						align: "center"
+ 					}, {
+ 						field: "ip",
+ 						title: "下单IP",
+ 						unresize: "true",
+ 						minWidth: 100,
+ 						align: "center",
+                       templet: function (d) {
+                            return "<a href='https://m.ip138.com/iplookup.asp?ip="+ d.ip +"' target='_blank' style='color:blue;'>" + d.ip + "</a>";
+                       }
+ 					}, {
+ 						title: '操作',
+ 						toolbar: '#options',
+ 						unresize: true,
+ 						align: 'center',
+ 						minWidth: 150,
+ 						fixed: 'right',
+ 					}
+ 				]
+ 			]
+
+ 			table.render({
+ 				elem: '#dataTable',
+ 				url: MODULE_PATH + 'index',
+ 				page: true,
+ 				overflow: 'tips',
+ 				cols: cols,
+ 				cellMinWidth: 100,
+ 				skin: 'line',
+ 				toolbar: '#toolbar',
+ 				defaultToolbar: [{
+ 					title: '刷新',
+ 					layEvent: 'refresh',
+ 					icon: 'layui-icon-refresh',
+ 				}, 'filter', 'print', 'exports'],
+                done: function () {
+                    soulTable.render(this)
+                }
+ 			});
+
+ 			table.on('tool(dataTable)', function(obj) {
+ 				if (obj.event === 'remove') {
+ 					window.remove(obj);
+ 				} else if (obj.event === 'edit') {
+ 					window.edit(obj);
+ 				}else if (obj.event === 'reback') {
+ 				    window.reback(obj);
+ 				}
+ 			});
+
+ 			table.on('toolbar(dataTable)', function(obj) {
+ 				if (obj.event === 'refresh') {
+ 					window.refresh();
+ 				} else if (obj.event === 'batchRemove') {
+ 					window.batchRemove(obj);
+ 				} else if (obj.event === 'daysRemove') {
+ 					window.daysRemove(obj);
+ 				} else if (obj.event === 'allRemove') {
+ 					window.allRemove(obj);
+ 				}
+ 			});
+
+ 			form.on('submit(query)', function(data) {
+ 				table.reload('dataTable', {
+ 					where: data.field,
+ 					page: {
+ 						curr: 1
+ 					}
+ 				})
+                laydate.render({elem: "#create_time-start"});laydate.render({elem: "#create_time-end"});
+                return false;
+ 			});
+
+ 			//弹出窗设置 自己设置弹出百分比
+ 			function screen() {
+ 				if (typeof width !== 'number' || width === 0) {
+ 					width = $(window).width() * 0.8;
+ 				}
+ 				if (typeof height !== 'number' || height === 0) {
+ 					height = $(window).height() * 0.5;
+ 				}
+ 				return [width + 'px', height + 'px'];
+ 			}
+
+ 			window.edit = function(obj) {
+ 				layer.open({
+ 					type: 2,
+ 					maxmin: true,
+ 					title: '查看订单详情',
+ 					shade: 0.1,
+ 					area: screen(),
+ 					content: MODULE_PATH + 'edit/id/' + obj.data['id']
+ 				});
+ 			}
+
+
+ 			window.remove = function(obj) {
+ 				layer.confirm('确定要删除该订单记录', {
+ 					icon: 3,
+ 					title: '提示'
+ 				}, function(index) {
+ 					layer.close(index);
+ 					let loading = layer.load();
+ 					$.ajax({
+ 						url: MODULE_PATH + 'remove',
+ 						data: {
+ 							id: obj.data['id']
+ 						},
+ 						dataType: 'json',
+ 						type: 'POST',
+ 						success: function(res) {
+ 							layer.close(loading);
+ 							//判断有没有权限
+ 							if (res && res.code == 999) {
+ 								layer.msg(res.msg, {
+ 									icon: 5,
+ 									time: 2000,
+ 								})
+ 								return false;
+ 							} else if (res.code == 200) {
+ 								layer.msg(res.msg, {
+ 									icon: 1,
+ 									time: 1000
+ 								}, function() {
+ 									obj.del();
+ 								});
+ 							} else {
+ 								layer.msg(res.msg, {
+ 									icon: 2,
+ 									time: 1000
+ 								});
+ 							}
+ 						}
+ 					})
+ 				});
+ 			}
+            
+            window.reback = function(obj) {
+ 				layer.confirm('确定要回调该订单嘛?', {
+ 					icon: 3,
+ 					title: '提示'
+ 				}, function(index) {
+ 					layer.close(index);
+ 					let loading = layer.load();
+ 					$.ajax({
+ 						url: MODULE_PATH + 'reback',
+ 						data: {
+ 							id: obj.data['id']
+ 						},
+ 						dataType: 'json',
+ 						type: 'POST',
+ 						success: function(res) {
+ 							layer.close(loading);
+ 							//判断有没有权限
+ 							if (res && res.code == 999) {
+ 								layer.msg(res.msg, {
+ 									icon: 5,
+ 									time: 2000,
+ 								})
+ 								return false;
+ 							} else if (res.code == 200) {
+ 								layer.msg(res.msg, {
+ 									icon: 1,
+ 									time: 1000
+ 								}, function() {
+ 									obj.del();
+ 								});
+ 							} else {
+ 								layer.msg(res.msg, {
+ 									icon: 2,
+ 									time: 1000
+ 								});
+ 							}
+ 						}
+ 					})
+ 				});
+ 			}
+            
+ 			window.batchRemove = function(obj) {
+ 				let data = table.checkStatus(obj.config.id).data;
+ 				if (data.length === 0) {
+ 					layer.msg("未选中数据", {
+ 						icon: 3,
+ 						time: 1000
+ 					});
+ 					return false;
+ 				}
+ 				var ids = []
+ 				var hasCheck = table.checkStatus('dataTable')
+ 				var hasCheckData = hasCheck.data
+ 				if (hasCheckData.length > 0) {
+ 					$.each(hasCheckData, function(index, element) {
+ 						ids.push(element.id)
+ 					})
+ 				}
+ 				layer.confirm('确定要删除这些订单记录', {
+ 					icon: 3,
+ 					title: '提示'
+ 				}, function(index) {
+ 					layer.close(index);
+ 					let loading = layer.load();
+ 					$.ajax({
+ 						url: MODULE_PATH + 'batchRemove',
+ 						data: {
+ 							ids: ids
+ 						},
+ 						dataType: 'json',
+ 						type: 'POST',
+ 						success: function(res) {
+ 							layer.close(loading);
+ 							//判断有没有权限
+ 							if (res && res.code == 999) {
+ 								layer.msg(res.msg, {
+ 									icon: 5,
+ 									time: 2000,
+ 								})
+ 								return false;
+ 							} else if (res.code == 200) {
+ 								layer.msg(res.msg, {
+ 									icon: 1,
+ 									time: 1000
+ 								}, function() {
+ 									table.reload('dataTable');
+ 								});
+ 							} else {
+ 								layer.msg(res.msg, {
+ 									icon: 2,
+ 									time: 1000
+ 								});
+ 							}
+ 						}
+ 					})
+ 				});
+ 			}
+
+ 			window.daysRemove = function(obj) {
+ 				layer.prompt({
+ 					title: '请输入天数',
+ 				}, function(value, index) {
+ 					layer.close(index);
+ 					layer.confirm('确定要删除' + value + '天前的订单嘛?', {
+ 						icon: 3,
+ 						title: '提示'
+ 					}, function(index) {
+ 						layer.close(index);
+ 						let loading = layer.load();
+ 						$.ajax({
+ 							url: MODULE_PATH + 'daysRemove',
+ 							data: {
+ 								day: value
+ 							},
+ 							type: 'POST',
+ 							success: function(res) {
+ 								layer.close(loading);
+ 								//判断有没有权限
+ 								if (res && res.code == 999) {
+ 									layer.msg(res.msg, {
+ 										icon: 5,
+ 										time: 2000,
+ 									})
+ 									return false;
+ 								} else if (res.code == 200) {
+ 									layer.msg(res.msg, {
+ 										icon: 1,
+ 										time: 1000
+ 									}, function() {
+ 										table.reload('dataTable');
+ 									});
+ 								} else {
+ 									layer.msg(res.msg, {
+ 										icon: 2,
+ 										time: 1000
+ 									});
+ 								}
+ 							}
+ 						})
+ 					});
+ 				});
+ 			}
+
+ 			window.allRemove = function(obj) {
+ 				layer.confirm('确定要清除所有未支付订单嘛', {
+ 					icon: 3,
+ 					title: '提示'
+ 				}, function(index) {
+ 					layer.close(index);
+ 					let loading = layer.load();
+ 					$.ajax({
+ 						url: MODULE_PATH + 'allRemove',
+ 						type: 'POST',
+ 						success: function(res) {
+ 							layer.close(loading);
+ 							//判断有没有权限
+ 							if (res && res.code == 999) {
+ 								layer.msg(res.msg, {
+ 									icon: 5,
+ 									time: 2000,
+ 								})
+ 								return false;
+ 							} else if (res.code == 200) {
+ 								layer.msg(res.msg, {
+ 									icon: 1,
+ 									time: 1000
+ 								}, function() {
+ 									table.reload('dataTable');
+ 								});
+ 							} else {
+ 								layer.msg(res.msg, {
+ 									icon: 2,
+ 									time: 1000
+ 								});
+ 							}
+ 						}
+ 					})
+ 				});
+ 			}
+
+ 			window.refresh = function(param) {
+ 				table.reload('dataTable');
+ 			}
+ 		})
+ 	</script>
+ </body>
+ </html>

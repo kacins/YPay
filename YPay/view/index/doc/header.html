@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>开发文档-{:getConfig()['sitename']}</title>
+		<meta charset="utf-8">
+		<meta name="keywords" content="{:getConfig()['key']}">
+		<meta name="description" content="{:getConfig()['desc']}">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+		<script defer="" src="https://res.easydoc.net/preview/static/main.22a17828.js"></script>
+		<link rel="stylesheet" type="text/css" href="/static/index/css/doc.css" id="theme-opt"/>
+	</head>
+	<body>
+		<div id="app" class=" middle" style="">
+			<header id="header" style="">
+				<div class="header-wrapper container desk">
+					<div class="header-content">
+						<div class="header-left">
+							<div class="project-title text-hidden" title="{:getConfig()['sitename']}">{:getConfig()['sitename']}</div>
+						</div>
+						<div class="header-mid">
+							<nav class="nav-list-wrapper">
+								<ul class="nav-list">
+								    {volist name="nav" id="vo"}
+									<li class="nav-list-item text-hidden" title="首页" data-children="0">
+										<div class="nav-title-wrapper text-hidden">
+											<a {if condition="$vo.is_target == 1"} target="_bank" {/if}   href="{$vo.url}" class="nav-item-link text-hidden" title="{$vo.name}">{$vo.name}</a>
+										</div>
+									</li>
+									{/volist}
+								</ul>
+							</nav>
+						</div>
+					</div>
+				</div>
+
+				<div class="header-wrapper container mobile">
+					<div class="menus-wrapper">
+						<span class="menus-text">目录</span>
+					</div>
+					<h2 class="doc-title text-hidden">💵 页面跳转支付</h2>
+				</div>
+			</header>
+			<div class="content-wrapper">
+				<div class="container">
+					<!-- 左右半部分白色背景 -->
+					<div class="left-half-bg"></div>
+					<div class="right-half-bg"></div>
+
+					<div class="content" data-type="http">
+						<aside class="content-left">
+							<div class="content-left-main">
+								<div class="project-title-wrapper">
+									<h2 class="project-title">
+										YPay
+									</h2>
+
+								</div>
+
+								<div class="article-list-wrapper left-nav">
+									<ul class="article-list">
+										<li class="article-list-item" data-type="doc" data-id="AQiS0nrG"
+											data-pid="" data-level="0" data-children="0" data-collection="">
+
+											<!-- 文档 -->
+											<a href="/doc" class="article-title text-hidden"
+												title="页面跳转支付" style="padding-left: 24px; padding-right: 10px;">
+												<span class="article-icon"></span>
+												页面跳转支付
+											</a>
+											<!-- 集合 -->
+
+										</li>
+										<li class="article-list-item" data-type="doc" data-id="69txTliB" data-pid=""
+											data-level="0" data-children="0" data-collection="">
+
+											<!-- 文档 -->
+											<a href="/doc/api" class="article-title text-hidden"
+												title="API接口支付" style="padding-left: 24px; padding-right: 10px;">
+												<span class="article-icon"></span>
+												API接口支付
+											</a>
+											<!-- 集合 -->
+
+										</li>
+										<li class="article-list-item" data-type="doc" data-id="STMLK1Wg" data-pid=""
+											data-level="0" data-children="0" data-collection="">
+
+											<!-- 文档 -->
+											<a href="/doc/result" class="article-title text-hidden"
+												title="支付结果通知" style="padding-left: 24px; padding-right: 10px;">
+												<span class="article-icon"></span>
+												支付结果通知
+											</a>
+											<!-- 集合 -->
+
+										</li>
+										
+										<li class="article-list-item" data-type="doc" data-id="STMLK1Wg" data-pid=""
+											data-level="0" data-children="0" data-collection="">
+
+											<!-- 文档 -->
+											<a href="/doc/chaorder" class="article-title text-hidden"
+												title="单笔订单查询" style="padding-left: 24px; padding-right: 10px;">
+												<span class="article-icon"></span>
+												单笔订单查询
+											</a>
+											<!-- 集合 -->
+
+										</li>
+									</ul>
+								</div>
+								<div class="bottom-wrapper">
+									<div class="bottom-content">
+										<a href="/console" target="_blank" class="bottom-link">本文档由<span
+												style="font-weight: 700;margin: 0 5px;">{:getConfig()['sitename']}</span>进行构建</a>
+									</div>
+								</div>
+							</div>
+							<!-- 抽屉弹窗部分 -->
+							<div class="drawer-wrapper">
+								<div class="drawer-content" style="transform: translateX(0)">
+									<div class="drawer-header">
+										<div class="header-left">更新日志</div>
+									</div>
+
+									<div class="drawer-slot">
+										<!-- 更新日志 -->
+										<div class="project-log-wrapper">
+											<div class="project-log-content">
+												<ul class="project-log-list"></ul>
+											</div>
+										</div>
+
+										<!-- 其他 -->
+									</div>
+								</div>
+							</div>
+</aside>

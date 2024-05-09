@@ -1,0 +1,127 @@
+ {include file="public/header" type="pear-container"/}
+		<div class="layui-card">
+			<div class="layui-card-body">
+				<form class="layui-form layui-form-pane">
+					<div class="layui-form-item">
+						<div class="layui-inline">
+						    <button type="button" class="layui-btn uploadTheme" lay-options="{accept: 'file',exts: 'zip|rar|7z'}">
+                                <i class="layui-icon layui-icon-upload"></i>上传主题</button>
+							<button type="submit" class="layui-btn pear-btn-primary" lay-submit lay-filter="save">
+								启用选中模板</button>
+							<button type="submit" class="layui-btn layui-bg-red" lay-submit lay-filter="delete">
+								删除选中模板</button>
+						</div>
+					</div>
+				</form>
+				<div id="homeTheme"></div>
+			</div>
+		</div>
+{include file="public/footer"/}
+		<script>
+			layui.use(['table', 'layer', 'form', 'jquery', 'card','upload'], function() {
+
+				let table = layui.table;
+				let form = layui.form;
+				let $ = layui.jquery;
+				let layer = layui.layer;
+				let card = layui.card;
+				var upload = layui.upload;
+                let MODULE_PATH = "{$Request.root}/ypay.home/";
+				card.render({
+					elem: '#homeTheme',
+					url: MODULE_PATH + 'index', // 接口数据
+					data: [], // 静态数据 
+					page: true, // 是否分页
+					limit: 8, // 每页数量
+					linenum: 4, // 每行数量
+					clickItem: function(data){ // 单击事件
+						
+					}
+				})
+	            
+	            // 渲染
+                upload.render({
+                    elem: '.uploadTheme', // 绑定多个元素
+                    url: MODULE_PATH + 'upload', // 此处配置你自己的上传接口即可
+                    accept: 'file', // 普通文件
+                    done: function(res){
+                      if (res.code === 200) {
+                            layer.msg(res.msg, {
+								icon: 1,
+								time: 1000
+							});
+							setTimeout(function () {
+                                location.reload();
+                            }, 2000);
+                        } else {
+                            layer.msg(res.msg, {
+								icon: 2,
+								time: 1000
+							});
+                        }
+                    }
+                });
+	            
+	            //保存模板
+				form.on('submit(save)', function() {
+					var data = card.getChecked("homeTheme");
+					if(data == null || data == ''){
+					    layer.msg('请先选择主题', {
+								icon: 2,
+								time: 1000
+							});
+						return false;
+					}
+					$.post(MODULE_PATH +'saveTheme', data, function (res) {
+                        if (res.code === 200) {
+                            layer.msg(res.msg, {
+								icon: 1,
+								time: 1000
+							});
+							setTimeout(function () {
+                            location.reload();
+                        }, 2000);
+                        } else {
+                            layer.msg(res.msg, {
+								icon: 2,
+								time: 1000
+							});
+                        }
+                    }, 'json');
+					return false;
+				});
+				
+				//删除模板
+				form.on('submit(delete)', function() {
+					var data = card.getChecked("homeTheme");
+					if(data == null || data == ''){
+					    layer.msg('请先选择主题', {
+								icon: 2,
+								time: 1000
+							});
+						return false;
+					}
+					$.post(MODULE_PATH +'deleteTheme', data, function (res) {
+                        if (res.code === 200) {
+                            layer.msg(res.msg, {
+								icon: 1,
+								time: 1000
+							});
+							setTimeout(function () {
+                            location.reload();
+                        }, 2000);
+                        } else {
+                            layer.msg(res.msg, {
+								icon: 2,
+								time: 1000
+							});
+                        }
+                    }, 'json');
+					return false;
+				});
+				
+			
+			})
+		</script>
+	</body>
+</html>

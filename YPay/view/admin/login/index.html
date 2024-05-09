@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+		<title>后台管理系统</title>
+		 <link rel="stylesheet" href="/static/index/user/assets/vendor/css/rtl/core.css" class="template-customizer-core-css" />
+		<!-- 样 式 文 件 -->
+		<link rel="stylesheet" href="/static/admin/css/login/index.css" />
+		    <!-- 依 赖 样 式-->
+        <link rel="stylesheet" href="/static/component/pear/css/pear.css" type="text/css"/>
+		<style>
+		    .codeImage {
+                float: right;
+                height: 38px;
+                margin-right: -15px;
+                border: #e6e6e6 1px solid;
+                }
+            #geetest_captcha{
+                margin-top: -15px;
+                padding-left: 10px;
+                padding-right: 10px;
+                width: 100%;
+            }
+
+		    svg{
+		        display: none;
+		    }
+		    .geetest_captcha.geetest_customTheme .geetest_holder, .geetest_popup_wrap.geetest_customTheme .geetest_holder{
+		        width:100%;
+		    }
+		</style>
+	</head>
+	<!-- 代 码 结 构 -->
+	<body style="background-size: cover;background-color:white;">
+		<div id="app">
+			<div class="login">
+				<div class="mx-auto">
+					<div class="login_left">
+						<div class="login_left_logo">
+						    <img src="/static/admin/images/logo_icon.png" alt="" class="icon">
+							<span class="title">YPay Admin</span>
+						</div>
+						<div class="login_left_content">
+							<div>
+							    <img src="/static/admin/images/login_left_content.svg" alt="" width="350px">
+								<div class="title">欢迎使用本系统</div>
+								<div class="desc">源分享是一个专业的系统开发商,用心创造每一款产品</div>
+							</div>
+						</div>
+					</div>
+					<div class="login_right">
+						<div class="login_right_content">
+							<form class="layui-form" action="javascript:void(0);">
+								<div class="row" style="margin-left: -10px; margin-right: -10px;">
+									<div class="row_child" style="padding-left: 10px; padding-right: 10px;">
+										<div class="row_info">
+											<div class="form_item_content">
+												<h2 class="title">登录</h2>
+											</div>
+										</div>
+									</div>
+									<div class="row_child" style="padding-left: 10px; padding-right: 10px;">
+										<div class="row_info_two">
+										    <label class="form_item_label">用户名</label>
+											<div class="form_item_content">
+												<div class="form_item_input">
+													<div class="form_item_input_wrapper">
+														<input class="form_item_input_inner" type="text" name="username" placeholder="请输入您得用户名">
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row_child" style="padding-left: 10px; padding-right: 10px;">
+										<div class="row_info_two">
+										    <label class="form_item_label">密码</label>
+											<div class="form_item_content">
+													<div class="form_item_input" style="width: 100%;">
+														<div class="form_item_input_wrapper">
+															<input class="form_item_input_inner" type="password" name="password" placeholder="请输入您的密码">
+														</div>
+													</div>
+											</div>
+										</div>
+									</div>
+									{if getConfig()['captcha-type'] == 1}
+									    <div class="row_child" style="padding-left: 10px; padding-right: 10px;">
+										<div class="row_info_two">
+											<div class="form_item_content">
+													<div class="form_item_input" style="width: 100%;">
+														<div class="form_item_input_wrapper">
+															<input placeholder="验证码 : " type="text" maxlength="4" name="captcha" hover class="form_item_input_inner">
+															<img id="codeimg" class="codeImage" style="cursor: pointer;"/>
+														</div>
+															
+													</div>
+											</div>
+										</div>
+									</div>
+                                    {/if}
+									<div class="row_child" style="padding-left: 10px; padding-right: 10px;">
+										<div class="row_info_two">
+											<div class="form_item_content">
+												<div class="form_item_remember">
+												    <label class="form_item_remember_checkbox">
+												           <input type="checkbox" name="remember" title="记住我" lay-skin="primary" checked>
+												        </label>
+													</div>
+											</div>
+										</div>
+									</div>
+									<div class="row_child" style="padding-left: 10px; padding-right: 10px;">
+										<div class="row_info_two">
+											<div class="form_item_content">
+											    <button class="form_item_button" type="button" lay-submit lay-filter="login">
+													<span class="">登录</span>
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 资 源 引 入 -->
+        {include file="public/footer"/}
+		<script>
+			layui.use(['form', 'layer', 'jquery', 'element'], function() {
+				var $ = layui.jquery,
+					layer = layui.layer,
+					element = layui.element,
+					form = layui.form;
+				// 登 录 提 交
+				form.on('submit(login)', function(data) {
+					layer.load();
+					$.ajax({
+						type: "POST",
+						data: data.field,
+						success: function(res) {
+							layer.closeAll('loading');
+							if (res.code == 200) {
+								layer.msg(res.msg, {
+									icon: 1,
+									time: 1000
+								}, function() {
+									location.href = '{$Request.root??"/"}';
+								})
+							} else {
+								layer.msg(res.msg, {
+									icon: 2,
+									time: 1000
+								}, function() {
+									initCode();
+								})
+							}
+						}
+					});
+					return false;
+				});
+				initCode();
+
+				function initCode() {
+					$('#codeimg').attr("src", "{$Request.root}/login/verify?data=" + new Date().getTime());
+				}
+				$('#codeimg').on('click', function() {
+					initCode();
+				});
+            })
+		</script>
+	</body>
+</html>

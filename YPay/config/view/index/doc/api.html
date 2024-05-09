@@ -1,0 +1,560 @@
+{include file="doc/header"}
+                    <main class="content-mid">
+                        <div class="doc-wrapper"><div class="doc-content http">
+
+<div class="http-wrapper" data-active="0">
+    <div class="http-nav-tab-wrapper">
+        <div class="http-nav-tab-item active" data-tab="0">
+            <div class="tab-item-text">文档</div>
+        </div>
+    </div>
+
+    <article class="http-preview-container">
+        <section class="section-wrapper">
+            <div class="base-info">
+                <div class="doc-title-wrapper">
+                    <div class="doc-title-row">
+                        <h1 class="section-title" style="margin-bottom: 0px;">
+                            <span style="font-weight: normal!important;">💴</span> API接口支付
+                        </h1>
+                        <div class="last-change">
+                            <a href="https://tools.fun/websocket.html" target="_blank" class="websocket-link">websocket测试</a>
+                        </div>
+                    </div>
+                    <div class="api-row">
+                        <div class="label-wrapper el-tag method-post method" style="margin-right: 5px; flex-wrap: unset;">
+                            POST
+                        </div>
+                        <div class="label-wrapper api-path text-hidden" onclick="copyCode(this, true)" data-tips="{:$domain}/pay/apisubmit">
+                            <div class="text-hidden">{:$domain}/pay/apisubmit</div>
+                        </div>
+    
+    
+                    </div>
+                </div>
+                <div class="doc-desc-wrapper">
+                    <h3 class="section-title">
+                        接口描述
+                    </h3>
+                    <p class="desc-text">
+                        POST数据：pid={商户ID}&amp;type={支付方式}&amp;out_trade_no={商户订单号}&amp;notify_url={服务器异步通知地址}&amp;return_url={页面跳转通知地址}&amp;name={商品名称}&amp;money={金额}&amp;sitename={网站名称}&amp;sign={签名字符串}&amp;sign_type=MD5
+                    </p>
+                </div>
+            </div>
+        </section>
+
+            <section class="section-wrapper params">
+                <div style="display: flex; align-items: center; flex-wrap: wrap; color: #909399;margin-bottom: 18px;">
+                    <h3 class="section-title" style="margin-bottom: 0; margin-right: 8px;;">请求参数</h3>
+                    <span style="color: #bbb;"></span>
+                </div>
+                <div class="param-list-container">
+                    <div class="param-list-head">
+                            <h5 class="head-item text-hidden l4z7s1sr" title="字段名">字段名</h5>
+                            <h5 class="head-item text-hidden name" title="参数名">参数名</h5>
+                            <h5 class="head-item text-hidden required" title="必填">必填</h5>
+                            <h5 class="head-item text-hidden type" title="类型">类型</h5>
+                            <h5 class="head-item text-hidden l4z7sh7h" title="示例值">示例值</h5>
+                            <h5 class="head-item text-hidden desc" title="描述">描述</h5>
+                    </div>
+                    <div class="param-list-wrapper">
+<div class="param-list">
+        <div class="param-list-item" data-children="0" data-level="0">
+            <div class="param-list-row">
+                <div class="param-list-row-item l4z7s1sr">
+                    <span class="td-span" onclick="copyCode(this, true)">商户ID</span>
+                </div>
+                <div class="param-list-row-item name">
+                        <span class="label-wrapper required-param" onclick="copyCode(this, true)">pid</span>
+                </div>
+                <div class="param-list-row-item required">
+                        <span class="td-span">必填</span>
+                </div>
+                <div class="param-list-row-item type">
+                    <span class="td-span" onclick="copyCode(this, true)">Int</span>
+                </div>
+                <div class="param-list-row-item l4z7sh7h">
+                    <span class="td-span" onclick="copyCode(this, true)">1000</span>
+                </div>
+                <div class="param-list-row-item desc">
+                    <span class="td-span" onclick="copyCode(this, true)">商户ID</span>
+                </div>
+            </div>
+
+        </div>
+        <div class="param-list-item" data-children="0" data-level="0">
+            <div class="param-list-row">
+                <div class="param-list-row-item l4z7s1sr">
+                    <span class="td-span" onclick="copyCode(this, true)">支付方式</span>
+                </div>
+                <div class="param-list-row-item name">
+                        <span class="label-wrapper required-param" onclick="copyCode(this, true)">type</span>
+                </div>
+                <div class="param-list-row-item required">
+                        <span class="td-span">必填</span>
+                </div>
+                <div class="param-list-row-item type">
+                    <span class="td-span" onclick="copyCode(this, true)">String</span>
+                </div>
+                <div class="param-list-row-item l4z7sh7h">
+                    <span class="td-span" onclick="copyCode(this, true)">alipay</span>
+                </div>
+                <div class="param-list-row-item desc">
+                    <span class="td-span" onclick="copyCode(this, true)"> 支付方式：alipay:支付宝,qqpay:QQ钱包,wxpay:微信支付</span>
+                </div>
+            </div>
+
+        </div>
+        <div class="param-list-item" data-children="0" data-level="0">
+            <div class="param-list-row">
+                <div class="param-list-row-item l4z7s1sr">
+                    <span class="td-span" onclick="copyCode(this, true)">商户订单号</span>
+                </div>
+                <div class="param-list-row-item name">
+                        <span class="label-wrapper required-param" onclick="copyCode(this, true)">out_trade_no</span>
+                </div>
+                <div class="param-list-row-item required">
+                        <span class="td-span">必填</span>
+                </div>
+                <div class="param-list-row-item type">
+                    <span class="td-span" onclick="copyCode(this, true)">String</span>
+                </div>
+                <div class="param-list-row-item l4z7sh7h">
+                    <span class="td-span" onclick="copyCode(this, true)">20160806151343349</span>
+                </div>
+                <div class="param-list-row-item desc">
+                    <span class="td-span" onclick="copyCode(this, true)">商户订单号</span>
+                </div>
+            </div>
+
+        </div>
+        <div class="param-list-item" data-children="0" data-level="0">
+            <div class="param-list-row">
+                <div class="param-list-row-item l4z7s1sr">
+                    <span class="td-span" onclick="copyCode(this, true)">异步通知地址</span>
+                </div>
+                <div class="param-list-row-item name">
+                        <span class="label-wrapper required-param" onclick="copyCode(this, true)">notify_url</span>
+                </div>
+                <div class="param-list-row-item required">
+                        <span class="td-span">必填</span>
+                </div>
+                <div class="param-list-row-item type">
+                    <span class="td-span" onclick="copyCode(this, true)">String</span>
+                </div>
+                <div class="param-list-row-item l4z7sh7h">
+                    <span class="td-span" onclick="copyCode(this, true)">http://站点域名/notify_url.php</span>
+                </div>
+                <div class="param-list-row-item desc">
+                    <span class="td-span" onclick="copyCode(this, true)">服务器异步通知地址</span>
+                </div>
+            </div>
+
+        </div>
+        <div class="param-list-item" data-children="0" data-level="0">
+            <div class="param-list-row">
+                <div class="param-list-row-item l4z7s1sr">
+                    <span class="td-span" onclick="copyCode(this, true)">跳转通知地址</span>
+                </div>
+                <div class="param-list-row-item name">
+                        <span class="label-wrapper required-param" onclick="copyCode(this, true)">return_url</span>
+                </div>
+                <div class="param-list-row-item required">
+                        <span class="td-span">必填</span>
+                </div>
+                <div class="param-list-row-item type">
+                    <span class="td-span" onclick="copyCode(this, true)">String</span>
+                </div>
+                <div class="param-list-row-item l4z7sh7h">
+                    <span class="td-span" onclick="copyCode(this, true)">http://站点域名/return_url.php</span>
+                </div>
+                <div class="param-list-row-item desc">
+                    <span class="td-span" onclick="copyCode(this, true)">页面跳转通知地址</span>
+                </div>
+            </div>
+
+        </div>
+        <div class="param-list-item" data-children="0" data-level="0">
+            <div class="param-list-row">
+                <div class="param-list-row-item l4z7s1sr">
+                    <span class="td-span" onclick="copyCode(this, true)">商品名称</span>
+                </div>
+                <div class="param-list-row-item name">
+                        <span class="label-wrapper required-param" onclick="copyCode(this, true)">name</span>
+                </div>
+                <div class="param-list-row-item required">
+                        <span class="td-span">必填</span>
+                </div>
+                <div class="param-list-row-item type">
+                    <span class="td-span" onclick="copyCode(this, true)">String</span>
+                </div>
+                <div class="param-list-row-item l4z7sh7h">
+                    <span class="td-span" onclick="copyCode(this, true)">一个奥利奥</span>
+                </div>
+                <div class="param-list-row-item desc">
+                    <span class="td-span" onclick="copyCode(this, true)">商品名称</span>
+                </div>
+            </div>
+
+        </div>
+        <div class="param-list-item" data-children="0" data-level="0">
+            <div class="param-list-row">
+                <div class="param-list-row-item l4z7s1sr">
+                    <span class="td-span" onclick="copyCode(this, true)">商品金额</span>
+                </div>
+                <div class="param-list-row-item name">
+                        <span class="label-wrapper required-param" onclick="copyCode(this, true)">money</span>
+                </div>
+                <div class="param-list-row-item required">
+                        <span class="td-span">必填</span>
+                </div>
+                <div class="param-list-row-item type">
+                    <span class="td-span" onclick="copyCode(this, true)">String</span>
+                </div>
+                <div class="param-list-row-item l4z7sh7h">
+                    <span class="td-span" onclick="copyCode(this, true)">1.00</span>
+                </div>
+                <div class="param-list-row-item desc">
+                    <span class="td-span" onclick="copyCode(this, true)">商品金额</span>
+                </div>
+            </div>
+
+        </div>
+        <div class="param-list-item" data-children="0" data-level="0">
+            <div class="param-list-row">
+                <div class="param-list-row-item l4z7s1sr">
+                    <span class="td-span" onclick="copyCode(this, true)">签名字符串</span>
+                </div>
+                <div class="param-list-row-item name">
+                        <span class="label-wrapper required-param" onclick="copyCode(this, true)">sign</span>
+                </div>
+                <div class="param-list-row-item required">
+                        <span class="td-span">必填</span>
+                </div>
+                <div class="param-list-row-item type">
+                    <span class="td-span" onclick="copyCode(this, true)">String</span>
+                </div>
+                <div class="param-list-row-item l4z7sh7h">
+                    <span class="td-span" onclick="copyCode(this, true)">202cb962ac59075b964b07152d234b70</span>
+                </div>
+                <div class="param-list-row-item desc">
+                    <span class="td-span" onclick="copyCode(this, true)"> 签名字符串，签名算法与支付宝签名算法相同</span>
+                </div>
+            </div>
+
+        </div>
+        <div class="param-list-item" data-children="0" data-level="0">
+            <div class="param-list-row">
+                <div class="param-list-row-item l4z7s1sr">
+                    <span class="td-span" onclick="copyCode(this, true)">签名类型</span>
+                </div>
+                <div class="param-list-row-item name">
+                        <span class="label-wrapper required-param" onclick="copyCode(this, true)">sign_type</span>
+                </div>
+                <div class="param-list-row-item required">
+                        <span class="td-span">必填</span>
+                </div>
+                <div class="param-list-row-item type">
+                    <span class="td-span" onclick="copyCode(this, true)">String</span>
+                </div>
+                <div class="param-list-row-item l4z7sh7h">
+                    <span class="td-span" onclick="copyCode(this, true)">MD5</span>
+                </div>
+                <div class="param-list-row-item desc">
+                    <span class="td-span" onclick="copyCode(this, true)">默认为MD5</span>
+                </div>
+            </div>
+
+        </div>
+</div>                    </div>
+                </div>
+            </section>
+
+            <section class="section-wrapper params">
+                <div style="display: flex; align-items: center; flex-wrap: wrap; color: #909399;margin-bottom: 18px;">
+                    <h3 class="section-title" style="margin-bottom: 0; margin-right: 8px;;">响应参数</h3>
+                    <span style="color: #bbb;"></span>
+                </div>
+                <div class="param-list-container">
+                    <div class="param-list-head">
+                            <h5 class="head-item text-hidden l4z8z2nr" title="字段名">字段名</h5>
+                            <h5 class="head-item text-hidden name" title="参数名">参数名</h5>
+                            <h5 class="head-item text-hidden type" title="类型">类型</h5>
+                            <h5 class="head-item text-hidden l4z8zifw" title="示例值">示例值</h5>
+                            <h5 class="head-item text-hidden desc" title="描述">描述</h5>
+                    </div>
+                    <div class="param-list-wrapper">
+<div class="param-list">
+        <div class="param-list-item" data-children="0" data-level="0">
+            <div class="param-list-row">
+                <div class="param-list-row-item l4z8z2nr">
+                    <span class="td-span" onclick="copyCode(this, true)">返回状态码</span>
+                </div>
+                <div class="param-list-row-item name">
+                        <span class="label-wrapper" onclick="copyCode(this, true)">code</span>
+                </div>
+                <div class="param-list-row-item type">
+                    <span class="td-span" onclick="copyCode(this, true)">Int</span>
+                </div>
+                <div class="param-list-row-item l4z8zifw">
+                    <span class="td-span" onclick="copyCode(this, true)">200</span>
+                </div>
+                <div class="param-list-row-item desc">
+                    <span class="td-span" onclick="copyCode(this, true)">200为成功，其它值为失败</span>
+                </div>
+            </div>
+
+        </div>
+        <div class="param-list-item" data-children="0" data-level="0">
+            <div class="param-list-row">
+                <div class="param-list-row-item l4z8z2nr">
+                    <span class="td-span" onclick="copyCode(this, true)">返回信息</span>
+                </div>
+                <div class="param-list-row-item name">
+                        <span class="label-wrapper" onclick="copyCode(this, true)">msg</span>
+                </div>
+                <div class="param-list-row-item type">
+                    <span class="td-span" onclick="copyCode(this, true)">String</span>
+                </div>
+                <div class="param-list-row-item l4z8zifw">
+                    <span class="td-span" onclick="copyCode(this, true)">获取成功!</span>
+                </div>
+                <div class="param-list-row-item desc">
+                    <span class="td-span" onclick="copyCode(this, true)">成功/失败时返回对应信息</span>
+                </div>
+            </div>
+
+        </div>
+        <div class="param-list-item" data-children="0" data-level="0">
+            <div class="param-list-row">
+                <div class="param-list-row-item l4z8z2nr">
+                    <span class="td-span" onclick="copyCode(this, true)">金额</span>
+                </div>
+                <div class="param-list-row-item name">
+                        <span class="label-wrapper" onclick="copyCode(this, true)">money</span>
+                </div>
+                <div class="param-list-row-item type">
+                    <span class="td-span" onclick="copyCode(this, true)">String</span>
+                </div>
+                <div class="param-list-row-item l4z8zifw">
+                    <span class="td-span" onclick="copyCode(this, true)">1.00</span>
+                </div>
+                <div class="param-list-row-item desc">
+                    <span class="td-span" onclick="copyCode(this, true)">支付金额</span>
+                </div>
+            </div>
+
+        </div>
+        <div class="param-list-item" data-children="0" data-level="0">
+            <div class="param-list-row">
+                <div class="param-list-row-item l4z8z2nr">
+                    <span class="td-span" onclick="copyCode(this, true)">类型</span>
+                </div>
+                <div class="param-list-row-item name">
+                        <span class="label-wrapper" onclick="copyCode(this, true)">type</span>
+                </div>
+                <div class="param-list-row-item type">
+                    <span class="td-span" onclick="copyCode(this, true)">String</span>
+                </div>
+                <div class="param-list-row-item l4z8zifw">
+                    <span class="td-span" onclick="copyCode(this, true)">alipay</span>
+                </div>
+                <div class="param-list-row-item desc">
+                    <span class="td-span" onclick="copyCode(this, true)"> 支付方式：alipay:支付宝,qqpay:QQ钱包,wxpay:微信支付</span>
+                </div>
+            </div>
+
+        </div>
+        <div class="param-list-item" data-children="0" data-level="0">
+            <div class="param-list-row">
+                <div class="param-list-row-item l4z8z2nr">
+                    <span class="td-span" onclick="copyCode(this, true)">二维码链接</span>
+                </div>
+                <div class="param-list-row-item name">
+                        <span class="label-wrapper" onclick="copyCode(this, true)">qrcode</span>
+                </div>
+                <div class="param-list-row-item type">
+                    <span class="td-span" onclick="copyCode(this, true)">String</span>
+                </div>
+                <div class="param-list-row-item l4z8zifw">
+                    <span class="td-span" onclick="copyCode(this, true)">wxp://f2f15IaTGck0xvm7vug4lqx-sMpJ0xiUB8fWTDwCQk-jYBxS6Yl1A_fOdPGNNGKwPnOt</span>
+                </div>
+                <div class="param-list-row-item desc">
+                    <span class="td-span" onclick="copyCode(this, true)">如果返回该字段，则根据该url生成二维码</span>
+                </div>
+            </div>
+
+        </div>
+        <div class="param-list-item" data-children="0" data-level="0">
+            <div class="param-list-row">
+                <div class="param-list-row-item l4z8z2nr">
+                    <span class="td-span" onclick="copyCode(this, true)">二维码图片</span>
+                </div>
+                <div class="param-list-row-item name">
+                        <span class="label-wrapper" onclick="copyCode(this, true)">code_url</span>
+                </div>
+                <div class="param-list-row-item type">
+                    <span class="td-span" onclick="copyCode(this, true)">String</span>
+                </div>
+                <div class="param-list-row-item l4z8zifw">
+                    <span class="td-span" onclick="copyCode(this, true)">Payewm.jpg</span>
+                </div>
+                <div class="param-list-row-item desc">
+                    <span class="td-span" onclick="copyCode(this, true)">如果返回该字段，可直接使用该二维码</span>
+                </div>
+            </div>
+
+        </div>
+        <div class="param-list-item" data-children="0" data-level="0">
+            <div class="param-list-row">
+                <div class="param-list-row-item l4z8z2nr">
+                    <span class="td-span" onclick="copyCode(this, true)">订单号</span>
+                </div>
+                <div class="param-list-row-item name">
+                        <span class="label-wrapper" onclick="copyCode(this, true)">trade_no</span>
+                </div>
+                <div class="param-list-row-item type">
+                    <span class="td-span" onclick="copyCode(this, true)">String</span>
+                </div>
+                <div class="param-list-row-item l4z8zifw">
+                    <span class="td-span" onclick="copyCode(this, true)">20160806151343349</span>
+                </div>
+                <div class="param-list-row-item desc">
+                    <span class="td-span" onclick="copyCode(this, true)">支付订单号</span>
+                </div>
+            </div>
+
+        </div>
+        <div class="param-list-item" data-children="0" data-level="0">
+            <div class="param-list-row">
+                <div class="param-list-row-item l4z8z2nr">
+                    <span class="td-span" onclick="copyCode(this, true)">商户订单号</span>
+                </div>
+                <div class="param-list-row-item name">
+                        <span class="label-wrapper" onclick="copyCode(this, true)">out_trade_no</span>
+                </div>
+                <div class="param-list-row-item type">
+                    <span class="td-span" onclick="copyCode(this, true)">String</span>
+                </div>
+                <div class="param-list-row-item l4z8zifw">
+                    <span class="td-span" onclick="copyCode(this, true)">20160806151343349</span>
+                </div>
+                <div class="param-list-row-item desc">
+                    <span class="td-span" onclick="copyCode(this, true)">商户订单号</span>
+                </div>
+            </div>
+
+        </div>
+</div>                    </div>
+                </div>
+            </section>
+            <section class="section-wrapper markdown ">
+                <h3 class="section-title">说明 / 示例</h3>
+                <article class="markdown-body"><p>发起支付请求网站名称参数可以为空,其他为必填项<br>
+签名算法与支付宝签名算法相同</p>
+</article>
+            </section>
+    </article>
+    
+    <div class="http-test-container">
+        <!-- insert vm -->
+    </div>
+</div>
+
+
+</div>
+
+
+</div>
+                        <div class="back-top-wrapper" style="display: none;">
+                            <div class="back-top-content">
+                                <i class="fa fa-angle-double-up" aria-hidden="true"></i> 
+                            </div>
+                        </div>
+
+                        <div class="bottom-nav-wrapper">
+                            <div class="bottom-nav-row" style="display: flex;">
+                                <div class="bottom-nav text-hidden">
+                                    <a href="/doc" class="bottom-nav-link" data-id="AQiS0nrG">上一篇  页面跳转支付</a>
+                                </div>
+                                <div class="bottom-nav text-hidden">
+                                    <a href="/doc/result" class="bottom-nav-link" data-id="STMLK1Wg">下一篇 支付结果通知</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </main>
+                    <aside class="content-right" style="">
+                        <div class="content-right-main">
+                            <div class="content-right-nav">
+                                <div class="right-nav-header">
+                                    <i class="fa fa-list" aria-hidden="true"></i>
+                                    文章导航
+                                </div>
+                                <div class="right-nav-list-wrapper">
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="full-search-wrapper">
+            <div class="full-search-content">
+                <div class="full-search-input-wrapper">
+                    <input type="text" class="full-search-input" placeholder="全文搜索">
+                    <i class="fa fa-search" style="padding: 10px;" aria-hidden="true"></i>
+                </div>
+
+                <div class="search-result-list-wrapper"></div>
+            </div>
+        </div> -->
+
+        <div class="full-search-wrapper" style="display: none;">
+            <div class="full-search-input-wrapper">
+                <i class="fa fa-search" aria-hidden="true"></i>
+                <input class="full-search-input" type="text" placeholder="全文搜索">
+            </div>
+            <div class="search-result-list-wrapper">
+                <div class="no-search-result" style="display:flex; align-items:center; justify-content:center; color:#999; font-size:16px; height:100%">
+                    请输入关键字进行搜索
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-P12TJKHQ1S"></script>
+    <script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/axios/0.21.1/axios.min.js"></script>
+
+
+
+    <script>
+        var appVersion = window.navigator.appVersion;
+        var isValid = 0;
+        var msg = ''
+        if (appVersion.indexOf("Trident") !== -1) {
+            isValid = 1;
+            console.log('this is IE')
+            msg = '<h3>易文档不支持当前浏览器，建议您使用 谷歌/Edge 浏览器，如果您使用的是兼容模式，请切换到非兼容模式</h3>';
+        }
+        else if (appVersion.indexOf("MSIE") !== -1 || !!window.ActiveXObject || "ActiveXObject" in window) {
+            console.log('this is ie')
+            isValid = 1;
+            msg = '<h3>易文档不支持当前浏览器，建议您使用 谷歌/Edge 浏览器，如果您使用的是兼容模式，请切换到非兼容模式</h3>';
+        }
+        else if (appVersion.indexOf("Chrome") !== -1) {
+            const regex = /Chrome\/(\d+)/i;
+            const found = appVersion.match(regex);
+            if (found && found.length === 2 && parseInt(found[1]) < 60) {
+                isValid = 2;
+                msg = '<h1>您的浏览器版本有点低，为更好的体验，建议升级到最新版本</h1>';
+            }
+        }
+        if (isValid > 0) {
+            document.body.innerHTML = msg;
+        }
+    </script>
+
+</body>
+</html>

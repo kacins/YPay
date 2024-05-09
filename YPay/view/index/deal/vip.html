@@ -1,0 +1,207 @@
+ {include file="public/user_header" title="购买会员" /}
+ <style>
+  
+@media (min-width: 968px) {
+   .vip{
+       width: 378px;
+   }
+}
+  
+ </style>
+<!-- Content -->
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <div class="card overflow-hidden">
+                <!-- Pricing Plans -->
+                <div class="pb-sm-5 pb-2 rounded-top">
+                  <div class="container py-5">
+                    <h2 class="text-center mb-2 mt-0 mt-md-4">为 您  找 到 合 适 的 套 餐</h2>
+                    <p class="text-center pb-3">
+                      从我们开始 - 它非常适合个人和团队.选择满足您需求的套餐.
+                    </p>
+
+                    <div class="row mx-0 gy-3 px-lg-5">
+
+                      <!-- Enterprise -->
+                      <?php foreach ($viplist as $key => $value): ?>
+                         <div class="col-lg">
+                        <div class="card border rounded shadow-none vip">
+                          <div class="card-body">
+ 
+                            <h3 class="card-title text-center text-capitalize fw-semibold mb-1">{$value.name}</h3>
+
+                            <div class="text-center">
+                              <div class="d-flex justify-content-center">
+                                <sup class="h6 text-primary pricing-currency mt-3 mb-0 me-1">¥</sup>
+                                <h1 class="price-toggle price-yearly fw-semibold display-4 text-primary mb-0">{$value.money}</h1>
+                                <sub class="h6 pricing-duration mt-auto mb-2 fw-normal text-muted">/{$value.viptime}天</sub>
+                              </div>
+                            </div>
+
+                            <ul class="ps-3 my-4 list-unstyled">
+                              <li class="mb-2">
+                                <span class="badge badge-center w-px-20 h-px-20 rounded-pill bg-label-primary me-2"
+                                  ><i class="bx bx-check bx-xs"></i
+                                ></span>
+                                费率：{$value.feilv} %
+                              </li>
+                              {if condition="$value.is_profiteer eq 1"}
+                                <li class="mb-2">
+                                  <span class="badge badge-center w-px-20 h-px-20 rounded-pill bg-label-primary me-2"
+                                    ><i class="bx bx-check bx-xs"></i
+                                  ></span>
+                                  订单加费：<i class="fa-solid fa-square-check"></i>
+                                </li>
+                              {else}
+                                <li class="mb-2">
+                                  <span class="badge badge-center w-px-20 h-px-20 rounded-pill bg-label-primary me-2"
+                                    ><i class="bx bx-check bx-xs"></i
+                                  ></span>
+                                  订单加费：<i class="fa-solid fa-square-xmark"></i>
+                                </li>
+                              {/if}
+                            </ul>
+                            {if condition="$value.isBuy eq 'yes'"}
+                                <a href="javascript:void(0);" id="go-vip-{$value.id}" data-id="{$value.id}" class="btn btn-label-success d-grid w-100"
+                                 >续 费</a>
+                            {else}
+                                <a href="javascript:void(0);" id="go-vip-{$value.id}" data-id="{$value.id}" class="btn btn-label-primary d-grid w-100">开 通</a>
+                            {/if}
+                          </div>
+                        </div>
+                      </div>
+                      <?php endforeach; ?>
+                      
+                    </div>
+                  </div>
+                </div>
+                <!--/ Pricing Plans -->
+                <!-- FAQS -->
+                <div class="pricing-faqs bg-alt-pricing rounded-bottom">
+                  <div class="container py-5 px-lg-5">
+                    <div class="row mt-0 mt-md-4">
+                      <div class="col-12 text-center mb-4">
+                        <h2 class="mb-2">经常问的问题</h2>
+                        <p class="mb-4">让我们帮助回答您可能遇到的最常见问题.</p>
+                      </div>
+                    </div>
+                    <div class="row mx-2">
+                      <div class="col-12">
+                        <div id="faq" class="accordion accordion-popout">
+                          <div class="card accordion-item active">
+                            <h6 class="accordion-header">
+                              <button
+                                class="accordion-button collapsed"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                aria-expanded="false"
+                                data-bs-target="#faq-1"
+                                aria-controls="faq-1"
+                              >
+                                日限额是什么意思呢?
+                              </button>
+                            </h6>
+
+                            <div id="faq-1" class="accordion-collapse collapse show" data-bs-parent="#faq">
+                              <div class="accordion-body">
+                                当您的平台对接上本站之后,每个用户当天所产生成功订单的金额总和达到套餐的当天限制即为日限额.
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="card accordion-item">
+                            <h6 class="accordion-header">
+                              <button
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#faq-4"
+                                aria-expanded="false"
+                                aria-controls="faq-4"
+                              >
+                                你们有退款保障嘛?
+                              </button>
+                            </h6>
+                            <div id="faq-4" class="accordion-collapse collapse" data-bs-parent="#faq">
+                              <div class="accordion-body">
+                                有的. 如果您在使用途中所遇到问题的最终结果是本站的导致的,您可以随时申请退款,无需任何额外解释.
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="card accordion-item mb-0 mb-md-4">
+                            <h6 class="accordion-header">
+                              <button
+                                class="accordion-button collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#faq-5"
+                                aria-expanded="false"
+                                aria-controls="faq-5"
+                              >
+                                我有更多问题. 我在哪里可以得到帮助?
+                              </button>
+                            </h6>
+                            <div id="faq-5" class="accordion-collapse collapse" data-bs-parent="#faq">
+                              <div class="accordion-body">
+                                如何您有任何其他问题或者疑惑,请联系我们.我们随时为您提供帮助.
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--/ FAQS -->
+              </div>
+            </div>
+            <!--/ Content -->
+{include file="public/user_footer" /}
+<script>
+        layui.use([ 'jquery', 'form'], function () {
+            var $ = layui.jquery, form = layui.form;
+            $("a[id^='go-vip']").click(function () {
+                var id = $(this).attr("data-id");
+                Swal.fire({
+                    title: '确定',
+                    text: "你确定要开通嘛!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: '确 定',
+                    cancelButtonText: '取 消',
+                    customClass: {
+                      confirmButton: 'btn btn-primary me-3',
+                      cancelButton: 'btn btn-label-secondary'
+                    },
+                    buttonsStyling: false
+                      }).then(function (result) {
+                        if (result.value) {
+                            $.post('/Deal/Vip', { tcid: id }, function (res) {
+                                if (res.code === 200) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: '购买成功',
+                                        text: res.msg,
+                                        customClass: {
+                                          confirmButton: 'btn btn-success'
+                                        }
+                                    });
+                                    setTimeout(function () {
+                                        location.reload();
+                                    }, 2000);
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: '购买失败',
+                                        text: res.msg,
+                                        customClass: {
+                                          confirmButton: 'btn btn-danger'
+                                        }
+                                    });
+                                }
+                            }, 'json');
+                       
+                    }
+                });
+                return false;
+            });
+        })
+    </script>

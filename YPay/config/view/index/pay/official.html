@@ -1,0 +1,448 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="zh-cn">
+<meta name="renderer" content="webkit">
+<title>在线支付 - 网上支付 安全快速！</title>
+{if condition="$order.type == 'qqpay'"}
+   <link href="/static/index/pay/official/qqpay.css" rel="stylesheet" media="screen">
+{/if}
+{if condition="$order.type == 'alipay'"}
+   <link href="/static/index/pay/official/alipay.css" rel="stylesheet" media="screen">
+{/if}
+{if condition="$order.type == 'wxpay'"}
+   <link href="/static/index/pay/official/wxpay.css" rel="stylesheet" media="screen">
+{/if}
+    <!-- 依 赖 样 式-->
+    <link rel="stylesheet" href="/static/component/pear/css/pear.css" type="text/css"/>
+    <link href="/static/index/pay/console/qrcode.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://open_hk1.ygit.net/static/index/user/assets/vendor/css/rtl/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="https://open_hk1.ygit.net/static/index/user/assets/vendor/css/rtl/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="https://open_hk1.ygit.net/static/index/user/assets/css/demo.css" />
+    <link rel="stylesheet" href="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/sweetalert2/sweetalert2.css" />
+<style>
+
+{if condition="$order.type == 'qqpay'"}
+          .time-item strong {
+    background: rgb(255 0 14);
+    color: #fff;
+    line-height: 25px;
+    font-size: 15px;
+    font-family: Arial;
+    padding: 0 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+{/if}
+{if condition="$order.type == 'alipay'"}
+       .time-item strong {
+    background: #1677ff;
+    color: #fff;
+    line-height: 25px;
+    font-size: 15px;
+    font-family: Arial;
+    padding: 0 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+{/if}
+{if condition="$order.type == 'wxpay'"}
+       .time-item strong {
+    background: #3ec742;
+    color: #fff;
+    line-height: 25px;
+    font-size: 15px;
+    font-family: Arial;
+    padding: 0 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+{/if}
+</style>
+</head>
+<body>
+<div class="body">
+<h1 class="mod-title" style="height:70px;">
+{if condition="$order.type == 'qqpay'"}
+   <span class="text"><img src="/static/index/pay/newpay/images/qqpay.jpg" alt="QQ支付"></span>
+{/if}
+{if condition="$order.type == 'alipay'"}
+   <span class="text"><img src="/static/index/pay/newpay/images/alipay.jpg" alt="支付宝支付"></span>
+{/if}
+{if condition="$order.type == 'wxpay'"}
+   <span class="text"><img src="/static/index/pay/newpay/images/weixin.jpg" alt="微信支付"></span>
+{/if}
+</h1>
+<div class="mod-ct">
+<div class="order">
+</div>
+<div class="amount">￥{$order.truemoney}</div>
+<div class="qr-image" id="qrcode">
+    <img class="kalecloud" id="qrcode_load" src="/static/index/images/status/loading.gif" style="display: block;">
+</div>
+                        <?php if ($order['type'] == 'alipay' && $basic['is_jump'] == 1): ?>
+                            <a id="startApp" type="button" class="btn btn-lg btn-block" style="color:white;background-color:#1e9fff;font-size:13px;width:250px;display:none"><span>启动支付宝支付</span></a>
+                        <?php endif; ?>
+                        <?php if ($order['type'] == 'wxpay' && $basic['is_jump'] == 1): ?>
+                             <a id="startApp" type="button" class="btn btn-lg btn-block" style="color:white;background-color:#16b777
+
+;font-size:13px;width:250px;display:none"><span>启动微信支付</span></a>
+                        <?php endif; ?>
+                        <?php if ($order['type'] == 'qqpay' && $basic['is_jump'] == 1): ?>
+                                <a id="startApp" type="button" class="btn btn-lg btn-block btn-danger" style="color:white;font-size:13px;width:250px;display:none"><span>启动QQ支付</span></a>
+                        <?php endif; ?>
+<div class="time-item" style="padding-top: 10px;color:red">
+    <strong id="hour_show"><s id="h"></s>0时</strong>
+    <strong id="minute_show"><s></s>0分</strong>
+    <strong id="second_show"><s></s>0秒</strong>
+</div>
+<div class="detail" style="margin-top:unset;" id="orderDetail">
+<dl class="detail-ct" style="display: none;">
+
+<dt>购买物品</dt>
+<dd id="productName">{$order.name}</dd>
+<dt>商户订单号</dt>
+<dd id="billId">{$order.out_trade_no}</dd>
+<dt>创建时间</dt>
+<dd id="createTime">{$order.create_time}</dd>
+</dl>
+<a href="javascript:void(0)" class="arrow"><i class="ico-arrow"></i></a>
+</div>
+{if condition="$order.type == 'qqpay'"}
+<div class="tip">
+<span class="dec dec-left"></span>
+<span class="dec dec-right"></span>
+<div class="ico-scan"></div>
+<div class="tip-text">
+<p>请使用QQ扫一扫</p>
+<p>扫描二维码完成支付</p>
+</div>
+</div>
+{/if}
+{if condition="$order.type == 'alipay'"}
+<div class="tip">
+<span class="dec dec-left"></span>
+<span class="dec dec-right"></span>
+<div class="ico-scan"></div>
+<div class="tip-text">
+<p>请使用支付宝扫一扫</p>
+<p>扫描二维码完成支付</p>
+</div>
+</div>
+{/if}
+{if condition="$order.type == 'wxpay'"}
+<div class="tip">
+<span class="dec dec-left"></span>
+<span class="dec dec-right"></span>
+<div class="ico-scan"></div>
+<div class="tip-text">
+<p>请使用微信扫一扫</p>
+<p>扫描二维码完成支付</p>
+</div>
+</div>
+{/if}
+
+<div class="tip-text">
+</div>
+</div>
+</div>
+
+<!-- 弹窗开始 -->
+{if condition="$is_payPopUp == 1"}
+<div class="web_notice" style="position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: rgba(0,0,0,0.3);z-index: 99999;">
+		<div style="position: fixed;top: 50%;left: 50%;width: 350px;background: #FFF;transform: translate(-50%, -50%);border-radius: 40px;padding: 50px 40px;">
+		                 {if condition="$order.type == 'qqpay'"}
+                            <h3 style="font-weight: bold;text-align: center;font-size: 30px;">QQ支付注意</h3>
+                            {/if}
+                            {if condition="$order.type == 'alipay'"}
+                              <h3 style="font-weight: bold;text-align: center;font-size: 30px;">支付宝支付注意</h3>
+                            {/if}
+                            {if condition="$order.type == 'wxpay'"}
+                                <h3 style="font-weight: bold;text-align: center;font-size: 30px;">微信支付注意</h3>
+                            {/if}  
+	
+		<div style="font-size: 16px;margin-top: 26px;line-height: 30px;color: #999;">
+		<br>
+		<font color="purple"><b>请在支付时务必支付订单金额，多付或少付系统都无法识别，这将导致你的订单无法完成。
+		<br>
+		<br>
+		<font color="red">订单金额：{$order.truemoney}元【注意小数点】</font></b><font color="red">
+		<br>
+		</font>
+		</font>
+		</div>
+		<font color="purple">
+		<a style="display: block;background: #98a3ff;color: #FFF;text-align: center;font-weight: bold;font-size: 19px;line-height: 60px;margin: 0 auto;margin-top: 45px;border-radius: 32px;width: 80%;" onclick="javascript:document.querySelector('.web_notice').remove()">懂了</a>
+		</font>
+		</div>
+		</div>
+{/if}
+    <script src="/static/index/js/jquery-3.2.1.min.js"></script>
+    <script src="/static/component/layer/layer.js"></script>
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/sweetalert2/sweetalert2.js"></script>
+    <script type="text/javascript" src="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/clipboard/clipboard.js"></script>
+    <script src='/static/index/pay/js/devtools-detector.js'></script>
+    <script type="text/javascript">
+
+        // 订单详情
+    $('#orderDetail .arrow').click(function (event) {
+        if ($('#orderDetail').hasClass('detail-open')) {
+            $('#orderDetail .detail-ct').slideUp(500, function () {
+                $('#orderDetail').removeClass('detail-open');
+            });
+        } else {
+            $('#orderDetail .detail-ct').slideDown(500, function () {
+                $('#orderDetail').addClass('detail-open');
+            });
+        }
+    });
+     var intDiff = parseInt('{$ms}');//倒计时总秒数量
+     function timer(intDiff){
+         var timerId = window.setInterval(function(){
+         var day=0,
+             hour=0,
+             minute=0,
+             second=0;//时间默认值
+         if(intDiff > 0){
+         	day = Math.floor(intDiff / (60 * 60 * 24));
+             hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
+             minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
+            second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+         }
+		if (minute <= 9) minute = '0' + minute;
+		if (second <= 9) second = '0' + second;
+		if (hour <= 0 && minute <= 0 && second <= 0) {
+			$("#divTime").html("<small style='color:red; font-size:26px'>订单二维码已过期</small>");
+            $("#qrcode").html('<img id="qrcode_load" src="/static/index/images/status/qrcode_timeout.png">');//输出过期二维码提示图片
+		}else{
+		    $('#hour_show').html('<s id="h"></s>' + hour + '时');
+            $('#minute_show').html('<s></s>' + minute + '分');
+            $('#second_show').html('<s></s>' + second + '秒');
+		}
+	    if(intDiff < 0){
+		    clearInterval(timerId);
+		}
+		intDiff--
+		
+		}, 1000);
+     }
+
+     $(function(){
+         timer(intDiff);
+     });
+
+	order();
+	updateQrOk = 0;
+	updateQrImg= 0;
+	updateQrNo = 0;
+	lastQrImg = '';
+     //订单监控  {订单监控}
+	function order(){
+        var _v = new Date().getTime();
+        $.get("/Pay/ConSole", { TradeNo: "{$order.out_trade_no}", v: _v }, function (result) {
+			//成功
+     		if(result.code == '200' && updateQrOk==0){
+				updateQrOk==1;
+				$("#divTime").html("<small style='color:red; font-size:22px'>"+ result.msg +"</small>");
+                    $("#qrcode").html('<img id="qrcode_load" src="/static/index/images/status/pay_ok.png">');//支付成功
+ 				//回调页面
+         		window.clearInterval(orderlst);
+				layer.msg('支付成功，正在跳转中...');
+				window.location.href=result.url;
+     		}
+     		//支付二维码
+     		if(result.code == '100' && (updateQrImg == 0 || (result.qr_url && lastQrImg !== result.qr_url))){
+ 				updateQrImg = 1;
+ 				lastQrImg = result.qr_url;
+                    $("#qrcode").html('<img id="qrcode_load"  src="' + result.qr_url + '">');
+
+                    //二维码获取成功
+                    if ("{$order.type}" == 'alipay')
+				{
+				    
+				    if(isMobilCheck())
+                    {
+                        $("#startApp").attr("href", "{$order.h5_qrurl|raw}");
+    				    $("#startApp").show();
+    				    $("#startApp_text").show();
+    				}
+                    }
+                    if ("{$order.type}"== 'wxpay')
+				    {
+				        if(isMobilCheck())
+                        {
+                            if("{$code}" == "qqpay_wzq"){
+                                $("#startApp").attr("href", "{$order.h5_qrurl|raw}");
+                                $("#startApp").html('点击跳转付款');
+                                $("#qrcode").html("<p style='color:red;font-weight:bold;font-size:20px;'>请在浏览器内点击按钮付款</p><p style='color:red;font-size:20px;font-weight:bold;'>一定要在手机浏览器内,禁止微信/QQ内点击</p>");
+                                $("#startApp_text").html('请打开浏览器付款');
+                            }else{
+                                $("#startApp").attr("href", "{$order.h5_qrurl|raw}");
+                            }
+		    			    $("#startApp").show();
+                            $("#startApp_text").show();
+                        }
+                      
+				    }
+                if ("{$order.type}"== 'qqpay')
+				    {
+				        if(isMobilCheck())
+                        {
+    				        if('{$code}' == 'qqpay_zg'  && '{$basic.is_jump}' == '1'){
+                                $("#startApp").attr("href",result.h5_qrurl);
+		    			        $("#startApp").show();
+                                $("#startApp_text").show();
+                                var url_scheme = result.h5_qrurl;
+                                layer.msg('正在自动唤醒QQ...', {shade: 0,time: 1000});
+		                        window.location.href = url_scheme;
+                            }else{
+                                $("#startApp").attr("href", "{$order.h5_qrurl|raw}");
+		    			        $("#startApp").show();
+		    			        $("#startApp_text").show();
+                            }
+                        }
+                      
+				    }
+			}
+         	//订单已经超时
+     		if(result.code == '201' && updateQrNo==0){
+				updateQrNo==1;
+				$("#divTime").html("<small style='color:red; font-size:22px'>"+ result.msg +"</small>");
+     			window.clearInterval(orderlst);
+     			Swal.fire({
+                    title: '支付失败',
+                    text: result.msg,
+                    icon: 'error',
+                    customClass: {
+                      confirmButton: 'btn btn-primary'
+                    },
+                    buttonsStyling: false
+                }).then(function (result) {
+                    var href = "{$timeout_url}";//获取跳转链接
+                     if (href && href.indexOf('http') !== 0 && href != '/') {
+                         href = "//" + href;
+                     }
+                    // 执行跳转
+                    window.location.href = href;
+                });
+     		
+         	}
+
+     	},"JSON");
+	}
+
+	/**
+     * 检验是否手机版，手机版直接跳转到APP支付
+     * @@returns
+     */
+    function isMobilCheck() {
+    	var userAgentInfo = navigator.userAgent;
+
+            var mobileAgents = ["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"];
+            
+            var mobile_flag = false;
+            
+            	//根据userAgent判断是否是手机
+             for (var v = 0; v < mobileAgents.length; v++) {
+                if (userAgentInfo.indexOf(mobileAgents[v]) > 0) {
+                      mobile_flag = true;
+                      break;
+                }
+             }
+             var screen_width = window.screen.width;
+             var screen_height = window.screen.height;
+            
+            //根据屏幕分辨率判断是否是手机
+            if (screen_width > 325 && screen_height < 750) {
+                mobile_flag = true;
+            }
+            
+            return mobile_flag;
+    }
+
+
+	//周期监听
+	orderlst = window.setInterval(function () {
+		order();
+	}, 2000);
+        
+    
+    //Copy Api Info
+            $("#copy").click(function () {
+                clipboard = new ClipboardJS('.copy');
+                clipboard.on('success', function(e) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '复制成功',
+                        customClass: {
+                          confirmButton: 'btn btn-success'
+                        }
+                    });
+                });
+                
+                clipboard.on('error', function(e) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '复制失败,请手动复制',
+                        customClass: {
+                          confirmButton: 'btn btn-danger'
+                        }
+                    });
+                });
+            });
+            
+    function showGlobalAd(){
+        Swal.fire({
+        html:'{:getConfig()['reportTips']}',
+        showCancelButton: true,
+        confirmButtonText: '{:getConfig()['reportYes']}',
+        cancelButtonText: '{:getConfig()['reportNo']}',
+        customClass: {
+          confirmButton: 'btn btn-primary me-3',
+          cancelButton: 'btn btn-label-secondary'
+        },
+        buttonsStyling: false
+      }).then(function (result) {
+        if (result.value) {
+          location.replace('{:getConfig()['reportUrl']}');
+        }
+      });
+    }
+    </script>
+
+
+    {if condition="$yuyin_tips == '1'"}
+        <script>
+            speckText(0)
+            function speckText(str) {
+                var url = "/static/index/pay/console/yuyin.mp3";
+                var voiceContent = new Audio(url);
+                voiceContent.src = url;
+                voiceContent.play();
+            }
+        </script>
+    {/if}
+
+    <script>
+function jscode(){
+    var pay_type = '{$order.type}';//支付方式
+    var pay_code ='{$code}'; //获取通道类型
+    if(pay_type=='alipay' && '{$basic.is_jump}' == '1'){
+        var url_scheme = '{$order.h5_qrurl|raw}';
+        layer.msg('正在自动唤醒支付宝...', {shade: 0,time: 1000});
+		window.location.href = url_scheme; 
+    }
+}
+
+if (window.navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)) {
+    setTimeout(jscode(), 3000 )
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+﻿@charset "utf-8";
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td { margin:0; padding:0 }
+body, button, input, select, textarea {font:12px/1.5 "\5FAE\8F6F\96C5\9ED1", arial ; *line-height:1.5}
+h1, h2, h3, h4, h5, h6 {font-size:100%; font-weight: normal;}
+address, cite, dfn, em, var {font-style:normal;}
+code, kbd, pre, samp {font-family:courier new, courier, monospace;}
+
+ul, ol {list-style:none;}
+fieldset, img {border:0}
+table {border-collapse:collapse;border-spacing:0;}
+input, button, textarea, select, optgroup, option {font-family: inherit;font-size: inherit;font-style: inherit;font-weight: inherit;font-size:100%;}
+div:after, ul:after, dl:after,.clearfix:after { content:""; display:block; clear:both; height:0; visibility:hidden;}
+/****/
+abbr, article, aside, audio, canvas, datalist, details, figure, footer, header, hgroup, menu, nav, output, progress, section, video {display:block;margin:0;padding:0}
+i,u,b,em,span,small{ font-weight:normal; font-style:normal;}
+html,body {height: 100%}
+/****/
+html {font-size: 62.5%;} 
+body {
+	-webkit-tap-highlight-color: rgba(255, 255, 255, 0); 
+
+}
+a{text-decoration: none;}
+h2{ margin:0; padding: 0;}
+ul{word-spacing: -4px;}

@@ -1,0 +1,223 @@
+
+ {include file="public/user_header" title="账号详情" /}
+            <div class="container-xxl flex-grow-1 container-p-y">
+
+              <div class="row">
+                <div class="col-md-12">
+                  <ul class="nav nav-pills flex-column flex-md-row mb-3">
+                    <li class="nav-item">
+                      <a class="nav-link active" href="javascript:void(0);"><i class="bx bx-user me-1"></i> 账 户 详 情</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="/My/Security"><i class="bx bx-lock-alt me-1"></i>安 全 设 置</a></li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/My/Notifications"
+                        ><i class="bx bx-bell me-1"></i> 通 知 设 置</a
+                      >
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/My/Connections"
+                        ><i class="bx bx-link-alt me-1"></i>账 号 绑 定</a
+                      >
+                    </li>
+                  </ul>
+                  <div class="card mb-4">
+                    <h5 class="card-header">资 料 详 情</h5>
+                    <!-- Account -->
+                    <div class="card-body">
+                      <div class="d-flex align-items-start align-items-sm-center gap-4">
+                        <img
+                          src="{$user.head}"
+                          alt="user-avatar"
+                          class="d-block rounded"
+                          height="100"
+                          width="100"
+                          id="uploadedAvatar"
+                        />
+                      </div>
+                    </div>
+                    <hr class="my-0" />
+                    <div class="card-body">
+                      <form id="formAccountSettings" method="POST" onsubmit="return false">
+                        <div class="row">
+                          <div class="mb-3 col-md-6">
+                            <label for="firstName" class="form-label">用 户 名</label>
+                            <input class="form-control" type="text" name="username" value="{:$user.username}" disabled=""/>
+                          </div>
+                          <div class="mb-3 col-md-6">
+                            <label for="email" class="form-label">账 户 ID</label>
+                            <input
+                              class="form-control"
+                              type="text"
+                              value="{:$user.id}"
+                              disabled=""
+                            />
+                          </div>
+                          {if condition="$user.email neq ''"}
+                          <div class="mb-3 col-md-6">
+                            <label for="organization" class="form-label">邮 箱</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              value="{:$user.email}"
+                              disabled=""
+                            />
+                          </div>
+                          {/if}
+                          {if condition="$user.mobile neq ''"}
+                          <div class="mb-3 col-md-6">
+                            <label class="form-label" for="phoneNumber">手 机 号</label>
+                            <div class="input-group input-group-merge">
+                              <span class="input-group-text">(+86)</span>
+                              <input
+                                type="text"
+                                class="form-control"
+                                value="{:$user.mobile}"
+                                disabled=""
+                              />
+                            </div>
+                          </div>
+                          {/if}
+                          <div class="mb-3 col-md-6">
+                            <label for="address" class="form-label">套 餐 费 率</label>
+                            <input type="text" class="form-control"  value="{:$user.feilv}" disabled=""/>
+                          </div>
+                          <div class="mb-3 col-md-6">
+                            <label for="state" class="form-label">套 餐 时 间</label>
+                            <input class="form-control" type="text" value="{:$user.vip_time}" disabled=""/>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <!-- /Account -->
+                  </div>
+                 {if condition="getConfig()['is_logOff'] == 1"}
+                  <div class="card">
+                    <h5 class="card-header">注 销 账 号</h5>
+                    <div class="card-body">
+                      <div class="mb-3 col-12 mb-0">
+                        <div class="alert alert-warning">
+                          <h6 class="alert-heading fw-bold mb-1">你是否确实要删除帐户?</h6>
+                          <p class="mb-0">一旦你删除了你的帐户, 就再也回不去了. 请注意.</p>
+                        </div>
+                      </div>
+                      <form id="formAccountDeactivation" onsubmit="return false">
+                        <div class="form-check mb-3">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            name="accountActivation"
+                            id="accountActivation"
+                          />
+                          <label class="form-check-label" for="accountActivation"
+                            >我 确 认 要 将 账 号 注 销</label
+                          >
+                        </div>
+                        <button type="submit" class="btn btn-danger deactivate-account">注 销 账 号</button>
+                      </form>
+                    </div>
+                  </div>
+                 {/if}                  
+                </div>
+              </div>
+            </div>
+            <!-- / Content -->
+
+{include file="public/user_footer" /}
+<!-- Page JS -->
+<script src="/static/index/user/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js"></script>
+    <script src="/static/index/user/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js"></script>
+    <script src="/static/index/user/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js"></script>
+    <script>
+    const deactivateAcc = document.querySelector('#formAccountDeactivation'),
+      deactivateButton = deactivateAcc.querySelector('.deactivate-account');
+            if (deactivateAcc) {
+      const fv = FormValidation.formValidation(deactivateAcc, {
+        fields: {
+          accountActivation: {
+            validators: {
+              notEmpty: {
+                message: '请 确 认 您 要 注 销 帐 户'
+              }
+            }
+          }
+        },
+        plugins: {
+          trigger: new FormValidation.plugins.Trigger(),
+          bootstrap5: new FormValidation.plugins.Bootstrap5({
+            eleValidClass: ''
+          }),
+          submitButton: new FormValidation.plugins.SubmitButton(),
+          fieldStatus: new FormValidation.plugins.FieldStatus({
+            onStatusChanged: function (areFieldsValid) {
+              areFieldsValid
+                ? // Enable the submit button
+                  // so user has a chance to submit the form again
+                  deactivateButton.removeAttribute('disabled')
+                : // Disable the submit button
+                  deactivateButton.setAttribute('disabled', 'disabled');
+            }
+          }),
+          // Submit the form when all fields are valid
+          // defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+          autoFocus: new FormValidation.plugins.AutoFocus()
+        },
+        init: instance => {
+          instance.on('plugins.message.placed', function (e) {
+            if (e.element.parentElement.classList.contains('input-group')) {
+              e.element.parentElement.insertAdjacentElement('afterend', e.messageElement);
+            }
+          });
+        }
+      });
+    }
+
+    // Deactivate account alert
+    const accountActivation = document.querySelector('#accountActivation');
+
+    // Alert With Functional Confirm Button
+    if (deactivateButton) {
+      deactivateButton.onclick = function () {
+        if (accountActivation.checked == true) {
+          Swal.fire({
+            text: '您 确 认 要 注 销 您 的 账 号 嘛?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: '确 定',
+            cancelButtonText:'取消',
+            customClass: {
+              confirmButton: 'btn btn-primary me-2',
+              cancelButton: 'btn btn-label-secondary'
+            },
+            buttonsStyling: false
+          }).then(function (result) {
+            if (result.value) {
+             $.post('/My/Cancellation',function(res){
+                if(res.code == 200){
+                   Swal.fire({
+                        icon: 'success',
+                        title: '注 销 成 功!',
+                        text: '您 的 账 号 已 注 销.',
+                        customClass: {
+                          confirmButton: 'btn btn-primary'
+                        }
+                    }).then((value) => {
+                        location.replace('/User/Login');
+                    });; 
+                }
+             });
+              
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+              Swal.fire({
+                title: '取消',
+                text: '已 停 止 注 销 操 作!!',
+                icon: 'error',
+                customClass: {
+                  confirmButton: 'btn btn-primary'
+                }
+              });
+            }
+          });
+        }
+      };
+    }
+    </script>

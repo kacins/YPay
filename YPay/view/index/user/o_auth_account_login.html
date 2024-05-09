@@ -1,0 +1,22 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>聚合登录</title>
+    <script src="/static/index/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var url = "{$url|raw}";
+            if (url.length > 0) {
+                window.location.href = url + "&t=" + (new Date()).getTime();
+            }
+        });
+    </script>
+</head>
+<body>
+    <div>
+        验证成功
+    </div>
+</body>
+</html>

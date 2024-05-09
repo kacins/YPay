@@ -1,0 +1,329 @@
+ {include file="public/user_header" title="安全设置" /}
+<!-- Content -->
+        
+          <div class="container-xxl flex-grow-1 container-p-y">
+
+<div class="row">
+  <div class="col-md-12">
+    <ul class="nav nav-pills flex-column flex-md-row mb-3">
+                    <li class="nav-item">
+                      <a class="nav-link" href="/My/UserPro"><i class="bx bx-user me-1"></i> 账 户 详 情</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link active" href="javascript:void(0);"><i class="bx bx-lock-alt me-1"></i>安 全 设 置</a></li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/My/Notifications"
+                        ><i class="bx bx-bell me-1"></i> 通 知 设 置</a
+                      >
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/My/Connections"
+                        ><i class="bx bx-link-alt me-1"></i>账 号 绑 定</a
+                      >
+                    </li>
+                  </ul>
+    <!-- Change Password -->
+    <div class="card mb-4">
+      <h5 class="card-header">修 改 密 码</h5>
+      <div class="card-body">
+        <form class="layui-form" id="formBasForm" lay-filter="formBasForm">
+          <div class="row">
+            <div class="mb-3 col-md-6 form-password-toggle">
+              <label class="form-label">新 密 码</label>
+              <div class="input-group input-group-merge">
+                <input class="form-control"  type="password"  name="newpwd" placeholder="请输入新密码" />
+                <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+              </div>
+            </div>
+
+            <div class="mb-3 col-md-6 form-password-toggle">
+              <label class="form-label">确 认 新 密 码</label>
+              <div class="input-group input-group-merge">
+                <input class="form-control" type="password" name="renewpwd"  placeholder="请确认您输入的新密码" />
+                <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+              </div>
+            </div>
+            <div class="col-12 mb-4">
+              <p class="fw-semibold mt-2">设 置 推 荐:</p>
+              <ul class="ps-3 mb-0">
+                <li class="mb-1">
+                  最少 6 个字符 - 越多越好
+                </li>
+                <li class="mb-1">至少一个小写字符</li>
+                <li>至少一个数字、符号或空白字符</li>
+              </ul>
+            </div>
+            <div class="col-12 mt-1">
+              <button type="submit" class="btn btn-primary me-2" lay-filter="formBasSubmit" lay-submit>保 存</button>
+              <button type="reset" class="btn btn-secondary">重 置</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!--/ Change Password -->
+
+
+    <!-- API Key-->
+    <div class="card mb-4">
+      <a name="Api" id="Api"></a>
+      <h5 class="card-header">API 密钥</h5>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="bg-lighter rounded p-3 position-relative">
+              <div class="d-flex align-items-center mb-2">
+                <span class="fw-semibold me-2">API:</span>
+                <span class="fw-semibold me-2">{$url}</span>
+                <span id='copy_url' class="text-muted cursor-pointer copy" 
+                      data-bs-toggle="tooltip"
+                      data-bs-offset="0,8"
+                      data-bs-placement="top"
+                      data-bs-custom-class="tooltip-primary"
+                      data-clipboard-text="{$url}"
+                      title="复 制"><i class="bx bx-copy"></i></span>
+              </div>
+              <div class="d-flex align-items-center mb-2">
+                <span class="fw-semibold me-2">商 户 PID:</span>
+                <span class="fw-semibold me-2">{$user.id}</span>
+                <span id='copy_id' class="text-muted cursor-pointer copy" 
+                      data-bs-toggle="tooltip"
+                      data-bs-offset="0,8"
+                      data-bs-placement="top"
+                      data-bs-custom-class="tooltip-primary"
+                      data-clipboard-text="{$user.id}"
+                      title="复 制"><i class="bx bx-copy"></i></span>
+              </div>
+                <span class="fw-semibold me-2">商 户 密 钥:</span>
+                <span id='userkey' class="fw-semibold me-2">{$user.user_key}</span>
+                <span id='copy_key' class="text-muted cursor-pointer me-2 copy"
+                      data-bs-toggle="tooltip"
+                      data-bs-offset="0,8"
+                      data-bs-placement="top"
+                      data-bs-custom-class="tooltip-primary"
+                      data-clipboard-text="{$user.user_key}"
+                      title="复 制"><i class="bx bx-copy"></i></span>
+                <span id='GeneratingKey' class="text-muted cursor-pointer" 
+                      data-bs-toggle="tooltip"
+                      data-bs-offset="0,8"
+                      data-bs-placement="top"
+                      data-bs-custom-class="tooltip-danger"
+                      title="重 置 密 钥"><i class='bx bx-reset'></i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/ API Key-->
+
+    <!-- 登 录 日 志 -->
+    <div class="card mb-4">
+      <h5 class="card-header border-bottom">登 录 日 志</h5>
+      <div class="card-datatable text-nowrap">
+        <table class="table border-top datatables-basic">
+          <thead>
+            <tr>
+                <th>商户ID</th>
+                <th>操作界面</th>
+                <th>登录详情</th>
+                <th>登录IP</th>
+                <th>登录时间</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+    <!--/ Recent Devices -->
+
+  </div>
+</div>
+
+
+
+          </div>
+{include file="public/user_footer" /}
+
+<!-- Page Js -->
+
+    <script>
+        
+        layui.use([ 'form'], function () {
+            var $ = layui.jquery;
+            var form = layui.form;
+            const formChangePass = document.querySelector('#formBasForm');
+
+            // Form validation for Submit
+            if (formChangePass) {
+              const fv = FormValidation.formValidation(formChangePass, {
+                fields: {
+                  newpwd: {
+                    validators: {
+                      notEmpty: {
+                        message: '请 输 入 您 的 新 密 码'
+                      },
+                      stringLength: {
+                        min: 6,
+                        message: '密 码 最 少 需 要 6 位'
+                      }
+                    }
+                  },
+                  renewpwd: {
+                    validators: {
+                      notEmpty: {
+                        message: '请 再 次 输 入 您 的 新 密 码'
+                      },
+                      identical: {
+                        compare: function () {
+                          return formChangePass.querySelector('[name="newpwd"]').value;
+                        },
+                        message: '两 次 密 码 输 入 不 相 同, 请 检 查'
+                      },
+                      stringLength: {
+                        min: 6,
+                        message: '密 码 最 少 需 要 6 位'
+                      }
+                    }
+                  }
+                },
+                plugins: {
+                  trigger: new FormValidation.plugins.Trigger(),
+                  bootstrap5: new FormValidation.plugins.Bootstrap5({
+                    eleValidClass: '',
+                    rowSelector: '.col-md-6'
+                  }),
+                  submitButton: new FormValidation.plugins.SubmitButton(),
+                  // Submit the form when all fields are valid
+                  // defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+                  autoFocus: new FormValidation.plugins.AutoFocus()
+                },
+                init: instance => {
+                  instance.on('plugins.message.placed', function (e) {
+                    if (e.element.parentElement.classList.contains('input-group')) {
+                      e.element.parentElement.insertAdjacentElement('afterend', e.messageElement);
+                    }
+                  });
+                }
+              });
+             fv.on('core.form.valid', function() {
+                form.on('submit(formBasSubmit)', function (obj) {
+                    $.post('/My/UpdatePwd', obj.field, function (res) {
+                        //layer.close(loadIndex);
+                        if (res.code === 200) {
+                            Swal.fire({
+                                title: '成功',
+                                text: res.msg,
+                                icon: 'success',
+                                customClass: {
+                                  confirmButton: 'btn btn-primary'
+                                 }
+                            }).then((value) => {
+                                location.replace('/User/Login');
+                            });
+                            
+                        } else {
+                             Swal.fire({
+                                title: '错误',
+                                text: res.msg,
+                                icon: 'error',
+                                customClass: {
+                                  confirmButton: 'btn btn-primary'
+                                 }
+                            });
+                        }
+                    }, 'json');
+                    return false;
+                });
+             });
+            }
+            
+            //reset key
+            $('#GeneratingKey').click(function () {
+                Swal.fire({
+                    title: '你真的要重新生成KEY吗?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: '确 定',
+                    cancelButtonText: '取 消',
+                    customClass: {
+                      confirmButton: 'btn btn-primary me-3',
+                      cancelButton: 'btn btn-label-secondary'
+                    },
+                    buttonsStyling: false
+                      }).then(function (result) {
+                        if (result.value) {
+                            $.get('/My/GeneratingKey', function (result) {
+                                if (result.code == '1') {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: '生 成 成 功',
+                                        text: "生成成功,新密钥：" + result.key,
+                                        customClass: {
+                                          confirmButton: 'btn btn-success'
+                                        }
+                                    });
+                                    $('#userkey').html(result.key);
+                                    $('#copy_key').attr('data-clipboard-text',result.key);
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: result.msg,
+                                        customClass: {
+                                          confirmButton: 'btn btn-danger'
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                });
+            });
+            
+            //Copy Api Info
+            $("span[id^='copy']").click(function () {
+                clipboard = new ClipboardJS('.copy');
+                clipboard.on('success', function(e) {
+                     Swal.fire({
+                            icon: 'success',
+                            title: '复 制 成 功',
+                            customClass: {
+                              confirmButton: 'btn btn-success'
+                            }
+                    });
+                });
+                
+                clipboard.on('error', function(e) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '复制失败,请手动复制',
+                        customClass: {
+                          confirmButton: 'btn btn-danger'
+                        }
+                    });
+                });
+            });
+            
+
+  var dt_basic_table = $('.datatables-basic');
+
+  // DataTable
+  // --------------------------------------------------------------------
+if (dt_basic_table.length) {
+    dt_basic = dt_basic_table.DataTable({
+      ajax: '/My/loginlog',
+      columns: [
+        { data: 'uid' },
+        { data: 'url' },
+        { data: 'desc' },
+        { data: 'ip' },
+        { data: 'create_time' },
+      ],
+      order: [[0, 'desc']],
+      dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+      displayLength: 10,
+      lengthMenu: [10, 20, 50],
+      scrollX: true,
+
+    });
+  }
+        });
+        
+	
+    </script>

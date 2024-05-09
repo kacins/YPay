@@ -1,0 +1,191 @@
+<html lang="en"><head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
+	<title>支付体验中心-{:getConfig()['sitename']}</title>
+<link rel="stylesheet" href="/static/component/layui/css/layui.css">
+<link rel="stylesheet" type="text/css" href="static/index/css/demo/header.css">
+<link rel="stylesheet" type="text/css" href="static/index/css/demo/public.css">
+<link rel="stylesheet" type="text/css" href="static/index/css/demo/min-paydemo.css">
+
+<body style="background-color: #FFFFFF;">
+	<div class="page">
+  <script src="/static/component/layui/layui.js"></script>
+<div class="header-container">
+	<div class="header-title-box">
+		<a class="header-logo" href="/">
+			<img src="{:getConfig()['logo']}">
+		</a>
+	</div>
+	<div class="links-drawer-box ">
+		<div class="drawer-line-top"></div>
+		<div class="drawer-line-bottom"></div>
+	</div>
+	<script src="static/index/js/demo/topnav.js" type="text/javascript" charset="utf-8"></script>
+</div>
+
+<div class="header-drawer-container">
+        {volist name="nav" id="vo"}
+        <a class="drawerLink-box" if condition="$vo.is_target == 1"} target="_bank" {/if}   href="{$vo.url}"><p>{$vo.name}</p></a>
+        <div class="line-xipiden"></div>
+        {/volist}
+			<!-- 未登入的状态 -->
+			<a class="drawerLink-box login" href="/User/Login">
+				<p>登录</p>
+			</a>
+			<div class="line-xipiden"></div>
+			<a class="drawerLink-box login" href="/User/Reg">
+				<p>注册</p>
+			</a>
+</div>
+		<div class="container">
+			<div class="input-box">
+				<div class="logo-box">
+					<img src="{:getConfig()['logo']}" alt="">
+				</div>
+				<div class="amount-input">
+					<div class="company">
+						<img src="static/index/images/demo/company.svg" alt="">
+					</div>
+					<!-- <p class="header">支付金额：</p> -->
+					<input class="input" type="number" value="{:getConfig()['demopay_money']}" oninput="value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')" onblur="b=this.value;b=(b+'').replace(/^0+\./g,'0.');b.match(/^0+[1-9]+/)?b=b.replace(/^0+/g,''):b;this.value=Number(b)?b:0;">
+				</div>
+				<p class="tips-text">可在输入框内输入自定义金额</p>
+			</div>
+			<div class="dex-box">
+				<div class="dex-text">
+					<p style="margin-bottom: 15px; font-size: 20px; font-weight: 900">
+						支付体验
+					</p>
+					<p>自定义金额体验{:getConfig()['sitename']}，支持微信、支付宝付款</p>
+				</div>
+				<div class="pay-button">
+					<p id="buttonText">支付 ￥0.01</p>
+				</div>
+			</div>
+		</div>
+		<div class="mask"></div>
+		<div class="pay-window">
+			<div class="pay-box">
+			    <?php foreach ($array as $key => $value): ?>
+			        <?php if ($value['isOpen'] != 'no'): ?>
+			            <div class="{$value['id']} paytest">
+					        <div class="pay-item-box" id="{$value['id']}">
+					        	<div class="icon">
+					        		<img src="{$value['src']}" alt="{$value['name']}">
+					        	</div>
+					        	<p>{$value['name']}</p>
+					        </div>
+				        </div>
+				    <div class="hr"></div>
+				    <?php endif; ?>
+			    <?php endforeach; ?>
+			</div>
+			<div class="cancel">取消</div>
+		</div>
+	</div>
+	<div class="none-show">
+		<img src="/static/images/message-error.png" alt="pc-tips">
+		<p>该页面为H5支付体验，请在移动端打开</p>
+	</div>
+
+<script>
+    layui.cache.page = '';
+    layui.use(['layer', 'laytpl'], function() {
+		var $ = layui.$
+				,layer = layui.layer;
+
+		const userAgent = navigator.userAgent;
+		var inputValue = $(".input").val(); //初始value
+
+		function inputFun() {
+			//公共方法，按钮文字同步
+			$("#buttonText").html("支付" + " " + "￥" + inputValue);
+		}
+		inputFun(); //初始调用
+
+		$(".input").bind("input propertychange", function () {
+			//输入实时触发
+			inputValue = $(".input").val(); //重置value
+			var _this = $(this);
+			var inputLength = _this.val().length;
+			var inputWidht = parseInt(inputLength) * 11.5 + 25;
+			var companyWidth = $(".company").outerWidth();
+			_this.css("width", inputWidht + "px"); //输入框宽度随内容变化
+			$(".amount-input").css("width", inputWidht + companyWidth + 20 + "px"); //容器宽度实时变化
+			inputFun(); //调用按钮文字同步方法
+		});
+		$("input").blur(function () {
+			//失焦时删除多输入的0，然后同步到按钮上
+			inputValue = $(".input").val();
+			inputFun();
+		});
+		$(".pay-button").on("click", function () {
+			$(".mask").css({
+				visibility: "visible",
+				opacity: 1,
+			});
+			$(".pay-window").css({
+				bottom: "10px",
+			});
+		});
+		$(".cancel").on("click", function(){
+			$(".mask").css({
+				visibility: "hidden",
+				opacity: 0,
+			});
+			$(".pay-window").css({
+				bottom: "-220px",
+			});
+		});
+		$(".mask").on("click", function(){
+			$(".mask").css({
+				visibility: "hidden",
+				opacity: 0,
+			});
+			$(".pay-window").css({
+				bottom: "-220px",
+			});
+		});
+
+		// 选择微信支付
+		$("#wxpay").on('click', function () {
+            pay("wxpay");
+		});
+
+		// 选择支付宝支付
+		$("#alipay").on('click', function () {
+			pay("alipay");
+		});
+        // 选择支付宝支付
+		$("#qqpay").on('click', function () {
+			pay("qqpay");
+		});
+
+		// 发起支付
+		function pay(wayCode){
+
+			let amount = inputValue;
+			const reg = /^([1-9]\d{0,4}|0)(\.\d{1,2})?$/;
+			
+			if (!amount || !reg.test(amount) || amount <= 0) {
+				layer.alert('请输入正确的金额，0-100000之间最多两位小数');
+				return ;
+			}
+            if({:getConfig()['demopay_money']} > inputValue){
+                layer.alert('请输入最小测试金额 -- '+{:getConfig()['demopay_money']});
+				return ;
+            }
+			var out_trade_no = genOrderNo(1000, 9999);
+
+			window.location.href = '/demo/dopay?type='+ wayCode+'&out_trade_no='+out_trade_no;
+		}
+
+		// 生成订单号
+		function genOrderNo(min, max) {
+			return "YPay" + new Date().getTime() + Math.floor(Math.random()*(max-min) + min);
+		}
+
+	})
+</script>
+
+</body></html>

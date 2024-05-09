@@ -1,0 +1,91 @@
+{include file="public/header" title="补充信息"/}
+              <form id="formAuthentication" class="mb-3">
+                <div class="mb-3" style="display:none;">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="type"
+                    value="{$data.type}"
+                  />
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="open_id"
+                    value="{$data.sid}"
+                  />
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="is_bind"
+                    value="{$data.is_bind}"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="username" class="form-label">账 号</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="username"
+                    placeholder="请输入您的账户(英文|数字)"
+                    value="{$data.username}"
+                    autofocus
+                  />
+                </div>
+                <div class="mb-3 form-password-toggle">
+                  <label class="form-label" for="password">密 码</label>
+                  <div class="input-group input-group-merge">
+                    <input
+                      type="password"
+                      class="form-control"
+                      name="password"
+                      placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                      aria-describedby="password"
+                    />
+                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                  </div>
+                </div>
+                <div class="mb-3 form-password-toggle">
+                  <label class="form-label" for="password">确 认 密 码</label>
+                  <div class="input-group input-group-merge">
+                    <input
+                      type="password"
+                      class="form-control"
+                      name="password2"
+                      placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                      aria-describedby="password"
+                    />
+                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="email" class="form-label">邮 箱</label>
+                  <input type="text" class="form-control" id="email" name="email" placeholder="请输入您的邮箱" />
+                </div>
+                
+                <!--引入注册公共部分开始-->
+                {include file="public/regVerification"/}
+                <!--引入注册公共部分结束-->
+                
+                <!--引入验证开始-->
+                {include file="public/verification"/}
+                <!--引入验证结束-->
+                <div class="mb-3">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" checked name="terms" />
+                    <label class="form-check-label" for="terms-conditions">
+                      我 同 意
+                      <a href="{:$config['user_agreement']}">用户协议</a> & <a href="{:$config['privacy']}">隐私政策</a>
+                    </label>
+                  </div>
+                </div>
+                <button class="btn btn-primary d-grid w-100">立 即 注 册</button>
+              </form>
+
+              <p class="text-center">
+                <span>已 经 有 账 号 了?</span>
+                <a href="/User/Login">
+                  <span>立 即 登 录</span>
+                </a>
+              </p>
+    <!-- / Content -->
+{include file="public/footer" functons="bind"/}

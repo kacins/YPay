@@ -1,0 +1,176 @@
+{include file="public/header" type="other"/}
+<form class="layui-form" action="">
+    <div class="mainBox">
+        <div class="main-container">
+            <div class="layui-form-item">
+                    <label class="layui-form-label">
+                        通道类型
+                    </label>
+                    <div class="layui-input-block">
+                        <select name="type" id="type" lay-filter="type">
+                            <option value="epay" {if condition="$model['type'] eq 'epay'"
+											} selected {/if}>易支付</option>
+                            <option value="dmf" {if condition="$model['type'] eq 'dmf'"
+											} selected {/if}>支付宝当面付</option>
+							<option value="wxpay" {if condition="$model['type'] eq 'wxpay'"
+											} selected {/if}>微信官方支付</option>
+                            <option value="alipay" {if condition="$model['type'] eq 'alipay'"
+											} selected {/if}>支付宝官方支付</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item" id="recommend">
+                    <label class="layui-form-label">
+                        推荐对接
+                    </label>
+                    <div class="layui-input-block">
+                        <select name="recommend" lay-filter="recommend">
+                            <option value="">请选择要对接的易支付</option>
+                            <?php foreach ($epayAd as $value): ?>
+		                        <option value="{$value.url}">{$value.title}</option>
+		                    <?php endforeach; ?> 
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">
+                        通道名称
+                    </label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input layui-form-danger" id="name" name="name" placeholder="请输入通道名称" value="{$model['name']??""}"/>
+                    </div>
+                </div>
+                <div class="layui-form-item" id="api">
+                    <label class="layui-form-label">
+                        API
+                    </label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input layui-form-danger" id="url" name="url"  placeholder="请输入API地址" value="{$model['url']??""}"/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label" id="pid">
+                        PID
+                    </label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input layui-form-danger" name="pid" id="pid_placeholder" placeholder="请输入PID" value="{$model['pid']??""}"/>
+                    </div>
+                </div>
+                <div class="layui-form-item" id="other" style="display:none;">
+                    <label class="layui-form-label" id="other_name">
+                        other
+                    </label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input layui-form-danger" name="other" id="other_placeholder"  placeholder="" value="{$model['other']??""}"/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label" id="key">
+                        Key
+                    </label>
+                    <div class="layui-input-block">
+                        <textarea class="layui-textarea" name="key" id="key_placeholder" placeholder="请输入Key">{$model['key']??""}</textarea>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="button-container">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit="" lay-filter="save">
+               
+                提交
+            </button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">
+               
+                重置
+            </button>
+        </div>
+    </div>
+</form>
+{include file="public/footer"/}
+<script>
+    layui.use(['form', 'jquery'], function () {
+        let form = layui.form;
+        let $ = layui.jquery;
+        
+        
+        
+        type();//默认调用一次
+        //定义通道筛选方法
+        function type(value = null){
+            if(value == null){
+                value = $('#type').val();
+            }
+            $("#api").show();
+ 			$("#other").show();
+ 			 $("#recommend").hide();
+            if(value == "epay"){
+ 			    $("#other").hide();
+ 			    $("#pid").html("PID");
+ 			    $("#key").html("Key");
+ 			    $("#recommend").show();
+ 			    $("#pid_placeholder").attr("placeholder", "请输入PID");
+ 			    $("#key_placeholder").attr("placeholder", "请输入Key");
+ 			}else if(value == "wxpay"){
+ 			    $("#api").hide();
+ 			    $("#pid").html("APPID");
+ 			    $("#key").html("密钥");
+ 			    $("#other_name").html("商户号");
+ 			    $("#pid_placeholder").attr("placeholder", "请输入APPID");
+ 			    $("#other_placeholder").attr("placeholder", "请输入商户号");
+ 			    $("#key_placeholder").attr("placeholder", "请输入密钥");
+ 			}else if(value == "dmf" || value == "alipay"){
+ 			    $("#api").hide();
+ 			    $("#pid").html("APPID");
+ 			    $("#key").html("商户私钥");
+ 			    $("#other_name").html("支付宝公钥");
+ 			    $("#pid_placeholder").attr("placeholder", "请输入APPID");
+ 			    $("#other_placeholder").attr("placeholder", "请输入支付宝公钥");
+ 			    $("#key_placeholder").attr("placeholder", "请输入应用私钥");
+ 			}
+        }
+        
+        //支付通道筛选
+        form.on('select(type)', function(data) {
+ 			let value = data.value;
+ 	        type(value)
+ 			return false;
+ 		});
+ 		
+ 		         		//下拉获取参数
+ 		form.on('select(recommend)', function(data) {
+ 			$('#url').val(data.value);
+ 			$('#name').val($("#recommend option:selected").text());
+ 		});
+        
+        form.on('submit(save)', function (data) {
+            
+            $.ajax({
+                data: JSON.stringify(data.field),
+                dataType: 'json',
+                contentType: 'application/json',
+                type: 'post',
+                success: function (res) {
+                    //判断有没有权限
+                    if (res && res.code == 999) {
+                        layer.msg(res.msg, {
+                            icon: 5,
+                            time: 2000,
+                        })
+                        return false;
+                    } else if (res.code == 200) {
+                        layer.msg(res.msg,{icon:1,time:1000}, function () {
+                            parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+                            parent.layui.table.reload("dataTable");
+                        });
+                    } else {
+                        layer.msg(res.msg,{icon:2,time:1000});
+                    }
+                }
+            })
+            return false;
+        });
+    })
+</script>
+</body>
+</html>

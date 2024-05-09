@@ -1,0 +1,456 @@
+ {include file="public/user_header" title="账号绑定" /}
+<!-- Content -->
+
+            <div class="container-xxl flex-grow-1 container-p-y">
+
+              <div class="row">
+                <div class="col-md-12">
+                  <ul class="nav nav-pills flex-column flex-md-row mb-3">
+                    <li class="nav-item">
+                      <a class="nav-link" href="/My/UserPro"><i class="bx bx-user me-1"></i> 账 户 详 情</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="/My/Security"><i class="bx bx-lock-alt me-1"></i>安 全 设 置</a></li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/My/Notifications"
+                        ><i class="bx bx-bell me-1"></i> 通 知 设 置</a
+                      >
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link active" href="javascript:void(0);"
+                        ><i class="bx bx-link-alt me-1"></i>账 号 绑 定</a
+                      >
+                    </li>
+                  </ul>
+                  <div class="row">
+                    <div class="col-md-6 col-12 mb-md-0 mb-4">
+                      <div class="card">
+                        <h5 class="card-header">邮 箱/WxPusher</h5>
+                        <div class="card-body">
+                            <?php if ($epwModel == 'no'): ?>
+                                <p>平台暂未开启有效的邮箱账号绑定</p>
+                            <?php else: ?>
+                                <p>可以使用以下绑定的邮箱/WxPusher账号接收信息</p>
+                                <!-- Social Accounts -->
+                                <?php foreach ($epwModel as $key => $value): if($value['isOpen'] == 'yes'):?>
+                                    <div class="d-flex mb-3">
+                                        <div class="flex-shrink-0 me-3">
+                                          <i class="fa-solid {:$value['icon']} fa-2x " style="vertical-align: middle;{:$value['user_class']}"></i>
+                                        </div>
+                                        <div class="flex-grow-1 row">
+                                          <div class="col-8 col-sm-7 mb-sm-0 mb-2">
+                                            <h6 class="mb-0">{:$value['name']}</h6>
+                                            <?php if (!empty($user[$value['id']])): ?>
+                                                <small class="text-muted" id="emw_{:$value['id']}">{:$user[$value['id']]}</small>
+                                            <?php else: ?>
+                                                <small class="text-muted">未 绑 定</small>
+                                            <?php endif; ?>
+                                          </div>
+                                          <div class="col-4 col-sm-5 text-end">
+                                                <?php if (!empty($user[$value['id']])): ?>
+                                                    <?php if ($value['id'] != 'wxpusher_uid'): ?>
+                                                    <button type="button" id="edit_{:$value['id']}" onclick="operate('edit','{:$value['id']}')" name="{:$value['id']}" 
+                                                        class="btn btn-icon btn-label-info" 
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#bind_{:$value['id']}"
+                                                    >
+                                                     <i class="fa-solid fa-pen-to-square"></i>
+                                                    </button>
+                                                    <?php else: ?>
+                                                    <button type="button" id="Unbinding_{:$value['name']}}" name="{:$value['name']}" class="btn btn-icon btn-label-danger" 
+                                                    data-bs-toggle="tooltip"
+                                                    data-bs-offset="0,8"
+                                                    data-bs-placement="top"
+                                                    data-bs-custom-class="tooltip-danger"
+                                                    title="解 绑 {:$value['name']}"
+                                                
+                                                    >
+                                                    <i class="bx bx-trash-alt"></i>
+                                                    </button>
+                                                    <?php endif; ?>
+                                            <?php else: ?>
+                                                    <button id="{:$value['id']}" onclick="operate('bind','{:$value['id']}')"  class="btn btn-icon btn-label-secondary"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#bind_{:$value['id']}"
+                                                    >
+                                                        <i class="bx bx-link-alt"></i>
+                                                    </button>
+                                            <?php endif; ?>
+                                          </div>
+                                        </div>
+                                    </div>
+                                <?php  endif; endforeach; ?>
+                                <!-- /Social Accounts -->
+                          <?php endif; ?>
+                          
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- / Content -->
+<!-- WxPusher -->
+<div class="modal fade" id="bind_wxpusher_uid" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-simple">
+        <div class="modal-content p-3 p-md-5">
+            <div class="modal-body">
+                <button id="" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="text-center mb-2">
+                  <h3 class="mb-0" id="wxpusher_title">绑定WxPusher</h3>
+                </div>
+                <h5 class="mb-2 pt-1 text-break">相关介绍</h5>
+                <p class="mb-4">
+                  绑定WxPusher之后可以在微信内及时获取到平台内订单/通道掉线/账号登录等相关信息.
+                </p>
+                <div class="text-center">
+                  <img src="/static/index/images/status/loading.gif" alt="QR Code" id="wxpusher_img" width="140" />
+                </div>
+                <div class="alert alert-warning alert-dismissible my-3" role="alert">
+                  <p class="mb-0">如果您在使用二维码时遇到问题,关注之后请在底部菜单栏选择[我的] -> [我的UID]获取填写</p>
+                </div>
+                <div class="mb-4">
+                    <input
+                      type="input"
+                      class="form-control"
+                      name="wxpusher_uid"
+                      id="wxpusher_text"
+                      placeholder="输入你的UID"
+                    />
+                </div>
+                <div class="col-12 text-end">
+                    <button type="button" id="wxpusher_submit"  class="btn btn-primary">
+                      <span class="align-middle">确 定</span
+                      >
+                    </button>
+                </div>
+        </div>
+    </div>
+</div>
+</div>
+<!--/ WxPusher -->
+<!-- email -->
+<div class="modal fade" id="bind_email" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-simple">
+        <div class="modal-content p-3 p-md-5">
+            <div class="modal-body">
+                <button id="" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="text-center mb-4">
+                  <h3 class="mb-0" id="email_title">绑定邮箱</h3>
+                </div>
+<form id="formAuthentication">
+                <section id="email_bind">
+                    <div class="mb-3">
+                        <label class="form-label">邮箱</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                name="email"
+                                id="email"
+                                placeholder="请 输 入 您 的 邮 箱"
+                                autofocus
+                        />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">验 证 码</label>
+                        <div class="input-group">
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    name="email-captcha"
+                                    id="email-numeral-mask"
+                                    placeholder="请 输 入 验 证 码"
+                            />  
+                            <button class="btn btn-outline-secondary"
+                                    type="button" id="send-code-email" style="width: 117px;">发送验证码
+                            </button>
+                        </div>
+                    </div>
+                </section>
+                <div class="col-12 text-end">
+                    <button type="button" id="email_submit"  class="btn btn-primary">
+                      <span class="align-middle">确 定</span
+                      >
+                    </button>
+                </div>
+</form>
+        </div>
+    </div>
+</div>
+</div>
+<!--/ email -->
+
+
+{include file="public/user_footer" /}
+<!-- Page Js -->
+<script>
+    
+    //定义WxPusher操作 operate:1-bind 2-edit
+    //temp - 1:wxpusher_uid 2:emial 3:mobile
+    function operate(operate,temp){
+        if(operate == 'bind'){
+            switch(temp) {
+                case 'wxpusher_uid':
+                    $("#wxpusher_title").html('绑定WxPusher');
+                    getWxPusherInfo(operate);
+                    break;
+                case 'email':
+                    $("#email_title").html('绑定邮箱');
+                    break;
+            } 
+        }else{
+           switch(temp) {
+                case 'wxpusher_uid':
+                        $("#wxpusher_title").html('修改WxPusher');
+                        var uid = $("#emw_wxpusher_uid").text();
+                        $("#wxpusher_submit").attr("disabled","disabled");
+                        getWxPusherInfo(operate,uid);
+                    break;
+                case 'email':
+                        $("#email_title").html('解绑邮箱');
+                        $("#email").val($('#emw_email').text());
+                        $("#email").attr("disabled","disabled");
+                    break;
+            } 
+        }
+    }
+    
+    // 发送邮箱验证码
+    $('#send-code-email').click(function(data) {
+		         var email = $('input[name="email"]').val();
+                 //点击一次之后禁止继续点击
+                 $('#send-code-email').attr('disabled',"true");
+                 var path = '';
+                 var isBind = false;
+                 if($('#emw_email').text() != '' && email != ''){
+                     isBind = true;
+                 }
+                 if(isBind){
+                     path = 'getUBindCode';
+                 }else{
+                     path = 'getBindCode';
+                 }
+                 
+		$.post('/My/' + path, {
+			mobile: '',
+			email:email,
+			bind:'email'
+		}, function(res) {
+			if (res.code === 200) {
+			    var countdown = 60;
+                var sendBtn = $('#send-code-email');
+                countdownTimer();
+                function countdownTimer() {
+                    if (countdown == 0) {
+                      // 倒计时结束，恢复按钮状态
+                      sendBtn.removeAttr('disabled');
+                      sendBtn.text('发送验证码');
+                      countdown = 60;
+                    } else {
+                      // 更新倒计时时间并更新按钮文本
+                      sendBtn.text(countdown + 's');
+                      countdown--;
+                      setTimeout(countdownTimer, 1000);
+                    }
+                 }
+				return false;
+			} else {
+			    Swal.fire({
+                        icon: 'error',
+                        title: res.msg,
+                        customClass: {
+                          confirmButton: 'btn btn-danger'
+                        }
+                    });
+				//返回信息之后恢复点击
+                $('#send-code-email').removeAttr("disabled");
+			}
+		}, 'json');
+		return false;
+	});
+	
+    
+          //绑定与解绑邮箱账户
+            $('#email_submit').click(function(){
+        var email = $('input[name="email"]').val();
+        var captcha = $('input[name="email-captcha"]').val();
+        var type = 1;
+        if($('#emw_email').text() != ''){
+            type = 2;
+        }
+        $.ajax({
+            url: '/My/bindOrUBindEmail',      //指向URL名称
+            type: 'POST',                    //页面传值类型
+            data: {"email": email,'captcha':captcha,'type':type},           //提交数据，以字典的形式
+            success: function (e) {          //提交数据成功后的处理函数，e是返回的值
+                if (e.code == 1) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: e.msg,
+                        customClass: {
+                            confirmButton: 'btn btn-success'
+                        }
+                 });
+                 setTimeout(function () {
+                            location.reload();
+                        }, 2000);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: e.msg,
+                        customClass: {
+                          confirmButton: 'btn btn-danger'
+                        }
+                    });
+                }
+            },
+        });
+    });
+    
+    //获取WxPusher信息
+    function getWxPusherInfo(operate,uid) {
+        var t1;
+        var operate = operate;
+        var uid = uid;
+		$.get('/My/getWxPusherQrCode', function (result) {
+            if (result.code == '1') {
+        		$("#wxpusher_img").attr("src", result.msg );
+        		function getWxPusherUid(operate,uid) {
+                   $.ajax({
+                       type:'post',
+                       url:'/My/getWxPusherUID',
+                       data:{"operate":operate,"uid":uid},
+                       dataType:'json',
+                       success:function(res){
+                            if (res.code == 1) {
+                                clearInterval(t1);
+                                $("#wxpusher_text").attr("disabled","disabled");
+                                $("#wxpusher_text").attr( "placeholder" , "账号已绑定,点击下方确认即可" );
+                                $("#wxpusher_img").attr("src", '/static/index/images/status/pay_ok.png');
+                                $("#wxpusher_submit").removeAttr("disabled");
+                            }
+                        }
+                   });
+        		}
+                t1 = setInterval(function () { getWxPusherUid(operate,uid) }, 2000);   
+            }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: result.msg,
+                    customClass: {
+                      confirmButton: 'btn btn-danger'
+                    }
+                });
+            }
+        });
+	}
+	
+	//提交WxPusher数据
+	$("#wxpusher_submit").click(function() {
+        var wxpusher_uid = $("#wxpusher_text").val();
+        $.ajax({
+            url: '/My/savaWxPuserUID',      //指向URL名称
+            type: 'POST',                    //页面传值类型
+            data: {"wxpusher_uid": wxpusher_uid},           //提交数据，以字典的形式
+            success: function (e) {          //提交数据成功后的处理函数，e是返回的值
+                if (e.code == 1) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: e.msg,
+                        customClass: {
+                            confirmButton: 'btn btn-success'
+                        }
+                 });
+                 setTimeout(function () {
+                            location.reload();
+                        }, 2000);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: e.msg,
+                        customClass: {
+                          confirmButton: 'btn btn-danger'
+                        }
+                    });
+                }
+            },
+        });
+	});
+
+    //验证输入的验证码是否为数字
+    const emailNumeralMask = document.querySelector('#email-numeral-mask')
+      //Numeral
+    if (emailNumeralMask) {
+      new Cleave(emailNumeralMask, {
+        numeral: true,
+        numeralThousandsGroupStyle: 'false'
+      });
+    }
+    
+    //验证输入的验证码是否为数字
+    const mobileNumeralMask = document.querySelector('#mobile-numeral-mask')
+      //Numeral
+    if (mobileNumeralMask) {
+      new Cleave(mobileNumeralMask, {
+        numeral: true,
+        numeralThousandsGroupStyle: 'false'
+      });
+    }
+    
+    const formAuthentication = document.querySelector('#formAuthentication');
+     if (formAuthentication) {
+      const fv = FormValidation.formValidation(formAuthentication, {
+        fields: {
+          'mobile': {
+            validators: {
+              notEmpty: {
+                message: '请 输 入 您 的 手 机 号'
+              },
+              phone: {
+                country: 'CN',
+                message: '请 输 入 正 确 的 手 机 号',
+              },
+            }
+          },
+          'email': {
+            validators: {
+              notEmpty: {
+                message: '请 输 入 您 的 邮 箱'
+              },
+              emailAddress: {
+                message: '请 输 入 正 确 的 邮 箱 地 址',
+              },
+            }
+          },
+          'captcha': {
+            validators: {
+              notEmpty: {
+                message: '请 输 入 您 的  验 证 码'
+              },
+              numeric :{
+                 message: '请 输 入 正 确 验 证 码' 
+              }
+            }
+          },
+        },
+        plugins: {
+          trigger: new FormValidation.plugins.Trigger(),
+          bootstrap5: new FormValidation.plugins.Bootstrap5({
+            eleValidClass: '',
+            rowSelector: '.mb-3'
+          }),
+          submitButton: new FormValidation.plugins.SubmitButton(),
+
+        //   defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+          autoFocus: new FormValidation.plugins.AutoFocus()
+        },
+        init: instance => {
+          instance.on('plugins.message.placed', function (e) {
+            if (e.element.parentElement.classList.contains('input-group')) {
+              e.element.parentElement.insertAdjacentElement('afterend', e.messageElement);
+            }
+          });
+        }
+      });
+     }
+</script>

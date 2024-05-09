@@ -1,0 +1,17 @@
+
+	            {if condition="$config['regcode-type'] == '2'"}
+	            <div class="mb-3">
+                        <label class="form-label">邮 箱 验 证 码</label>
+                        <div class="input-group">
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="captcha"
+                                id = "numeral-mask"
+                                placeholder="请 输 入 邮 箱 验 证 码"
+                            />
+                            <button class="btn btn-outline-secondary"
+    														type="button" id="send-code">发送验证码</button>
+                        </div>
+                    </div>
+	            {/if}

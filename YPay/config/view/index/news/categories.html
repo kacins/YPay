@@ -1,0 +1,42 @@
+ {include file="public/news_header" title="分类"/}
+
+            <!-- Content -->
+
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">公 告 中 心 /</span> 分 类</h4>
+
+              <div class="row" style="padding-bottom: 30px;">
+
+                <!-- Article list -->
+                <div class="col-xl-12 col-lg-8 col-md-8">
+                  <div class="card overflow-hidden">
+                    <div class="card-body">
+                      <h4 class="d-flex align-items-center">
+                        <span class="badge bg-label-secondary p-2 rounded me-3">
+                          <i class="bx bx-cube bx-sm"></i>
+                        </span>
+                        {:$title}
+                      </h4>
+                      <ul class="list-unstyled my-4">
+                        {volist name='news' id='vo'}
+                            <li class="mb-3">
+                                <a href="/News/Detail?id={$vo.id}" class="d-flex fw-semibold">
+                                  <i class="bx bx-chevron-right scaleX-n1-rtl text-muted me-1"></i>
+                                  {$vo.title}
+                                </a>
+                        </li>
+                        {/volist}
+                      </ul>
+
+                      <a class="btn btn-label-primary" href="/News">
+                        <i class="bx bx-chevron-left scaleX-n1-rtl me-1"></i>
+                        <span class="align-middle">返 回 公 告 中 心</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <!-- /Article list -->
+              </div>
+            </div>
+            <!--/ Content -->
+  {include file="public/news_footer"/}  

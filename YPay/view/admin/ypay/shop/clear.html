@@ -1,0 +1,253 @@
+ {include file="public/header" type='pear-container'/}
+ <link rel="stylesheet" href="https://www.yfx.top/wp-admin/load-styles.php?c=0&amp;dir=ltr&amp;load%5Bchunk_0%5D=dashicons,admin-bar,common,forms,admin-menu,dashboard,list-tables,edit,revisions,media,themes,about,nav-menus,wp-pointer,widgets&amp;load%5Bchunk_1%5D=,site-icon,l10n,buttons,wp-auth-check&amp;ver=6.2.2" media="all">
+<style>
+    .header{
+        text-align: center;
+    }
+    h1{
+        font-weight: 600;
+        margin: 0 0.8rem 1rem;
+        font-size: 23px;
+        padding: 9px 0 4px;
+        line-height: 1.3;
+    }
+    .attention{
+        color: #d63638;
+        font-weight: 600;
+    }
+    .health-check-body{
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    .clear-itme-warp {
+        padding-bottom: 20px;
+    }
+    table.widefat {
+        background: #fff;
+        border: 1px solid #c3c4c7;
+        box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    }
+    .widefat{
+        border-spacing: 0;
+        width: 100%;
+        clear: both;
+        margin: 0;
+    }
+    .widefat * {
+        word-wrap: break-word;
+    }
+    .widefat thead tr th {
+    color: #2c3338;
+    }
+    .widefat td{
+        display: table-cell;
+        vertical-align: middle;
+    }
+</style>
+
+    <div class="layui-row layui-col-space12" style="margin-bottom:10px;">
+				<div class="layui-col-xs20 layui-col-md20 header">
+					<div class="layui-card top-panel">
+						<div class="layui-card-header"><h1>数据清理优化</h1></div>
+						<div class="layui-card-body">
+									<p>临时/历史数据清理，有效提升数据库负载和速度，这些数据无意义</p>
+ 				                    <p class="attention">清理数据记录会影响商城总览中统计数量减少和占比变化，不方便观察运营，请您谨慎操作</p>
+						</div>
+					</div>
+				</div>
+				<!-- 主页面 -->
+ 		<div class="health-check-body">
+            <?php foreach ($data as $key => $value): ?>
+                <div class="clear-itme-warp">
+ 				    <h3>{$value.title}</h3>
+ 				    <p>{:html_entity_decode($value.desc)}</p>
+ 				    <table class="widefat table-sweep">
+ 					<thead>
+ 						<tr>
+ 							<th>详情</th>
+ 							<th>统计</th>
+ 							<th>占比</th>
+ 							<th>操作</th>
+ 						</tr>
+ 					</thead>
+ 					<tbody>
+ 						<tr>
+ 							<td><strong>{$value.details}</strong></td>
+ 							<td><span>{$value.total}</span></td>
+ 							<td><span>{$value.proportion}</span></td>
+ 							<td>
+ 							    {if condition = '$value.isClear'}
+ 							        <button id="{$value.id}" class="layui-btn layui-bg-blue layui-btn-sm">处理数据</button>
+ 							    {else}
+ 							        无需清理
+ 							    {/if}
+ 							</td>
+ 						</tr>
+ 					</tbody>
+ 				</table>
+ 			    </div>
+            <?php endforeach; ?>
+
+ 		</div>
+    </div>
+ 		
+
+ 		<div class="clear"></div>
+ <!-- 主页面END -->
+{include file="public/footer"/}
+<script>
+    layui.use(['jquery'], function() {
+ 			let $ = layui.jquery;
+ 			let MODULE_PATH = "{$Request.root}/ypay.shop/";
+            $('#clearOrder').click(function(){
+                layer.confirm('确定要清除订单记录嘛?', {
+                    icon: 3,
+                    title: '提示'
+                }, function(index) {
+                    layer.close(index);
+                    let loading = layer.load();
+                    $.ajax({
+                        url: MODULE_PATH + 'clearOrder',
+                        dataType: 'json',
+                        type: 'POST',
+                        success: function(res) {
+                            layer.close(loading);
+                            //判断有没有权限
+                            if(res && res.code==999){
+                                layer.msg(res.msg, {
+                                    icon: 5,
+                                    time: 2000, 
+                                })
+                                return false;
+                            }else if (res.code==200) {
+                                layer.msg(res.msg, {
+                                    icon: 1,
+                                    time: 1000
+                                }, function() {
+                                    location.reload();
+                                });
+                            } else {
+                                layer.msg(res.msg, {
+                                    icon: 2,
+                                    time: 1000
+                                });
+                            }
+                        }
+                    })
+                });
+            });
+            $('#clearRecharge').click(function(){
+                layer.confirm('确定要清除充值记录嘛?', {
+                    icon: 3,
+                    title: '提示'
+                }, function(index) {
+                    layer.close(index);
+                    let loading = layer.load();
+                    $.ajax({
+                        url: MODULE_PATH + 'clearRecharge',
+                        dataType: 'json',
+                        type: 'POST',
+                        success: function(res) {
+                            layer.close(loading);
+                            //判断有没有权限
+                            if(res && res.code==999){
+                                layer.msg(res.msg, {
+                                    icon: 5,
+                                    time: 2000, 
+                                })
+                                return false;
+                            }else if (res.code==200) {
+                                layer.msg(res.msg, {
+                                    icon: 1,
+                                    time: 1000
+                                }, function() {
+                                    location.reload();
+                                });
+                            } else {
+                                layer.msg(res.msg, {
+                                    icon: 2,
+                                    time: 1000
+                                });
+                            }
+                        }
+                    })
+                });
+            });
+            
+            $('#clearAdminLog').click(function(){
+                layer.confirm('确定要清除后台操作日志嘛?', {
+                    icon: 3,
+                    title: '提示'
+                }, function(index) {
+                    layer.close(index);
+                    let loading = layer.load();
+                    $.ajax({
+                        url: MODULE_PATH + 'clearAdminLog',
+                        dataType: 'json',
+                        type: 'POST',
+                        success: function(res) {
+                            layer.close(loading);
+                            //判断有没有权限
+                            if(res && res.code==999){
+                                layer.msg(res.msg, {
+                                    icon: 5,
+                                    time: 2000, 
+                                })
+                                return false;
+                            }else if (res.code==200) {
+                                layer.msg(res.msg, {
+                                    icon: 1,
+                                    time: 1000
+                                }, function() {
+                                    location.reload();
+                                });
+                            } else {
+                                layer.msg(res.msg, {
+                                    icon: 2,
+                                    time: 1000
+                                });
+                            }
+                        }
+                    })
+                });
+            });
+            
+            $('#clearUserLog').click(function(){
+                layer.confirm('确定要清除用户行为日志嘛?', {
+                    icon: 3,
+                    title: '提示'
+                }, function(index) {
+                    layer.close(index);
+                    let loading = layer.load();
+                    $.ajax({
+                        url: MODULE_PATH + 'clearUserLog',
+                        dataType: 'json',
+                        type: 'POST',
+                        success: function(res) {
+                            layer.close(loading);
+                            //判断有没有权限
+                            if(res && res.code==999){
+                                layer.msg(res.msg, {
+                                    icon: 5,
+                                    time: 2000, 
+                                })
+                                return false;
+                            }else if (res.code==200) {
+                                layer.msg(res.msg, {
+                                    icon: 1,
+                                    time: 1000
+                                }, function() {
+                                    location.reload();
+                                });
+                            } else {
+                                layer.msg(res.msg, {
+                                    icon: 2,
+                                    time: 1000
+                                });
+                            }
+                        }
+                    })
+                });
+            });
+ 		});
+</script>

@@ -1,0 +1,147 @@
+ {include file="public/header" type='pear-container'/}
+
+ <link rel="stylesheet" href="/static/css/admin.css?v1.0.7" />
+ <!--<link rel="stylesheet" href="http://preview.smartadmin.1024lab.net/css/home-header-41033179.css" />-->
+ <!-- 主 题 更 换 -->
+ <style id="pearadmin-bg-color"></style>
+ 	<div class="ant-row" style="row-gap: 0px;">
+ 		<div class="user-header">
+ 			<div class="ant-page-header ant-page-header-ghost">
+ 				<!---->
+ 				<div class="ant-page-header-heading">
+ 					<div class="ant-page-header-heading-left">
+ 						<!---->
+ 						<!----><span class="ant-page-header-heading-title">{$data.hello}</span>
+ 						<!----><span class="ant-page-header-heading-tags"><span class="ant-tag ant-tag-blue">努力工作
+ 								<!---->
+ 							</span></span>
+ 					</div>
+ 					<span class="ant-page-header-heading-extra">
+ 						<p>{$data.time}</p>
+ 					</span>
+ 				</div>
+ 				<div class="ant-page-header-content">
+ 					<div class="ant-row content" style="row-gap: 0px;"><span class="heart-sentence">
+ 							<h3>{$data.chicken}</h3>
+ 							<div></div>
+ 						</span>
+ 					
+ 					</div>
+ 				</div>
+ 				<!---->
+ 			</div>
+ 		</div>
+ 	</div>
+ 	<!-- 快捷方式 -->
+ 	<div class="layui-row layui-col-space15">
+ 		<div class="layui-col-sm12" style="padding-bottom: 0;">
+ 			<div class="layui-row layui-col-space15">
+ 			    <?php foreach ($data['path'] as $key => $value): ?>
+ 				    <div class="layui-col-xs6 layui-col-sm3">
+ 					    <a href="{$value.url}">
+ 					    	<div class="console-app-group">
+ 					    		<i class="console-app-icon layui-icon {$value.icon}"
+ 					    			style="color: {$value.color};padding-top: 3px;margin-right: 6px;"></i>
+ 					    		<div class="console-app-name">{$value.title}</div>
+ 					    	</div>
+ 					    </a>
+ 				    </div>
+ 				<?php endforeach; ?>
+ 			</div>
+ 		</div>
+ 		<div class="layui-col-sm6" style="padding-bottom: 0;">
+
+ 			<div class="layui-row layui-col-space15">
+ 			</div>
+ 		</div>
+ 	</div>
+ 	<!--系统信息 AND 指示导航-->
+ 	<div class="layui-row layui-col-space15">
+ 		<div class="layui-col-md6">
+ 			<div class="layui-card">
+ 				<div class="layui-card-header">系统信息</div>
+ 				<div class="layui-card-body">
+ 					<table class="layui-table">
+ 						<colgroup>
+ 							<col width="50%">
+ 							<col>
+ 						</colgroup>
+ 						<tbody>
+ 							<tr>
+ 								<td>版本号</td>
+ 								<td>{$ver}</td>
+ 							</tr>
+ 							<tr>
+ 								<td>操作系统</td>
+ 								<td>{$os}</td>
+ 							</tr>
+ 							<tr>
+ 								<td>平台地址</td>
+ 								<td>{$addr}</td>
+ 							</tr>
+ 							<tr>
+ 								<td>PHP版本</td>
+ 								<td>{$php}</td>
+ 							</tr>
+ 							<tr>
+ 								<td>上传附件限制</td>
+ 								<td>{$upload}</td>
+ 							</tr>
+ 						</tbody>
+ 					</table>
+ 				</div>
+ 			</div>
+ 		</div>
+ 		<div class="layui-col-md6">
+ 			<div class="layui-card">
+ 				<div class="layui-card-header">快捷方式</div>
+ 				<div class="layui-card-body">
+ 					<a target="_blank" href="https://www.yfx.top/" class="pear-btn pear-btn-primary layui-btn-fluid"
+ 						style="height: 46px;line-height:46px;background-color: #2D8CF0 !important;">官 网</a>
+ 					<br>
+ 					<a target="_blank" href="https://doc.yfx.top/" class="pear-btn pear-btn-success  layui-btn-fluid"
+ 						style="margin-top: 8px;height: 45px;line-height: 45px;">文 档</a>
+ 					<br>
+ 					<a target="_blank" href="https://www.yfx.top/auth"
+ 						class="pear-btn pear-btn-danger  layui-btn-fluid"
+ 						style="margin-top: 8px ;height: 45px;line-height: 45px;">授 权 查 询</a>
+ 					<br>
+ 					<a target="_blank" href="https://www.yfx.top/service"
+ 						class="pear-btn pear-btn-warming  layui-btn-fluid"
+ 						style="margin-top: 8px ;height: 45px;line-height: 45px;">官 方 客 服</a>
+ 				</div>
+ 			</div>
+ 		</div>
+ 	</div>
+ 	 <!-- 赞助广告 -->
+ 	    <div class="layui-row layui-col-space15">
+ 	    <div class="layui-col-md6">
+ 			<div class="layui-card">
+ 				<div class="layui-card-header">赞助位</div>
+ 				<div class="layui-card-body">
+ 				 <?php foreach ($data['homeLeftAd'] as $key => $value): ?>
+ 				  	<a target="_blank" href="{$value.url}" class="pear-btn pear-btn-primary layui-btn-fluid"
+ 						style="height: 46px;line-height:46px;background-color: #2f363c !important;">{$value.title}</a>
+ 					<br>
+ 				<?php endforeach; ?>
+ 				</div>
+ 			</div>
+ 		</div>
+ 		<div class="layui-col-md6">
+ 			<div class="layui-card">
+ 				<div class="layui-card-header">赞助位</div>
+ 				<div class="layui-card-body">
+ 				 <?php foreach ($data['homeRightAd'] as $key => $value): ?>
+ 				  	<a target="_blank" href="{$value.url}" class="pear-btn pear-btn-primary layui-btn-fluid"
+ 						style="height: 46px;line-height:46px;background-color: #2f363c !important;">{$value.title}</a>
+ 					<br>
+ 				<?php endforeach; ?>
+ 				</div>
+ 			</div>
+ 		</div>
+ 	</div>
+ 	
+ {include file="public/footer"/}
+ 	<!--</div>-->
+ </body>
+ </html>

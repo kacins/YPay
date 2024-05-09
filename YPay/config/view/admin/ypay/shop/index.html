@@ -1,0 +1,517 @@
+ {include file="public/header" type='pear-container'/}
+		<link rel="stylesheet" href="/static/admin/css/other/console1.css" />
+        <style>
+            .list .list-item {
+                height: 31.8px;
+                line-height: 31.8px;
+                color: gray;
+                padding: 1px;
+                padding-left: 15px;
+                border-radius: 4px;
+                /* margin-top: 5.2px; */
+            }
+            .pull-right{
+               float: right;
+               top: 10px;
+            }
+            .layui-sales{
+                font-size: 36px;
+                color: #666;
+                line-height: 36px;
+                padding: 5px 0 10px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                word-break: break-all;
+                white-space: nowrap;
+                margin: 0;
+            }
+            .layui-backlog-body{
+                display: block;
+                padding: 10px 15px;
+                background-color: #f8f8f8;
+                color: #999;
+                border-radius: 2px;
+                transition: all .3s;
+                -webkit-transition: all .3s;
+            }
+            .layui-backlog-body h3 {
+                padding-bottom: 0;
+                font-size: 12px;
+                color: #999;
+            }
+            .layui-backlog-body p cite {
+                font-style: normal;
+                font-size: 30px;
+                font-weight: 300;
+                color: #009688;
+            }
+        </style>
+		<!-- 主 题 更 换 -->
+
+		<div class="layui-row layui-col-space15">
+		    <div class="layui-col-md9">
+		        <div class="layui-card">
+		            <div class="layui-card-header">
+                            平台数据统计
+                    </div>
+                    <div class="layui-card-body">
+			            <div class="layui-row layui-col-space15 layui-bg-gray">
+                <?php foreach ($top as $key =>$value): ?>
+                    <div class="layui-col-sm6 layui-col-md4">
+					<!-- 填充内容 -->
+					<div class="layui-card">
+						<div class="layui-card-header">{$value.name}已付款&nbsp;<span
+								class="layui-badge layui-bg-red">{$value.order_ok}&nbsp;条</span><span
+								class="layui-badge layui-bg-blue pull-right">付款率&nbsp;{$value.success}%</span>
+						</div>
+						<div class="layui-card-body">
+							<div class="layui-sales">¥ {$value.money_ok}</div>
+							<div class="layui-sales-info">
+								<fieldset class="layui-elem-field layui-field-title"></fieldset>
+								<div>订单总数&nbsp;<span
+										class="layui-badge layui-bg-black">{$value.order}&nbsp;条</span><span
+										class="pull-right">订单金额&nbsp;<span
+											class="layui-badge layui-bg-orange">¥{$value.money}</span></span></div>
+							</div>
+						</div>
+					</div>
+				</div>
+                <?php endforeach; ?>
+            </div>
+                    </div>
+                </div>
+                <div class="layui-card">
+				<div class="layui-card-header">本月销售统计图(近30天)</div>
+				<div class="layui-card-body">
+					<div class="layui-row">
+		              <div class="layui-col-sm15">
+		                  <div id="conversionsChart" style="width: auto;height:450px;"></div>
+		              </div>
+		              <!--<div class="layui-col-sm4">-->
+		              <!--    <div id="conversionsChart2" style="width: auto;height:450px;"></div>-->
+		              <!--</div>-->
+		            </div>
+				</div>
+			</div>
+            </div>
+            <div class="layui-col-md3">
+
+			<div class="layui-card">
+				<div class="layui-card-header">其他信息统计/总览</div>
+		        <div class="layui-card-body">
+		            <ul class="layui-row layui-col-space10 layui-this">
+		                <?php foreach ($other_info as $value): ?>
+		                    <li class="layui-col-xs6">
+						        <a class="layui-backlog-body">
+						            <h3>{$value.title}</h3>
+						            <p><cite>{$value.value}</cite></p>
+						        </a>
+					        </li>
+		                <?php endforeach; ?>    
+                    </ul>
+		        </div>
+		        
+		    </div>
+<div class="layui-card">
+				<div class="layui-card-header">赞助位</div>
+		        <div class="layui-card-body">
+		            <ul class="layui-row layui-col-space10 layui-this">
+		                <?php foreach ($shopAd as $value): ?>
+		                    <li class="layui-col-xs12" >
+						        <a href="{$value.url}" target="_blank">
+						            <p><img style="width:100%;height:60px;" alt="{$value.title}" src="{$value.images}"></p>
+						        </a>
+					        </li>
+		                <?php endforeach; ?> 
+                    </ul>
+		        </div>
+		        
+		    </div>
+		</div>
+		</div>
+		
+        <div class="layui-row layui-col-space12">
+			    			    <div class="layui-col-md6">
+				<div class="layui-card">
+					<div class="layui-card-body">
+						<div id="column1" style="min-height:400px;"></div>
+					</div>
+				</div>
+			</div>
+    			<div class="layui-col-md6">
+    				<div class="layui-card">
+    					<div class="layui-card-body">
+    						<div id="column2" style="min-height:400px;"></div>
+    					</div>
+    				</div>
+    			</div>
+			</div>
+
+		<!-- 主页面END -->
+		{include file="public/footer"/}
+		<script type="text/javascript" src="/static/index/js/index/jquery.min.js"></script>
+        <script src="https://cdn.staticfile.org/echarts/5.0.0/echarts.min.js"></script>
+		<script>
+		    layui.use(['echarts','form'], function() {
+        	let echarts = layui.echarts;
+        	let form = layui.form;
+
+
+        	
+        	var column1 = echarts.init(document.getElementById('column1'));
+            option = {
+                 title: {
+	        	text: "总流水",
+	        	left: "18px",
+	        	top: "0",			
+	        	color: "#999",
+	        	fontSize: 12,
+	        	fontWeight: '400'			
+	        },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: { 
+                        type: 'shadow' ,
+                        textStyle: {
+                            color: '#fff',
+                            fontSize: '26'
+                        },
+                    }
+                },
+                legend: {
+                    top:'5%',
+                    right:'10%',
+                    data: ['微信', '支付宝', 'QQ钱包'],
+                    textStyle:{
+                        fontSize:12,
+                        color:'#808080'
+                    },
+                    icon:'rect'
+                },
+                grid: {
+                    top:60,
+                    left:50,
+                    bottom:60,
+                    right:60
+                },
+                xAxis: [{
+                    type: 'category',
+                    axisTick:{
+                        show:false
+                    },
+                    axisLine:{
+                        show:false
+                    },
+                    axisLabel:{
+                        color:'#4D4D4D',
+                        fontSize:14,
+                        margin:21,
+                        fontWeight:'bold'
+                    },
+                    data: ['本月', '本周', '今日'],
+                   
+                }],
+                yAxis: [{
+                    name:'单位：元',
+                    nameTextStyle:{
+                        color:'#808080',
+                        fontSize:12,
+                        padding:[0, 0, 0, -5]
+                    },
+                    max: function(value) {
+                        if(value.max<5){
+                            return 5
+                        }else{
+                            return value.max*1.2
+                        }
+                    },
+                    type: 'value',
+                    axisLine:{
+                        show:false
+                    },
+                    axisLabel:{
+                        color:'#808080',
+                        fontSize:12,
+                        margin:5
+                    },
+                    splitLine:{
+                        show:false
+                    },
+                    axisTick:{
+                        show:false
+                    }
+                }],
+                series: [
+                    {
+                        name: '微信',
+                        type: 'bar',
+                        label:{
+                            show:true,
+                            position:'top',
+                            fontSize:14,
+                            color:'#3DC3F0',
+                            fontWeight:'bold'
+                        },
+                        barMaxWidth:60,
+                        itemStyle:{
+                            color: {
+                                type: 'linear',
+                                x: 0,
+                                y: 0,
+                                x2: 0,
+                                y2: 1,
+                                colorStops: [{
+                                    offset: 0, color: '#48d3a1' // 0% 处的颜色
+                                }, {
+                                    offset: 1, color: '#ccfadc' // 100% 处的颜色
+                                }]
+                            }
+                        },
+                        data: [ {$data.wechat_month_money}, {$data.wechat_week_money}, {$data.wechat_today_money}]
+                    }, 
+                    {
+                        name: '支付宝',
+                        type: 'bar',
+                                    label:{
+                            show:true,
+                            position:'top',
+                            fontSize:14,
+                            color:'#3D8BF0',
+                            fontWeight:'bold'
+                        },
+                        barMaxWidth:60,
+                        itemStyle:{
+                            color: {
+                                type: 'linear',
+                                x: 0,
+                                y: 0,
+                                x2: 0,
+                                y2: 1,
+                                colorStops: [{
+                                    offset: 0, color: '#3DC3F0' // 0% 处的颜色
+                                }, {
+                                    offset: 1, color: '#CCF2FF' // 100% 处的颜色
+                                }]
+                            }
+                        },
+                        data: [{$data.ali_month_money}, {$data.ali_week_money} , {$data.ali_today_money}]
+                    },
+                    {
+                        name: 'QQ钱包',
+                        type: 'bar',
+                                    label:{
+                            show:true,
+                            position:'top',
+                            fontSize:14,
+                            color:'#3D8BF0',
+                            fontWeight:'bold'
+                        },
+                        barMaxWidth:60,
+                        itemStyle:{
+                            color: {
+                                type: 'linear',
+                                x: 0,
+                                y: 0,
+                                x2: 0,
+                                y2: 1,
+                                colorStops: [{
+                                    offset: 0, color: '#f55f5f' // 0% 处的颜色
+                                }, {
+                                    offset: 1, color: '#f2a1a1' // 100% 处的颜色
+                                }]
+                            }
+                        },
+                        data:[ {$data.qq_month_money}, {$data.qq_week_money} , {$data.qq_today_money}]
+                    }
+                ]
+            };
+            
+            	column1.setOption(option);
+            
+            	window.onresize = function() {
+            		column1.resize();
+            	}
+            var column2 = echarts.init(document.getElementById('column2'));
+            option2 = {
+                 title: {
+	        	text: "总充值",
+	        	left: "18px",
+	        	top: "0",			
+	        	color: "#999",
+	        	fontSize: 12,
+	        	fontWeight: '400'			
+	        },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: { 
+                        type: 'shadow' ,
+                        textStyle: {
+                            color: '#fff',
+                            fontSize: '26'
+                        },
+                    }
+                },
+                legend: {
+                    top:'5%',
+                    right:'10%',
+                    data: ['微信', '支付宝', 'QQ钱包'],
+                    textStyle:{
+                        fontSize:12,
+                        color:'#808080'
+                    },
+                    icon:'rect'
+                },
+                grid: {
+                    top:60,
+                    left:50,
+                    bottom:60,
+                    right:60
+                },
+                xAxis: [{
+                    type: 'category',
+                    axisTick:{
+                        show:false
+                    },
+                    axisLine:{
+                        show:false
+                    },
+                    axisLabel:{
+                        color:'#4D4D4D',
+                        fontSize:14,
+                        margin:21,
+                        fontWeight:'bold'
+                    },
+                    data: ['本月', '本周' , '今日'],
+                   
+                }],
+                yAxis: [{
+                    name:'单位：元',
+                    nameTextStyle:{
+                        color:'#808080',
+                        fontSize:12,
+                        padding:[0, 0, 0, -5]
+                    },
+                    max: function(value) {
+                        if(value.max<5){
+                            return 5
+                        }else{
+                            return value.max*1.2
+                        }
+                    },
+                    type: 'value',
+                    axisLine:{
+                        show:false
+                    },
+                    axisLabel:{
+                        color:'#808080',
+                        fontSize:12,
+                        margin:5
+                    },
+                    splitLine:{
+                        show:false
+                    },
+                    axisTick:{
+                        show:false
+                    }
+                }],
+                series: [
+                    {
+                        name: '微信',
+                        type: 'bar',
+                        label:{
+                            show:true,
+                            position:'top',
+                            fontSize:14,
+                            color:'#3DC3F0',
+                            fontWeight:'bold'
+                        },
+                        barMaxWidth:60,
+                        itemStyle:{
+                            color: {
+                                type: 'linear',
+                                x: 0,
+                                y: 0,
+                                x2: 0,
+                                y2: 1,
+                                colorStops: [{
+                                    offset: 0, color: '#51ecd7' // 0% 处的颜色
+                                }, {
+                                    offset: 1, color: '#9bfaed' // 100% 处的颜色
+                                }]
+                            }
+                        },
+                        data:[ {$data.wechat_month_recharge}, {$data.wechat_week_recharge} , {$data.wechat_today_recharge}]
+                    }, 
+                    {
+                        name: '支付宝',
+                        type: 'bar',
+                                    label:{
+                            show:true,
+                            position:'top',
+                            fontSize:14,
+                            color:'#3D8BF0',
+                            fontWeight:'bold'
+                        },
+                        barMaxWidth:60,
+                        itemStyle:{
+                            color: {
+                                type: 'linear',
+                                x: 0,
+                                y: 0,
+                                x2: 0,
+                                y2: 1,
+                                colorStops: [{
+                                    offset: 0, color: '#7287f2' // 0% 处的颜色
+                                }, {
+                                    offset: 1, color: '#c4cbef' // 100% 处的颜色
+                                }]
+                            }
+                        },
+                        data:[ {$data.ali_month_recharge}, {$data.ali_week_recharge} , {$data.ali_today_recharge}]
+                    },
+                    {
+                        name: 'QQ钱包',
+                        type: 'bar',
+                                    label:{
+                            show:true,
+                            position:'top',
+                            fontSize:14,
+                            color:'#3D8BF0',
+                            fontWeight:'bold'
+                        },
+                        barMaxWidth:60,
+                        itemStyle:{
+                            color: {
+                                type: 'linear',
+                                x: 0,
+                                y: 0,
+                                x2: 0,
+                                y2: 1,
+                                colorStops: [{
+                                    offset: 0, color: '#faa156' // 0% 处的颜色
+                                }, {
+                                    offset: 1, color: '#f7cca8' // 100% 处的颜色
+                                }]
+                            }
+                        },
+                        data:[ {$data.qq_month_recharge}, {$data.qq_week_recharge} , {$data.qq_today_recharge}]
+                    }
+                ]
+            };
+            column2.setOption(option2);
+            window.onresize = function() {
+            		column2.resize();
+            	}	
+  
+            
+            })
+		</script>
+		<script type="text/javascript">
+var myChart = echarts.init(document.getElementById('conversionsChart'));
+var option={tooltip:{trigger:"axis",axisPointer:{type:"shadow"}},legend:{data:["总订单","已付款","未付款"]},grid:{left:"3%",right:"4%",bottom:"3%",containLabel:!0},xAxis:[{type:"category",data:{:$time.time_arr}}],yAxis:[{type:"value"}],series:[{name:"总订单",type:"bar",data:{:$time.__sum_data}},{name:"已付款",type:"bar",data:{:$time.__sum_ok_data}},{name:"未付款",type:"bar",data:{:$time.__sum_no_data}}]};
+
+// 使用刚指定的配置项和数据显示图表。
+myChart.setOption(option);
+</script>
+	</body>
+</html>

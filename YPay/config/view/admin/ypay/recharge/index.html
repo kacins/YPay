@@ -1,0 +1,428 @@
+ {include file="public/header" type='pear-container'/}
+		<div class="layui-card">
+			<div class="layui-card-body">
+				<form class="layui-form" action="">
+					<div class="layui-form-item">
+                           
+               <div class="layui-form-item layui-inline">
+                   <label class="layui-form-label">支付状态</label>
+                   <div class="layui-input-inline">
+                       <select name="status">
+                           <option value="">请选择一个状态</option>
+                           <option value="0">未支付</option>
+                           <option value="1">已支付</option>
+                       </select>                   
+                    </div>
+               </div>     
+               <div class="layui-form-item layui-inline">
+                   <label class="layui-form-label">本地订单</label>
+                   <div class="layui-input-inline">
+                       <input type="text" name="out_trade_no" placeholder="" class="layui-input">
+                   </div>
+               </div>   
+               <div class="layui-form-item layui-inline">
+                   <label class="layui-form-label">会员ID</label>
+                   <div class="layui-input-inline">
+                       <input type="text" name="user_id" placeholder="" class="layui-input">
+                   </div>
+               </div>   
+               <div class="layui-form-item layui-inline">
+                   <label class="layui-form-label">创建时间</label>
+                   <div class="layui-input-inline">
+                       <input type="text" class="layui-input" id="create_time-start" name="create_time-start" placeholder="开始时间" autocomplete="off">
+                   </div>
+                   <div class="layui-input-inline">
+                        <input type="text" class="layui-input" id="create_time-end" name="create_time-end" placeholder="结束时间" autocomplete="off">
+                    </div>
+               </div>
+                        <div class="layui-form-item layui-inline">
+                       <button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="query">
+                           <i class="layui-icon layui-icon-search"></i>
+                           查询
+                       </button>
+                       <button type="reset" class="pear-btn pear-btn-md">
+                           <i class="layui-icon layui-icon-refresh"></i>
+                           重置
+                       </button>
+                       </div>
+                    </div>
+				</form>
+			</div>
+		</div>
+		<div class="layui-card">
+			<div class="layui-card-body">
+				<table id="dataTable" lay-filter="dataTable"></table>
+			</div>
+		</div>
+
+		<script type="text/html" id="toolbar">
+			<button class="pear-btn pear-btn-primary pear-btn-md" lay-event="batchRemove">
+		        <i class="layui-icon layui-icon-delete"></i>
+		        批量删除
+		    </button>
+		    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="allRemove">
+		        <i class="layui-icon layui-icon-delete"></i>
+		        一键清理未支付订单
+		    </button>
+		</script>
+
+        
+
+		<script type="text/html" id="options">
+		    <button class="layui-btn layui-bg-blue pear-btn-sm" lay-event="reback"><i
+ 				class="layui-icon layui-icon-refresh"></i></button>
+		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
+		</script>
+		{include file="public/footer"/}
+        <script>
+        layui.use(['table', 'form', 'jquery','common','laydate'], function() {
+            let table = layui.table;
+            let form = layui.form;
+            let $ = layui.jquery;
+            let common = layui.common;
+            let laydate = layui.laydate;
+            let MODULE_PATH = "{$Request.root}/ypay.recharge/";
+            laydate.render({elem: "#create_time-start"});laydate.render({elem: "#create_time-end"});
+            let cols = [
+                [{
+                        type: 'checkbox'
+                    },{
+                       field: "out_trade_no",
+                       title: "订单号",
+                       unresize: "true",
+                       align: "center"
+                   }, {
+                       field: "user_id",
+                       title: "用户ID",
+                       unresize: "true",
+                       align: "center",
+                       templet: function (d) {
+                            if(d.user_id == 0){
+                               return '平台商户'; 
+                            }else{
+                                return d.user_id;
+                            }
+                            
+                       }
+                   },{
+                       field: "money",
+                       title: "订单金额",
+                       unresize: "true",
+                       align: "center"
+                   },  {
+                       field: "create_time",
+                       title: "下单时间",
+                       unresize: "true",
+                       align: "center"
+                   }, {
+                       field: "type",
+                       title: "支付类型",
+                       unresize: "true",
+                       align: "center",
+                       templet: function (d) {
+                            var strs = {
+                                'default':'未选择',
+                                'alipay': '支付宝',
+                                'wxpay': '微信',
+                                'qqpay':'QQ',
+                                
+                            };
+                            return strs[d.type];
+                       }
+                   }, {
+                       field: "rtype",
+                       title: "收益类型",
+                       unresize: "true",
+                       align: "center",
+                       templet: function (d) {
+                            var strs = {
+                                'default':'在线充值',
+                                '0': '在线充值',
+                                '1': '用户注册',
+                            };
+                            return strs[d.rtype];
+                       }
+                   }, {
+                       field: "end_time",
+                       title: "支付时间",
+                       unresize: "true",
+                       align: "center"
+                   }, {
+                        field: 'status', title: '状态', minWidth: 100, align: 'center', templet: function (d) {
+                            var strs = {
+                                1: '<span class="layui-badge pear-btn-success pear-btn-xs">已支付</span>',
+                                0: '<span class="layui-badge pear-btn-danger pear-btn-xs">未支付</span>'
+                                
+                            };
+                            return strs[d.status];
+                        }
+                    }, {
+ 						title: '操作',
+ 						toolbar: '#options',
+ 						unresize: true,
+ 						align: 'center',
+ 						minWidth: 120,
+ 						fixed: 'right',
+ 					}
+                ]
+            ]
+
+            table.render({
+                elem: '#dataTable',
+                url: MODULE_PATH + 'index',
+                page: true,
+                cols: cols,
+                cellMinWidth: 100,
+                skin: 'line',
+                toolbar: '#toolbar',
+                defaultToolbar: [{
+                    title: '刷新',
+                    layEvent: 'refresh',
+                    icon: 'layui-icon-refresh',
+                }, 'filter', 'print', 'exports']
+            });
+
+            table.on('tool(dataTable)', function(obj) {
+                if (obj.event === 'remove') {
+                    window.remove(obj);
+                } else if (obj.event === 'edit') {
+                    window.edit(obj);
+                }else if (obj.event === 'reback') {
+ 				    window.reback(obj);
+ 				}
+            });
+
+            table.on('toolbar(dataTable)', function(obj) {
+                if (obj.event === 'add') {
+                    window.add();
+                } else if (obj.event === 'refresh') {
+                    window.refresh();
+                } else if (obj.event === 'batchRemove') {
+                    window.batchRemove(obj);
+                } else if (obj.event === 'allRemove') {
+                    window.allRemove(obj);
+                }
+            });
+
+            form.on('submit(query)', function(data) {
+                table.reload('dataTable', {
+                    where: data.field,
+                    page:{curr: 1}
+                })
+                laydate.render({elem: "#create_time-start"});laydate.render({elem: "#create_time-end"});
+                return false;
+            });
+            
+            //弹出窗设置 自己设置弹出百分比
+            function screen() {
+                if (typeof width !== 'number' || width === 0) {
+                width = $(window).width() * 0.8;
+                }
+                if (typeof height !== 'number' || height === 0) {
+                height = $(window).height() * 0.5;
+                }
+                return [width + 'px', height + 'px'];
+            }
+
+            window.add = function() {
+                layer.open({
+                    type: 2,
+                    maxmin: true,
+                    title: '新增充值记录',
+                    shade: 0.1,
+                    area: screen(),
+                    content: MODULE_PATH + 'add'
+                });
+            }
+
+            window.edit = function(obj) {
+                layer.open({
+                    type: 2,
+                    maxmin: true,
+                    title: '修改充值记录',
+                    shade: 0.1,
+                    area: screen(),
+                    content: MODULE_PATH + 'edit/id/'+obj.data['id']
+                });
+            }
+
+
+            window.remove = function(obj) {
+                layer.confirm('确定要删除该充值记录', {
+                    icon: 3,
+                    title: '提示'
+                }, function(index) {
+                    layer.close(index);
+                    let loading = layer.load();
+                    $.ajax({
+                        url:MODULE_PATH + 'remove',
+                        data:{id:obj.data['id']},
+                        dataType: 'json',
+                        type: 'POST',
+                        success: function(res) {
+                            layer.close(loading);
+                            //判断有没有权限
+                            if(res && res.code==999){
+                                layer.msg(res.msg, {
+                                    icon: 5,
+                                    time: 2000, 
+                                })
+                                return false;
+                            }else if (res.code==200) {
+                                layer.msg(res.msg, {
+                                    icon: 1,
+                                    time: 1000
+                                }, function() {
+                                    obj.del();
+                                });
+                            } else {
+                                layer.msg(res.msg, {
+                                    icon: 2,
+                                    time: 1000
+                                });
+                            }
+                        }
+                    })
+                });
+            }
+            
+        window.reback = function(obj) {
+ 				layer.confirm('确定要回调该订单嘛?', {
+ 					icon: 3,
+ 					title: '提示'
+ 				}, function(index) {
+ 					layer.close(index);
+ 					let loading = layer.load();
+ 					$.ajax({
+ 						url: MODULE_PATH + 'reback',
+ 						data: {
+ 							id: obj.data['id']
+ 						},
+ 						dataType: 'json',
+ 						type: 'POST',
+ 						success: function(res) {
+ 							layer.close(loading);
+ 							//判断有没有权限
+ 							if (res && res.code == 999) {
+ 								layer.msg(res.msg, {
+ 									icon: 5,
+ 									time: 2000,
+ 								})
+ 								return false;
+ 							} else if (res.code == 200) {
+ 								layer.msg(res.msg, {
+ 									icon: 1,
+ 									time: 1000
+ 								}, function() {
+ 									obj.del();
+ 								});
+ 							} else {
+ 								layer.msg(res.msg, {
+ 									icon: 2,
+ 									time: 1000
+ 								});
+ 							}
+ 						}
+ 					})
+ 				});
+ 			}
+
+            window.batchRemove = function(obj) {
+                let data = table.checkStatus(obj.config.id).data;
+                if (data.length === 0) {
+                    layer.msg("未选中数据", {
+                        icon: 3,
+                        time: 1000
+                    });
+                    return false;
+                }
+                var ids = []
+                var hasCheck = table.checkStatus('dataTable')
+                var hasCheckData = hasCheck.data
+                if (hasCheckData.length > 0) {
+                    $.each(hasCheckData, function (index, element) {
+                        ids.push(element.id)
+                    })
+                }
+                layer.confirm('确定要删除这些充值记录', {
+                    icon: 3,
+                    title: '提示'
+                }, function(index) {
+                    layer.close(index);
+                    let loading = layer.load();
+                    $.ajax({
+                        url:MODULE_PATH + 'batchRemove',
+                        data:{ids:ids},
+                        dataType: 'json',
+                        type: 'POST',
+                        success: function(res) {
+                            layer.close(loading);
+                            //判断有没有权限
+                            if(res && res.code==999){
+                                layer.msg(res.msg, {
+                                    icon: 5,
+                                    time: 2000, 
+                                })
+                                return false;
+                            }else if (res.code==200) {
+                                layer.msg(res.msg, {
+                                    icon: 1,
+                                    time: 1000
+                                }, function() {
+                                    table.reload('dataTable');
+                                });
+                            } else {
+                                layer.msg(res.msg, {
+                                    icon: 2,
+                                    time: 1000
+                                });
+                            }
+                        }
+                    })
+                });
+            }
+            
+            window.allRemove = function(obj) {
+                layer.confirm('确定要清除所有未支付订单嘛', {
+                    icon: 3,
+                    title: '提示'
+                }, function(index) {
+                    layer.close(index);
+                    let loading = layer.load();
+                    $.ajax({
+                        url:MODULE_PATH + 'allRemove',
+                        type: 'POST',
+                        success: function(res) {
+                            layer.close(loading);
+                            //判断有没有权限
+                            if(res && res.code==999){
+                                layer.msg(res.msg, {
+                                    icon: 5,
+                                    time: 2000, 
+                                })
+                                return false;
+                            }else if (res.code==200) {
+                                layer.msg(res.msg, {
+                                    icon: 1,
+                                    time: 1000
+                                }, function() {
+                                    table.reload('dataTable');
+                                });
+                            } else {
+                                layer.msg(res.msg, {
+                                    icon: 2,
+                                    time: 1000
+                                });
+                            }
+                        }
+                    })
+                });
+            }
+
+            window.refresh = function(param) {
+                table.reload('dataTable');
+            }
+        })
+    </script>
+	</body>
+</html>

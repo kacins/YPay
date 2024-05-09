@@ -1,0 +1,62 @@
+ {include file="public/header" type="other"/}
+    <form class="layui-form" action="">
+        <div class="mainBox">
+            <div class="main-container">
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>生成基础表--无需填写表前缀{$prefix}</legend>
+                  </fieldset>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">基础表名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name"  placeholder="示例:home_news" class="layui-input" lay-verify="required">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">中文备注</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="desc"  placeholder="示例:新闻" class="layui-input" lay-verify="required">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom">
+        <div class="button-container">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit="" lay-filter="save">
+                <i class="layui-icon layui-icon-ok"></i>
+                提交
+            </button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">
+                <i class="layui-icon layui-icon-refresh"></i>
+                重置
+            </button>
+        </div>
+    </div>
+</form>
+{include file="public/footer"/}
+<script>
+layui.use(['form','jquery'],function(){
+    let form = layui.form;
+    let $ = layui.jquery;
+    form.on('submit(save)', function(data){
+        $.ajax({
+            data:JSON.stringify(data.field),
+            dataType:'json',
+            contentType:'application/json',
+            type:'post',
+            success:function(res){
+                if (res.code==200) {
+                    layer.msg(res.msg,{icon:1,time:1000},function(){
+                        parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+                        parent.layui.table.reload("dict-type-table");
+                    });
+                }else{
+                    layer.msg(res.msg,{icon:2,time:1000});
+                }
+            }
+        })
+        return false;
+    });
+})
+</script>
+</body>
+</html>

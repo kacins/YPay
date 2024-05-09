@@ -1,0 +1,90 @@
+ {include file="public/user_header" title="插件下载" /}
+ <style>
+     table tbody tr td:last-child{
+         background-color:white;
+     }
+     .layui-upload-file{
+         display: none;
+     }
+ </style>
+<!-- Content -->
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <div class="row">
+                <div class="col-md-12">
+                
+                  <div class="card">
+                    <!-- 插 件 列 表 -->
+                    <h5 class="card-header border-bottom">
+                        <span style="float:left;">插 件 列 表</span> 
+                    </h5>
+                    <div class="card-datatable text-nowrap">
+                      <table class="datatables-basic table border-top">
+                        <thead>
+                          <tr>
+                            <th></th>
+                            <th>插件名称</th>
+                            <th>插件介绍</th>
+                            <th style="background-color:white;">操作</th>
+                          </tr>
+                        </thead>
+                      </table>
+                    </div>
+                    <!--/ 域 名 列 表 -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- / Content -->
+            
+{include file="public/user_footer" /}
+ <!-- / Page Js -->
+<script>
+    var dt_basic_table = $('.datatables-basic');
+     // DataTable
+            // --------------------------------------------------------------------
+    if (dt_basic_table.length) {
+             var table =  dt_basic_table.DataTable({
+                 ajax: '/User/PlugDownload',
+                 columns: [
+                   { data: 'id' },
+                   { data: 'name' },
+                   { data: 'introduce' },
+                   { data: 'id' },
+                 ],
+                 columnDefs: [
+                    {
+                        target: 0,
+                        visible: false,
+                        searchable: false,
+                    },
+                    {
+                      // Label
+                      targets: -1,
+                      searchable: false,
+                      orderable: false,
+                      render: function (data, type, full, meta) {
+                        return (
+                                '<a href="'+full["downurl"]+'" target="_blank"><button type="button"  class="btn rounded-pill btn-sm btn-google-plus">下 载</button></a>'
+                            ); 
+                        
+                      }
+                    },
+                ],
+                 order: [[0, 'desc']],
+                 dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+                 displayLength: 10,
+                 lengthMenu: [10, 20, 50],
+                 scrollX:        true,
+                 deferRender: true,
+                 fixedColumns:   {
+                     left: 0,
+                     right: 1
+                 }
+            });
+            }
+    //刷新表单
+    function reload(){
+        table.ajax.reload();
+        // window.location.reload();
+    }
+</script>

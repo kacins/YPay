@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+
+<html
+  lang="en"
+  class="light-style customizer-hide"
+  dir="ltr"
+  data-theme="theme-default"
+  data-assets-path="https://open_hk1.ygit.net/static/index/user/assets/"
+  data-template="vertical-menu-template"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+
+    <title>[title] - {:$config['sitename']}</title>
+
+    <meta name="description" content="" />
+
+    <!-- Favicon -->
+     <link href="{:getConfig()['favicon']}" rel="icon">
+    
+    <!-- 依 赖 样 式-->
+    <link rel="stylesheet" href="/static/component/pear/css/pear.css" type="text/css"/>
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="/static/index/user/assets/vendor/fonts/boxicons.css" />
+    <link rel="stylesheet" href="/static/index/user/assets/vendor/fonts/fontawesome.css" />
+    <link rel="stylesheet" href="/static/index/user/assets/vendor/fonts/flag-icons.css" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="https://open_hk1.ygit.net/static/index/user/assets/vendor/css/rtl/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="https://open_hk1.ygit.net/static/index/user/assets/vendor/css/rtl/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="https://open_hk1.ygit.net/static/index/user/assets/css/demo.css" />
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/typeahead-js/typeahead.css" />
+    <!-- Vendor -->
+    <link rel="stylesheet" href="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css" />
+
+    <!-- Page CSS -->
+    <!-- Page -->
+    <link rel="stylesheet" href="https://open_hk1.ygit.net/static/index/user/assets/vendor/css/pages/page-auth.css" />
+    <!-- Helpers -->
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/js/helpers.js"></script>
+
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/js/template-customizer.js"></script>
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/js/config.js"></script>
+     <style>
+     .captcha_div{
+		       position: relative; 
+		    }
+		    #geetest_captcha{
+		        margin-bottom: 15px;
+		    }
+		    .geetest_holder{
+		        width:100%  !important;
+		    }
+		    .geetest_btn_svg{
+		        display: none;
+		    }
+			.login-captcha {
+			    display: block;
+				height: 39px;
+				width: 106px;
+				cursor: pointer;
+				box-sizing: border-box;
+				border: 1px solid #e6e6e6;
+				border-radius: 2px !important;
+			}
+			.bg-img-cover{
+			    background-position: center;
+                background-size: cover;
+                background-color: #343a40;
+                width: 100%;
+                height: 100%;
+			}
+			.app-brand {
+                 margin-bottom: 2.5rem; 
+            }
+			.mb-3 {
+                margin-bottom: 0.7rem!important;
+            }
+            p {
+                margin-bottom: 0.5rem;
+            }
+            .divider {
+                margin: 0.5rem 0;
+            }
+ </style>
+  </head>
+{if condition="$config['bgtype'] == '0'"}
+	 <body  class="bg-img-cover"style="background-image: url('{:$config['bg']}')">
+{else}
+	 <body class="bg-img-cover" style="background-image: url('{:$config['api_bg']}')">
+{/if} 
+  
+	<!-- Content -->
+	<div class="container-xxl" >
+      <div class="authentication-wrapper authentication-basic container-p-y">
+        <div class="authentication-inner">
+          <div class="card">
+            <div class="card-body">
+              <!-- Logo -->
+              <div class="app-brand justify-content-center">
+                <a href="/" class="app-brand-link gap-2">
+                  <span claass="app-brand-logo" style="width:100%;">
+                    <img src="{:$config['logo']}" alt="Logo" style="width: 70%;margin: 0 auto;display: grid;">
+                  </span>
+                </a>
+              </div>
+              <!-- /Logo -->

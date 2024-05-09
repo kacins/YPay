@@ -1,0 +1,92 @@
+ {include file="public/header" type="other"/}
+<form class="layui-form" action="">
+    <div class="mainBox">
+        <div class="main-container">
+            <div class="layui-form-item">
+                    <label class="layui-form-label">
+                        会员ID
+                    </label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input layui-form-danger" readonly name="user_id" type="text" value="{$model['user_id']??""}"/>
+                    </div>
+                </div>
+                {if condition="$model['wxname'] != null"}
+                <div class="layui-form-item">
+                  <label class="layui-form-label">
+                        店员昵称
+                    </label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input layui-form-danger" name="wxname" type="text" value="{$model['wxname']??""}"/>
+                    </div>
+                 </div>
+                {/if}
+                <div class="layui-form-item">
+                    <label class="layui-form-label">
+                        收款笔数
+                    </label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input layui-form-danger" readonly name="succcount" type="text" value="{$model['succcount']??""}"/>
+                    </div>
+                </div><div class="layui-form-item">
+                    <label class="layui-form-label">
+                        收款金额
+                    </label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input layui-form-danger" readonly name="succprice" type="text" value="{$model['succprice']??""}"/>
+                    </div>
+                </div>
+        </div>
+        {if condition="$model['wxname'] != null"}
+        <div class="bottom">
+        <div class="button-container">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit="" lay-filter="save">
+                <i class="layui-icon layui-icon-ok"></i>
+                提交
+            </button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">
+                <i class="layui-icon layui-icon-refresh"></i>
+                重置
+            </button>
+        </div>
+    </div>
+        {/if}
+    </div>
+</form>
+{include file="public/footer"/}
+<script>
+    layui.use(['form', 'jquery', 'uploads'], function () {
+        let form = layui.form;
+        let $ = layui.jquery;
+        //建立编辑器
+        
+        form.on('submit(save)', function (data) {
+            
+            $.ajax({
+                data: JSON.stringify(data.field),
+                dataType: 'json',
+                contentType: 'application/json',
+                type: 'post',
+                success: function (res) {
+                    //判断有没有权限
+                    if (res && res.code == 999) {
+                        layer.msg(res.msg, {
+                            icon: 5,
+                            time: 2000,
+                        })
+                        return false;
+                    } else if (res.code == 200) {
+                        layer.msg(res.msg,{icon:1,time:1000}, function () {
+                            parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+                            parent.layui.table.reload("account");
+                        });
+                    } else {
+                        layer.msg(res.msg,{icon:2,time:1000});
+                    }
+                }
+            })
+            return false;
+        });
+    })
+</script>
+</body>
+</html>

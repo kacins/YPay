@@ -1,0 +1,147 @@
+ {include file="public/user_header" title="通知配置" /}
+ <style>
+     .layui-form-radio{
+         display: none;
+     }
+ </style>
+<!-- Content -->
+
+            <div class="container-xxl flex-grow-1 container-p-y">
+
+              <div class="row">
+                <div class="col-md-12">
+                  <ul class="nav nav-pills flex-column flex-md-row mb-3">
+                    <li class="nav-item">
+                      <a class="nav-link" href="/My/UserPro"><i class="bx bx-user me-1"></i> 账 户 详 情</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="/My/Security"><i class="bx bx-lock-alt me-1"></i>安 全 设 置</a></li>
+                    <li class="nav-item">
+                      <a class="nav-link active" href="javascript:void(0);"
+                        ><i class="bx bx-bell me-1"></i> 通 知 设 置</a
+                      >
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/My/Connections"
+                        ><i class="bx bx-link-alt me-1"></i>账 号 绑 定</a
+                      >
+                    </li>
+                  </ul>
+                  <div class="card">
+                    <!-- Notifications -->
+                    <h5 class="card-header">通 知 方 式</h5>
+                    <div class="card-body">
+                      <span
+                        >我 们 需 要 您 的 的 许 可 才 能 显 示 通 知.</span>
+                      <div class="error"></div>
+                    </div>
+                    <form class="layui-form" action="javascript:void(0);" id="formBasForm" lay-filter="formBasForm">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-borderless border-bottom">
+                        <thead>
+                          <tr>
+                            <th class="text-nowrap">类 型</th>
+                            <?php foreach ($noticeType as $key => $value): if($value['isOpen'] == 'yes'):?>
+                                <th class="text-nowrap text-center"><i class="{:$value['icon']}"></i> {:$value['name']}</th>
+                            <?php endif; endforeach; ?>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($notice as $key => $value): ?>
+                                <tr>
+                                    <td class="text-nowrap">{:$value['name']}</td>
+                                    <?php foreach ($value['child'] as $ckey => $cvalue): if($cvalue['isOpen'] == 'yes'): ?>
+                                        <td>
+                                            <div class="form-check d-flex justify-content-center">
+                                              <input class="form-check-input" type="radio" name="{:$value['id']}" value="{:$cvalue['id']}" {:$cvalue['class']}/>
+                                            </div>
+                                        </td>
+                                    <?php endif; endforeach; ?>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                      </table>
+                        </div>
+                        <div class="card-body">
+                        <div class="mb-3">
+                          <label>余 额 提 示 金 额</label>
+                          <input type="text" class="form-control" name="money_tips" value="{$basic.money_tips??'0'}" placeholder="余额不足多少时进行提醒" />
+                        </div>
+                        <div class="mt-4">
+                            <button type="submit"  class="btn btn-primary me-2" lay-filter="save" lay-submit>保 存</button>
+                          </div>
+                        </div>
+                    </form>
+                    <!-- /Notifications -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- / Content -->
+{include file="public/user_footer" /}
+<!-- Page Js -->
+
+    <script>
+        layui.use([ 'form'], function () {
+            var $ = layui.jquery;
+            var form = layui.form;
+            const formChangeMoney = document.querySelector('#formBasForm');
+            // Form validation for Submit
+            if (formChangeMoney) {
+              const fv = FormValidation.formValidation(formChangeMoney, {
+                fields: {
+                  money_tips: {
+                    validators: {
+                      notEmpty: {
+                        message: '请 输 入 最 低 通 知 金 额'
+                      }
+                    }
+                  }
+                },
+                plugins: {
+                  trigger: new FormValidation.plugins.Trigger(),
+                  bootstrap5: new FormValidation.plugins.Bootstrap5({
+                    eleValidClass: '',
+                    rowSelector: '.mb-3'
+                  }),
+                  submitButton: new FormValidation.plugins.SubmitButton(),
+                  // Submit the form when all fields are valid
+                  // defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+                  autoFocus: new FormValidation.plugins.AutoFocus()
+                },
+                init: instance => {
+                  instance.on('plugins.message.placed', function (e) {
+                    if (e.element.parentElement.classList.contains('input-group')) {
+                      e.element.parentElement.insertAdjacentElement('afterend', e.messageElement);
+                    }
+                  });
+                }
+              });
+             fv.on('core.form.valid', function() {
+                form.on('submit(save)', function (obj) {
+                    $.post('/My/Notifications', obj.field, function (res) {
+                        //layer.close(loadIndex);
+                        if (res.code === 200) {
+                            Swal.fire({
+                                title: '保存成功',
+                                icon: 'success',
+                                customClass: {
+                                  confirmButton: 'btn btn-primary'
+                                 }
+                            })
+                            
+                        } else {
+                             Swal.fire({
+                                title: '保存失败',
+                                icon: 'error',
+                                customClass: {
+                                  confirmButton: 'btn btn-primary'
+                                 }
+                            });
+                        }
+                    }, 'json');
+                    return false;
+                });
+             });
+            }
+        });
+    </script>

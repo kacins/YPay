@@ -1,0 +1,259 @@
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class="footer footer-bar" style="margin-top:-3%;">
+    <div class="container text-center">
+        <div class="row align-items-center">
+            <div>
+                <div class="text-sm-left">
+                  <p class="mb-0">{:getConfig()['copyright']}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+    </div>
+
+    <input id='functions' value="[functons]" type="text" hidden>
+<!-- Core JS -->
+
+    <!-- Vendors JS -->
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js"></script>
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/formvalidation/dist/js/FormValidation.full.min.js"></script>
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js"></script>
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js"></script>
+        <!-- Other JS -->
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/cleavejs/cleave.js"></script>
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/libs/cleavejs/cleave-phone.js"></script>
+
+    <!-- Main JS -->
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/js/main.js"></script>
+     <script src="/static/component/layui/layui.js"></script>
+    <script src="/static/component/pear/pear.js"></script>
+     <!-- Page JS -->
+ <script>
+ layui.use(['form', 'formX'], function() {
+				var $ = layui.jquery;
+				var form = layui.form;
+				var formX = layui.formX;
+
+	//验证输入的验证码是否为数字
+    const numeralMask = document.querySelector('#numeral-mask')
+      //Numeral
+    if (numeralMask) {
+      new Cleave(numeralMask, {
+        numeral: true,
+        numeralThousandsGroupStyle: 'false'
+      });
+    }
+     const formAuthentication = document.querySelector('#formAuthentication');
+     if (formAuthentication) {
+      const fv = FormValidation.formValidation(formAuthentication, {
+        fields: {
+          'username': {
+            validators: {
+              notEmpty: {
+                message: '请 输 入 您 的 账 号'
+              }
+            }
+          },
+          'password': {
+            validators: {
+              notEmpty: {
+                message: '请 输 入 您 的 密 码'
+              },
+              stringLength: {
+                min: 6,
+                message: '密 码 最 少 需 要 6 位'
+              }
+            }
+          },
+          'password2': {
+            validators: {
+              notEmpty: {
+                message: '请 再 次 输 入 您 的 密 码'
+              },
+              identical: {
+                compare: function () {
+                  return formAuthentication.querySelector('[name="password"]').value;
+                },
+                message: '两 次 密 码 输 入 不 相 同, 请 检 查'
+              },
+              stringLength: {
+                min: 6,
+                message: '密 码 最 少 需 要 6 位'
+              }
+            }
+          },
+          'email': {
+            validators: {
+              notEmpty: {
+                message: '请 输 入 您 的 邮 箱'
+              },
+              emailAddress: {
+                message: '请 输 入 正 确 的 邮 箱 地 址',
+              },
+            }
+          },
+          'captcha': {
+            validators: {
+              notEmpty: {
+                message: '请 输 入 您 的  验 证 码'
+              }
+            }
+          },
+          'ordinary_captcha': {
+            validators: {
+              notEmpty: {
+                message: '请 输 入 验 证 码'
+              }
+            }
+          },
+          'terms': {
+            validators: {
+              notEmpty: {
+                message: '请 同 意 协 议'
+              }
+            }
+          },
+        },
+        plugins: {
+          trigger: new FormValidation.plugins.Trigger(),
+          bootstrap5: new FormValidation.plugins.Bootstrap5({
+            eleValidClass: '',
+            rowSelector: '.mb-3'
+          }),
+          submitButton: new FormValidation.plugins.SubmitButton(),
+
+        //   defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+          autoFocus: new FormValidation.plugins.AutoFocus()
+        },
+        init: instance => {
+          instance.on('plugins.message.placed', function (e) {
+            if (e.element.parentElement.classList.contains('input-group')) {
+              e.element.parentElement.insertAdjacentElement('afterend', e.messageElement);
+            }
+          });
+        }
+      });
+        
+        //数据验证成功之后执行
+        fv.on('core.form.valid', function() {
+	    // 获取对应方法名称				    
+        var functions = $("#functions").val();
+        let json = $('#formAuthentication').serialize();
+            //判断是登录还是注册or绑定
+            if(functions == "login"){
+			    $.post('/User/Login', json, function(res) {  
+                    if (res.code === 200) {
+                        layer.msg('登录成功', {  
+                            icon: 1,  
+                            time: 1500  
+                        }, function() {  
+                            $.post('/User/notice',  {'type':'login'}, function(res) {  
+                                // 处理通知信息  
+                            }, 'json');  
+                            location.replace('/User/Index');  
+                        });  
+                    } else {  
+                        layer.msg(res.msg, {  
+                            icon: 2,  
+                            anim: 6  
+                        });  
+                        f5Captcha();  
+                    }  
+                }, 'json');  
+            }else{
+				$.post('/User/' + functions, json, function(res) {
+					if (res.code === 200) {
+						layer.msg('注册成功', {
+							icon: 1,
+							time: 1500
+						}, function() {
+						    $.post('/User/notice', {'type':'register','data':json}, function(res) {  
+                                // 处理通知信息  
+                            }, 'json');  
+							location.href = '/User/Login';
+						});
+					}else {
+					    layer.msg(res.msg, {
+					    	icon: 2,
+					    	anim: 6
+					    });
+					    		f5Captcha();
+					   }
+					 }, 'json');
+                }
+					return false;
+		});
+				
+		// 获取验证码
+				$('#send-code').click(function(data) {
+					var email = $("#email").val();
+                    var mobile = $("#mobile").val();
+                    // 获取对应方法名称				    
+                    var functions = $("#functions").val();
+                    //点击一次之后禁止继续点击
+                    $('#send-code').attr('disabled',"true");
+                    var path = '';
+                    if(functions == "login"){
+                        path = 'getLoginCode';
+                    }else{
+                        path = 'getRegCode';
+                    }
+                    
+					$.post('/User/' + path, {
+						email: email,
+						mobile: mobile
+					}, function(res) {
+						if (res.code === 200) {
+							setTimeout(function() {
+								formX.startTimer('#send-code', 60, function(t) {
+									return '已发送(' + t + 's)';
+								});
+							}, 600);
+							//倒计时结束之后恢复点击
+                        $('#send-code').removeAttr("disabled");
+							return false;
+						} else {
+							layer.msg(res.msg, {
+								icon: 2,
+								anim: 6
+							});
+							//返回信息之后恢复点击
+                            $('#send-code').removeAttr("disabled");
+							f5Captcha();
+						}
+					}, 'json');
+					return false;
+				});
+		
+      /* 图形验证码 */
+		var captchaUrl = '/User/Verify';
+		$('img.login-captcha').click(function() {
+		    f5Captcha();
+		}).trigger('click');
+        
+        function f5Captcha(){
+            var img = captchaUrl + '?t=' + (new Date).getTime();
+            $('img.login-captcha').attr('src',img);
+        }
+      
+     }
+});
+ </script>
+{if condition="($config['reg_popup'] != null || $config['reg_popup'] != '') && $pop =='yes'"}
+<div class="web_notice" style="position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: rgba(0,0,0,0.3);z-index: 99999;">
+<div style="position: fixed;top: 50%;left: 50%;width: 350px;background: #FFF;transform: translate(-50%, -50%);border-radius: 40px;padding: 50px 40px;">
+<h3 style="font-weight: bold;text-align: center;font-size: 30px;">注册须知</h3>
+<div style="font-size: 16px;margin-top: 26px;line-height: 30px;color: #999;"><br/>
+<font color="purple">{:$config['reg_popup']}
+</div>
+<a style="display: block;background: #98a3ff;color: #FFF;text-align: center;font-weight: bold;font-size: 19px;line-height: 60px;margin: 0 auto;margin-top: 45px;border-radius: 32px;width: 80%;" onclick="javascript:document.querySelector('.web_notice').remove()">好的</a>
+</div>
+</div>
+{/if}
+  </body>
+</html>

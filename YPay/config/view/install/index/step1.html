@@ -1,0 +1,143 @@
+ {include file="common/install_header"/}
+<div class="layui-content" >
+	<div class="layui-container">
+		<div class="layui-row">
+
+			<div class="layui-step-group">
+	            <div class="layui-step layui-active">
+	                <div class="layui-sort">1</div>
+	                <div class="layui-desc">检查安装环境</div>
+	            </div>
+	            <div class="layui-step layui-line"></div>
+	            <div class="layui-step">
+	                <div class="layui-sort">2</div>
+	                <div class="layui-desc">创建数据库</div>
+	            </div>
+	            <div class="layui-step layui-line"></div>
+	            <div class="layui-step">
+	                <div class="layui-sort">3</div>
+	                <div class="layui-desc">安装成功</div>
+	            </div>
+	    	</div>
+
+			<div class="layui-col-md12">
+				<div class="layui-card layui-fixed">
+					<div class="layui-card-header">
+						<span>1 运行环境检测</span>
+						<span class="layui-card-version">{:env('YuanVer')}</span>
+					</div>
+					<div class="layui-card-body">
+				  		<table class="layui-table" lay-skin="nob" >
+				            <thead>
+				              <tr>
+				                <th>检测项</th>
+				                <th>所需环境</th>
+				                <th>当前环境</th>
+				              </tr>
+				            </thead>
+				            <tbody>
+				              <tr>
+				              	<td>php</td>
+				              	<td> >= 8.1 </td>
+				              	    {if  condition="$checkEnv['php'] >= 8.1"}
+				              		    <td style="color:green;">{$checkEnv.php}</td>
+				              		{else}
+				              		    <td style="color:red;">{$checkEnv.php}</td>
+				              		{/if}
+				              </tr>
+				              <tr>
+				              	<td>mysqli</td>
+				              	<td>模块</td>
+				              	<td>
+				              	    {if  condition="$checkEnv['mysqli'] == 1 "}
+										<i class="layui-icon layui-icon-ok-circle"></i>
+									{else}
+				              			<i class="layui-icon layui-icon-close-fill"></i>
+				              		{/if}
+				              	</td>
+				              </tr>
+				              <tr>
+				              	<td>curl</td>
+				              	<td>扩展</td>
+				              	<td>
+				              	    {if  condition="$checkEnv['curl'] == 1 "}
+										<i class="layui-icon layui-icon-ok-circle"></i>
+				              		{else}
+				              			<i class="layui-icon layui-icon-close-fill"></i>
+				              		{/if}
+				              	</td>
+				              </tr>
+				              <tr>
+				              	<td>fileinfo</td>
+				              	<td>扩展</td>
+				              	<td>
+				              	    {if  condition="$checkEnv['fileinfo'] == 1 "}
+										<i class="layui-icon layui-icon-ok-circle"></i>
+				              		{else}
+				              			<i class="layui-icon layui-icon-close-fill"></i>
+				              	    {/if}
+				              	</td>
+				              </tr>
+
+				            </tbody>
+	            		</table>
+
+				  		<table class="layui-table dir" lay-skin="nob">
+				            <thead>
+				              <tr>
+				                <th>目录名</th>
+				                <th>写入权限</th>
+				                <th>读取权限</th>
+				              </tr> 
+				            </thead>
+				            <tbody> 
+				            {volist name='checkfile' id='vo'}
+				              <tr>
+				                <td>{$vo[3]}</td>
+				                <td><i class="layui-icon {$vo[1]}"></i></td>
+				                <td><i class="layui-icon {$vo[2]}"></i></td>
+				              </tr>
+				            {/volist}
+				            </tbody>
+	            		</table>
+						
+					    <div class="layui-center">
+							<button type="button" onclick="window.history.go(-1);" class="layui-btn layui-btn-normal">上一步</button>
+							<button id="step" type="button" class="layui-btn layui-btn-normal">下一步</button>
+					    </div>
+		    		</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+</div>
+<style>.layui-footer{    
+		position: revert;
+        padding: 0px;
+    }</style>
+<div class="layui-footer">copyright © <script>
+                    document.write(new Date().getFullYear());
+                  </script> 源分享 all rights reserved.</div>
+</body>
+
+
+<script type="text/javascript">
+	layui.use(['jquery','layer'],function() {
+		var layer = layui.layer;
+		var jquery = layui.jquery;
+
+		jquery('#step').click(function(){
+			jquery.post('/install.php/index/step1',[],function(res){
+				if (res.code === 200) {
+					location.href = res.url;
+				}
+				else {
+					layer.msg(res.msg, {icon: 5});
+				}
+			})
+		}) 
+
+	})
+</script>
+</html>

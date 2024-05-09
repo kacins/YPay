@@ -1,0 +1,252 @@
+html,body{padding:0!important;margin:0;overflow:hidden;width:100%;height:100%}
+html #app, body #app {
+    width: 100%;
+    height: 100%;
+}
+.login{
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+}
+.mx-auto{
+    display: flex;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+}
+.login_left{
+    background-color: rgba(107,114,128,0.2);
+    flex: 1 1 0%;
+    padding: 30px;
+    position: relative;
+}
+.login_left:before{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    background-image: url(/static/admin/images/login_left.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    content: "";
+}
+.login_left_logo{
+    display: flex;
+    align-items: center;
+    position: relative;
+    color: rgba(255,255,255,1);
+}
+.login_left_logo .icon{
+    height: 48px;
+    margin-right: 10px;
+    width: 48px;
+}
+.login_left_logo .title{
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 1;
+}
+.login_left_content{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(100% - 60px);
+}
+.login_left_content .title{
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    color: rgba(255,255,255,1);
+}
+.login_left_content .desc{
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1;
+    margin-top: 1.25rem;
+    color: rgba(255,255,255,1);
+}
+.login_right{
+    margin-top:6%;
+    flex: 1 1 0%;
+    padding: 30px;
+    position: relative;
+}
+.login_right_content{
+    display: flex;
+    align-items: center;
+    height: 100%;
+    margin: auto;
+    width: 100%;
+}
+@media (min-width: 1536px){
+    .login_right_content{
+         max-width: 500px;
+    }
+}
+.login_right_content .layui-form{
+    font-size: 14px;
+    height: auto;
+    margin: auto;
+    padding: 20px;
+}
+.row{
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    box-sizing: border-box;
+    margin-left: 0!important;
+    margin-right: 0!important;
+}
+.row_child{
+   float: left;
+   box-sizing: border-box;
+   max-width: 100%;
+   flex: 0 0 100%;
+   display: block;
+   min-height: 1px;
+}
+.row_info{
+    display: block;
+    font-size: 14px;
+    margin-bottom: 22px;
+}
+.form_item_content{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    flex: 1;
+    line-height: 40px;
+    position: relative;
+    font-size: 14px;
+    min-width: 0;
+    line-height: 40px;
+}
+.row_info .form_item_content .title{
+    font-weight: 700;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    text-align: center;
+    width: 100%;
+}
+.row_info_two{
+    display: block;
+    font-size: 14px;
+    margin-bottom: 22px;
+}
+.form_item_label{
+    display: block;
+    text-align: left;
+    margin-bottom: 10px;
+    line-height: 22px;
+}
+.form_item_input{
+    position: relative;
+    display: inline-flex;
+    width: 100%;
+    line-height: 40px;
+    box-sizing: border-box;
+    height: 40px;
+    font-size: 14px;
+}
+.form_item_input_wrapper{
+    display: inline-flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    background-image: none;
+    border-radius: 4px;
+    transition: 0.2s;
+    box-shadow: 0 0 0 1px #dcdfe6 inset;
+    padding: 1px 15px;
+}
+.form_item_input_inner{
+    width: 100%;
+    flex-grow: 1;
+    -webkit-appearance: none;
+    color: #606266;
+    font-size: inherit;
+    height: 38px;
+    line-height: 38px;
+    padding: 0;
+    outline: 0;
+    border: none;
+    background: 0 0;
+    box-sizing: border-box;
+}
+.form_item_remember{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+.form_item_remember_checkbox{
+    color: #606266;
+    font-weight: 500;
+    font-size: 14px;
+    position: relative;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    user-select: none;
+    height: 24px;
+}
+.form_item_button{
+    width: 100%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    color: #ffffff;
+    text-align: center;
+    box-sizing: border-box;
+    outline: 0;
+    transition: .1s;
+    font-weight: 500;
+    user-select: none;
+    vertical-align: middle;
+    -webkit-appearance: none;
+    height: 40px;
+    padding: 12px 19px;
+    font-size: 14px;
+    border-radius: 4px;
+    background-color: #409eff;
+    border: 1px solid #dcdfe6;
+}
+.form_item_button>span {
+    display: inline-flex;
+    align-items: center;
+}
+@media (min-width: 1024px) and (max-width: 1279.9px){
+    .login_right_content{
+        max-width: 500px;
+    }
+}
+@media (max-width:1278px){
+    .mx-auto{
+        position:unset;
+        display: unset;
+    }
+    .login_left{
+        background-color:unset;
+        position: unset;
+    }
+    .login_left_content{
+        display: none;
+    }
+    .login_right{
+        margin-top: -5%;
+    }
+    .login_right_content .layui-form{
+        padding: 20px;
+        height: auto;
+        margin: auto;
+        border-radius: 1.5rem;
+        background-color: rgba(255,255,255,1);
+    }
+}

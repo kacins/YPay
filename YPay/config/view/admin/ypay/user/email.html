@@ -1,0 +1,165 @@
+{include file="public/header" type='pear-container'/}
+<div class="layui-col-md12">
+				<div class="layui-card">
+					<div class="layui-card">
+						<div class="layui-card-body" style="padding-top: 40px;">
+							<form class="layui-form" action="javascript:void(0);" style="margin: 0 auto;max-width: 660px;padding-top: 40px;">
+											<div class="layui-form-item">
+												<label class="layui-form-label">发件对象:</label>
+												<div class="layui-input-block">
+													<select name="type" lay-filter="type">
+														<option value="1" selected>全部用户</option>
+														<option value="2">指定用户</option>
+														<option value="3">会员用户</option>
+													</select>
+												</div>
+											</div>
+											<div class="layui-form-item" id="email" style="display:none;">
+												<label class="layui-form-label">用户邮箱:</label>
+												<div class="layui-input-block">
+													<input name="email" placeholder="请输入用户邮箱"  class="layui-input">
+												</div>
+											</div>
+							                <div class="layui-form-item">
+												<label class="layui-form-label">邮件标题:</label>
+												<div class="layui-input-block">
+													<input name="title" placeholder="请输入邮件标题"  class="layui-input">
+												</div>
+											</div>
+											<div class="layui-form-item">
+ 					                            <label class="layui-form-label">
+ 					                            	邮件内容
+ 					                            </label>
+ 					                            <div class="layui-input-block">
+ 					                                <textarea name="content" class="layui-textarea" placeholder="请输入邮件内容,支持html"></textarea>
+ 					                            </div>
+ 				                            </div>
+											<div class="layui-form-item">
+												<div class="layui-input-block">
+													<button class="pear-btn pear-btn-success" lay-submit lay-filter="save">
+														&emsp;提交&emsp;
+													</button>
+												</div>
+											</div>
+										</form>
+						</div>
+					</div>
+				</div>
+			</div>
+	{include file="public/footer"/}
+<script>
+layui.use(['form', 'jquery',  'xmSelect','element'], function() {
+			let form = layui.form;
+			let $ = layui.jquery;
+			let xmSelect = layui.xmSelect;
+			 var element = layui.element;
+			let MODULE_PATH = "{$Request.root}/ypay.user/";
+			//筛选邮件发信模式
+            form.on('select(type)', function(data) {
+ 				if(data.value == 2){
+ 				    $("#email").show();
+ 				}else{
+ 				    $("#email").hide();
+ 				}
+
+ 			});
+ 			
+ 			//数据提交
+ 			form.on('submit(save)', function(data) {
+ 			    
+ 			    var temp = true;
+ 			    
+ 			    $.ajax({
+					data: JSON.stringify(data.field),
+					dataType: 'json',
+					contentType: 'application/json',
+					type: 'post',
+					success: function(res) {
+                        //判断有没有权限
+                        temp = false;
+						if (res && res.code == 999) {
+							layer.msg(res.msg, {
+								icon: 5,
+								time: 2000,
+							})
+						setTimeout(function(){
+                        for (let i = 0; i < 100000; i++) {
+                            clearInterval(i)
+                        } 
+                    },1000);
+							return false;
+						} else if (res.code == 200) {
+
+						} else {
+						    temp = false;
+		
+							layer.msg(res.msg, {
+								icon: 2,
+								time: 1000
+							});
+						setTimeout(function(){
+                        for (let i = 0; i < 100000; i++) {
+                            clearInterval(i)
+                        } 
+                    },1000);
+							return false;
+						}
+					}
+				})
+				
+				if(temp){
+				    				
+ 			    var progressLayer = layer.open({
+                    type: 0,
+                    title: false,
+                    closeBtn: 0,
+                    btn: false,
+                    content: '<div class="layui-progress layui-progress-big" lay-filter="progress" lay-showpercent="true"><div class="layui-progress-bar" lay-percent="0%"></div></div>'
+                });
+                //ajax每隔一秒向后端请求一次进度异步渲染进度条
+                      var scanTime = 1000;
+                var timer = setInterval(function (){
+                    $.ajax({
+                        url: MODULE_PATH + "/get_email_progress",
+                        success: function (data) {
+                            var percent = data.msg;
+                            
+                            if(percent != null && percent != ''){
+                                element.progress('progress', percent +'%');
+                                // 渲染进度条组件
+                                element.render('progress', 'progress');
+                            }
+                            
+                            
+                            if(percent  == 100){
+                                //进度到100%，注意关闭定时器
+                                clearInterval(timer);
+                                //关闭弹出层
+                                layer.close(progressLayer);
+                                layer.closeAll();
+                                layer.msg('发送成功', {
+								    icon: 1,
+								    time: 2000,
+							    })
+                            }
+                        },
+                        error: function (e) {
+                            //关闭定时器
+                            clearInterval(timer);
+                            //关闭弹出层
+                            layer.close(progressLayer);
+                            layer.msg('发送失败', {
+								icon: 2,
+								time: 1000
+							});
+                        }
+                    });
+                }, scanTime);
+				}
+
+
+				return false;
+			});
+		})
+
+</script>

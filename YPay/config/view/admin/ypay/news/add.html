@@ -1,0 +1,112 @@
+ {include file="public/header" type="other"/}
+<form class="layui-form" action="">
+    <div class="mainBox">
+        <div class="main-container">
+            <div class="layui-form-item">
+                <label class="layui-form-label">公告类型</label>
+                <div class="layui-input-inline">
+                  <select name="type" lay-verify="required" lay-search>
+                   
+                    <option value="1">平台公告</option>
+                    <option value="2">行业动态</option>
+                    <option value="3">常见问题</option>
+                  </select>
+                </div>
+              </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">
+                        公告标题
+                    </label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input layui-form-danger" name="title" type="text" value="{$model['title']??""}"/>
+                    </div>
+                </div><div class="layui-form-item">
+                    <label class="layui-form-label">
+                        标题颜色
+                    </label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input layui-form-danger" name="color" type="text" value="red"/>
+                    </div>
+                </div><div class="layui-form-item">
+                    <label class="layui-form-label">
+                        公告内容
+                    </label>
+                    <div class="layui-input-block">
+                        <textarea class="textarea" id="add_news" name="content">{$model['content']??''}</textarea>
+                        
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="button-container">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit="" lay-filter="save">
+                <i class="layui-icon layui-icon-ok"></i>
+                提交
+            </button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">
+                <i class="layui-icon layui-icon-refresh"></i>
+                重置
+            </button>
+        </div>
+    </div>
+</form>
+{include file="public/footer"/}
+<script>
+    layui.use(['form', 'jquery', 'uploads','tinymce'], function () {
+        let form = layui.form;
+        let $ = layui.jquery;
+        var tinymce = layui.tinymce;
+         // 加载编辑器
+ 			tinymce.render({
+ 				elem: "#add_news",
+ 				width: "80%",
+ 				height: 250,
+ 				automatic_uploads: false,
+ 				menubar: 'edit insert tools',
+ 				images_upload_handler: function(blobInfo, succFun, failFun) {
+ 					var xhr, formData;
+ 					var file = blobInfo.blob(); //转化为易于理解的file对象
+ 					xhr = new XMLHttpRequest();
+ 					xhr.withCredentials = false;
+ 					xhr.open('POST', '{$Request.root}/index/upload');
+ 					formData = new FormData();
+ 					formData.append('file', file, file.name);
+ 					xhr.send(formData);
+ 				}
+ 			}, (opt, edit) => {
+ 				// 加载完成后回调 opt 是传入的所有参数
+ 				// edit是当前编辑器实例，等同于t.get返回值
+ 			});
+        
+        form.on('submit(save)', function (data) {
+            data.field['content'] = tinymce.get('#add_news').getContent();
+            $.ajax({
+                data: JSON.stringify(data.field),
+                dataType: 'json',
+                contentType: 'application/json',
+                type: 'post',
+                success: function (res) {
+                    //判断有没有权限
+                    if (res && res.code == 999) {
+                        layer.msg(res.msg, {
+                            icon: 5,
+                            time: 2000,
+                        })
+                        return false;
+                    } else if (res.code == 200) {
+                        layer.msg(res.msg,{icon:1,time:1000}, function () {
+                            parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+                            parent.layui.table.reload("news");
+                        });
+                    } else {
+                        layer.msg(res.msg,{icon:2,time:1000});
+                    }
+                }
+            })
+            return false;
+        });
+    })
+</script>
+</body>
+</html>

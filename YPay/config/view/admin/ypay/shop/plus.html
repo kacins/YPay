@@ -1,0 +1,142 @@
+{include file="public/header" type='pear-container'/}
+    <!--根据条件查询订单-->
+ 	<div class="layui-card">
+ 		<div class="layui-card-body">
+ 			<form class="layui-form" action="">
+ 				<div class="layui-form-item">
+ 					<div class="layui-form-item layui-inline">
+ 						<label class="layui-form-label">用户ID</label>
+ 						<div class="layui-input-inline">
+ 							<input type="text" name="user_id" placeholder="" class="layui-input">
+ 						</div>
+ 					</div>
+ 					<div class="layui-form-item layui-inline">
+ 						<button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="query">
+ 							<i class="layui-icon layui-icon-search"></i>
+ 							查询
+ 						</button>
+ 						<button type="reset" class="pear-btn pear-btn-md">
+ 							<i class="layui-icon layui-icon-refresh"></i>
+ 							重置
+ 						</button>
+ 					</div>
+ 				</div>
+ 			</form>
+ 		</div>
+ 	</div>
+ 	
+ 	<!--显示订单数据表格-->
+ 	<div class="layui-card">
+ 		<div class="layui-card-body">
+ 			<table id="dataTable" lay-filter="dataTable"></table>
+ 		</div>
+ 	</div>
+    
+    <!--根据条件执行对应删除操作-->
+ 	<script type="text/html" id="toolbar">
+ 		<button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
+		        <i class="layui-icon layui-icon-add-1"></i>
+		        充值用户余额
+		</button>
+ 	</script>
+
+ 	
+ 	{include file="public/footer"/}
+ 	<script>
+ 		layui.use(['table', 'form', 'jquery'], function() {
+ 			let table = layui.table;
+ 			let form = layui.form;
+ 			let $ = layui.jquery;
+ 			let MODULE_PATH = "{$Request.root}/ypay.shop/";
+
+ 			let cols = [
+ 				[{
+ 						type: 'checkbox'
+ 					}, {
+ 						field: "user_id",
+ 						title: "用户ID",
+ 						minWidth: 200,
+ 						unresize: "true",
+ 						align: "center"
+ 					}, {
+ 						field: "memo",
+ 						title: "充值类型",
+ 						minWidth: 200,
+ 						unresize: "true",
+ 						align: "center"
+ 					}, {
+ 						field: "money",
+ 						title: "金额",
+ 						unresize: "true",
+ 						align: "center"
+ 					}, {
+ 						field: "create_time",
+ 						title: "操作时间",
+                        minWidth: 150,
+ 						align: "center"
+ 					}
+ 				]
+ 			]
+
+ 			table.render({
+ 				elem: '#dataTable',
+ 				url: MODULE_PATH + 'plus',
+ 				page: true,
+ 				cols: cols,
+ 				cellMinWidth: 100,
+ 				skin: 'line',
+ 				toolbar: '#toolbar',
+ 				defaultToolbar: [{
+ 					title: '刷新',
+ 					layEvent: 'refresh',
+ 					icon: 'layui-icon-refresh',
+ 				}, 'filter', 'print', 'exports']
+ 			});
+
+
+ 			table.on('toolbar(dataTable)', function(obj) {
+ 				if (obj.event === 'add') {
+ 					window.add();
+ 				}
+ 			});
+
+ 			form.on('submit(query)', function(data) {
+ 				table.reload('dataTable', {
+ 					where: data.field,
+ 					page: {
+ 						curr: 1
+ 					}
+ 				})
+
+ 				return false;
+ 			});
+
+ 			//弹出窗设置 自己设置弹出百分比
+ 			function screen() {
+ 				if (typeof width !== 'number' || width === 0) {
+ 					width = $(window).width() * 0.5;
+ 				}
+ 				if (typeof height !== 'number' || height === 0) {
+ 					height = $(window).height() * 0.5;
+ 				}
+ 				return [width + 'px', height + 'px'];
+ 			}
+
+ 			window.add = function(obj) {
+ 				layer.open({
+ 					type: 2,
+ 					maxmin: true,
+ 					title: '后台充值余额',
+ 					shade: 0.1,
+ 					area: screen(),
+ 					content: MODULE_PATH + 'add_plus'
+ 				});
+ 			}
+
+ 			window.refresh = function(param) {
+ 				table.reload('dataTable');
+ 			}
+ 		})
+ 	</script>
+ </body>
+ </html>

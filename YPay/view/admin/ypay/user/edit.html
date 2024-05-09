@@ -1,0 +1,202 @@
+{include file="public/header" type="other"/}
+		<form class="layui-form" action="">
+			<div class="mainBox">
+				<div class="main-container">
+					<div class="layui-form-item">
+						<label class="layui-form-label">
+							会员账号
+						</label>
+						<div class="layui-input-block">
+							<input type="text" class="layui-input layui-form-danger" disabled=""  type="text"
+								value="{$model['username']??""}" />
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">
+							余额
+						</label>
+						<div class="layui-input-block">
+							<input type="text" class="layui-input layui-form-danger"  name="money" type="text"
+								value="{$model['money']??""}" />
+						</div>
+					</div>
+					<div class="layui-form-item">
+                    <label class="layui-form-label">
+                        套餐类型
+                    </label>
+                    <div class="layui-input-block">
+                         <select name="vip_id" id="vip_id" lay-filter="vip_id" lay-verType="vip_id">
+                             <option value="0" {if condition="$model['vip_id'] eq 0"
+											} selected {/if}>关闭</option> 
+                        <?php foreach ($vip as $value): ?>
+                               <option value="{$value['id']}" {if condition="$model['vip_id'] eq $value['id']"
+											} selected {/if}>
+                                   {$value['name']}
+                               </option> 
+                            
+                        <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+				<div id="vip" {if condition="$model['vip_id'] eq 0"} style="display:none;" {/if}>
+				    <div class="layui-form-item">
+						<label class="layui-form-label">
+							套餐时间
+						</label>
+						<div class="layui-input-block">
+							<input type="text" id="vip_time" class="layui-input layui-form-danger" name="vip_time" type="text"
+								value="{$model['vip_time']??""}" />
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">
+							费率
+						</label>
+						<div class="layui-input-block">
+							<input type="text" class="layui-input layui-form-danger" name="feilv" type="text"
+								value="{$model['feilv']??""}" />
+						</div>
+					</div>
+				</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">
+							会员密码
+						</label>
+						<div class="layui-input-block">
+							<input type="text" class="layui-input layui-form-danger" name="password" type="text"
+								value="" />
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">
+							邮箱
+						</label>
+						<div class="layui-input-block">
+							<input type="text" class="layui-input layui-form-danger" name="email" type="text"
+								value="{$model['email']??""}" />
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">
+							手机号
+						</label>
+						<div class="layui-input-block">
+							<input type="text" class="layui-input layui-form-danger" name="mobile" type="text"
+								value="{$model['mobile']??""}" />
+						</div>
+					</div>
+					<div class="layui-form-item">
+ 						<label class="layui-form-label">
+ 							用户状态
+ 						</label>
+ 						<div class="layui-input-block">
+ 							{if $model['is_frozen'] == 0}
+ 							<input type="radio" name="is_frozen" lay-filter="is_frozen" value="0" 
+ 								title="未冻结" checked>
+ 							<input type="radio" name="is_frozen" lay-filter="is_frozen" value="1" 
+ 								title="已冻结">
+ 							{else}
+ 							<input type="radio" name="is_frozen" lay-filter="is_frozen" value="0" 
+ 								title="未冻结">
+ 							<input type="radio" name="is_frozen"  lay-filter="is_frozen" value="1" 
+ 								title="已冻结" checked>
+ 							{/if}
+ 						</div>
+ 					</div>
+ 					<div class="layui-form-item" id="frozen_reason" {if condition="$model['is_frozen'] eq 0"} style="display:none;" {/if}>
+						<label class="layui-form-label">
+							封禁理由
+						</label>
+						<div class="layui-input-block">
+							<input type="text" class="layui-input layui-form-danger" name="frozen_reason" type="text"
+								value="{$model['frozen_reason']??""}" />
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">
+							备注
+						</label>
+						<div class="layui-input-block">
+							<input type="text" class="layui-input layui-form-danger" name="remarks" type="text"
+								value="{$model['remarks']??""}" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="bottom">
+				<div class="button-container">
+					<button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit=""
+						lay-filter="save">
+						提交
+					</button>
+					<button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">
+						重置
+					</button>
+				</div>
+			</div>
+		</form>
+		{include file="public/footer"/}
+		<script>
+			layui.use(['form', 'jquery', 'uploads','laydate'], function() {
+				let form = layui.form;
+				let $ = layui.jquery;
+				let laydate = layui.laydate;
+				//建立编辑器
+				laydate.render({elem: "#vip_time", type:'datetime'});
+                
+                
+                
+				form.on('submit(save)', function(data) {
+
+					$.ajax({
+						data: JSON.stringify(data.field),
+						dataType: 'json',
+						contentType: 'application/json',
+						type: 'post',
+						success: function(res) {
+							//判断有没有权限
+							if (res && res.code == 999) {
+								layer.msg(res.msg, {
+									icon: 5,
+									time: 2000,
+								})
+								return false;
+							} else if (res.code == 200) {
+								layer.msg(res.msg, {
+									icon: 1,
+									time: 1000
+								}, function() {
+									parent.layer.close(parent.layer.getFrameIndex(window
+										.name)); //关闭当前页
+									parent.layui.table.reload("user");
+								});
+							} else {
+								layer.msg(res.msg, {
+									icon: 2,
+									time: 1000
+								});
+							}
+						}
+					})
+					return false;
+				});
+				
+				 form.on('select(vip_id)',function(data){
+                    if(data.value != 0){
+                        $('#vip').show();
+                    }else{
+                        $('#vip').hide();
+                    }
+                });
+                
+                 form.on('radio(is_frozen)',function(data){
+                    if(data.value != 0){
+                        $('#frozen_reason').show();
+                    }else{
+                        $('#frozen_reason').hide();
+                    }
+                });
+			})
+		</script>
+	</body>
+</html>

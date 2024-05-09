@@ -1,0 +1,176 @@
+ {include file="public/header" type="other"/}
+ 	{include file="public/footer"/}
+<style>
+	@media(max-width:760px) {
+		.layui-form-label {
+			float: unset;
+			display: unset;
+			padding: unset;
+			width: unset;
+			font-weight: unset;
+			line-height: unset;
+			text-align: unset;
+		}
+
+		.layui-input-block {
+			margin-left: unset;
+			min-height: unset;
+		}
+	}
+</style>
+	<form class="layui-form" action="">
+		<div class="mainBox">
+			<div class="main-container">
+				<div class="layui-form-item">
+					<label class="layui-form-label">
+						套餐名称
+					</label>
+					<div class="layui-input-block">
+						<input type="text" class="layui-input layui-form-danger" placeholder="例如:VIP" name="name"
+							type="text" value="{$model['name']??""}" />
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">
+						套餐费率
+					</label>
+					<div class="layui-input-block">
+						<input type="text" class="layui-input layui-form-danger" placeholder="费率范围设置项:0-100"
+							name="feilv"  value="{$model['feilv']??""}" />
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">
+						套餐金额
+					</label>
+					<div class="layui-input-block">
+						<input type="text" class="layui-input layui-form-danger" name="money" 
+							value="{$model['money']??""}" />
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">
+						套餐时间
+					</label>
+					<div class="layui-input-block">
+						<input type="text" class="layui-input layui-form-danger" placeholder="填写实际数字即可,例:888" name="viptime"
+						 value="{$model['viptime']??""}" />
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">额外功能</label>
+					<div class="layui-input-block">
+						<table class="layui-table">
+							<thead>
+								<tr>
+									<th>名称</th>
+									<th>操作</th>
+									<th>配置项</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										<span>订单加费</span>
+									</td>
+									<td>
+										<input type="checkbox" name="is_profiteer" lay-skin="switch" lay-text="开|关"
+											lay-filter="profiteer">
+									</td>
+									<td>
+										<div id="profiteer" >
+											<div class="layui-form-item">
+												开启之后用户的费率将由用户的客户支付,但是用户仍需要充值余额
+											</div>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="bottom">
+			<div class="button-container">
+				<button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit="" lay-filter="save">
+
+					提交
+				</button>
+				<button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">
+					<i class="layui-icon layui-icon-refresh"></i>
+					重置
+				</button>
+			</div>
+		</div>
+	</form>
+
+	<script>
+		layui.use(['form', 'jquery', 'uploads', 'xmSelect'], function() {
+			let form = layui.form;
+			let $ = layui.jquery;
+			let xmSelect = layui.xmSelect;
+			let MODULE_PATH = "{$Request.root}/ypay.vip/";
+			var channel = xmSelect.render({
+				el: '#channel',
+				autoRow: true,
+				filterable: true,
+				tree: {
+					show: true,
+					showFolderIcon: true,
+					showLine: true,
+					indent: 20,
+				},
+				toolbar: {
+					show: true,
+					list: ['ALL', 'REVERSE', 'CLEAR']
+				},
+				filterable: true,
+				height: 'auto',
+				data: []
+			})
+
+			//建立编辑器
+
+			form.on('submit(save)', function(data) {
+				if (data.field.is_profiteer == null || data.field.is_profiteer == '') {
+					data.field.is_profiteer = 0;
+				} else {
+					data.field.is_profiteer = 1;
+				}
+				$.ajax({
+					data: JSON.stringify(data.field),
+					dataType: 'json',
+					contentType: 'application/json',
+					type: 'post',
+					success: function(res) {
+						//判断有没有权限
+						if (res && res.code == 999) {
+							layer.msg(res.msg, {
+								icon: 5,
+								time: 2000,
+							})
+							return false;
+						} else if (res.code == 200) {
+							layer.msg(res.msg, {
+								icon: 1,
+								time: 1000
+							}, function() {
+								parent.layer.close(parent.layer.getFrameIndex(window
+									.name)); //关闭当前页
+								parent.layui.table.reload("vip");
+							});
+						} else {
+							layer.msg(res.msg, {
+								icon: 2,
+								time: 1000
+							});
+						}
+					}
+				})
+				return false;
+			});
+		})
+	</script>
+</body>
+</html>

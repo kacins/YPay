@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+
+<html
+  lang="en"
+  class="light-style layout-navbar-fixed"
+  dir="ltr"
+  data-theme="theme-default"
+  data-assets-path="https://open_hk1.ygit.net//static/index/user/assets/"
+  data-template="front-pages">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+
+    <title>[title] - {:getConfig()['sitename']}</title>
+
+    <meta name="description" content="" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{:getConfig()['favicon']}" />
+    <link rel="stylesheet" href="/static/index/user/assets/vendor/fonts/boxicons.css" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="https://open_hk1.ygit.net/static/index/user/assets/vendor/css/rtl/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="https://open_hk1.ygit.net/static/index/user/assets/vendor/css/rtl/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="https://open_hk1.ygit.net/static/index/user/assets/css/demo.css" />
+    <link rel="stylesheet" href="https://open_hk1.ygit.net/static/index/user/assets/vendor/css/pages/front-page.css" />
+    <!-- Vendors CSS -->
+
+    <!-- Page CSS -->
+    <link rel="stylesheet" href="https://open_hk1.ygit.net/static/index/user/assets/vendor/css/pages/front-page-help-center.css" />
+
+    <!-- Helpers -->
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/js/helpers.js"></script>
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/js/template-customizer.js"></script>
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/js/front-config.js"></script>
+  </head>
+
+  <body>
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/js/dropdown-hover.js"></script>
+    <script src="https://open_hk1.ygit.net/static/index/user/assets/vendor/js/mega-dropdown.js"></script>
+    
+    <!-- Navbar: Start -->
+    <nav class="layout-navbar shadow-none py-0">
+      <div class="container">
+        <div class="navbar navbar-expand-lg landing-navbar px-3 px-md-4">
+          <!-- Menu logo wrapper: Start -->
+          <div class="navbar-brand app-brand demo d-flex py-0 me-4">
+            <!-- Mobile menu toggle: Start-->
+            <button
+              class="navbar-toggler border-0 px-0 me-2"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation">
+              <i class="tf-icons bx bx-menu bx-sm align-middle"></i>
+            </button>
+            <!-- Mobile menu toggle: End-->
+            <a href="/" class="app-brand-link">
+              <span class="app-brand-text menu-text fw-bold ms-2 ps-1" style="font-size: 1.75rem;letter-spacing: -0.5px;">{:getConfig()['sitename']}</span>
+            </a>
+          </div>
+          <!-- Menu logo wrapper: End -->
+          <!-- Menu wrapper: Start -->
+          <div class="collapse navbar-collapse landing-nav-menu" id="navbarSupportedContent">
+            <button
+              class="navbar-toggler border-0 text-heading position-absolute end-0 top-0 scaleX-n1-rtl"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation">
+              <i class="tf-icons bx bx-x bx-sm"></i>
+            </button>
+            <ul class="navbar-nav me-auto">
+                {volist name="nav" id="vo"}
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" {if condition="$vo.is_target == 1"} target="_bank" {/if} aria-current="page" href="{$vo.url}">{$vo.name}</a>
+                    </li>
+                {/volist}
+            </ul>
+          </div>
+          <div class="landing-menu-overlay d-lg-none"></div>
+          <!-- Menu wrapper: End -->
+          <!-- Toolbar: Start -->
+          <ul class="navbar-nav flex-row align-items-center ms-auto">
+            <!-- Style Switcher -->
+            <li class="nav-item dropdown-style-switcher dropdown me-2 me-xl-0">
+              <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                <i class="bx bx-sm"></i>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end dropdown-styles">
+                <li>
+                  <a class="dropdown-item" href="javascript:void(0);" data-theme="light">
+                    <span class="align-middle"><i class="bx bx-sun me-2"></i>白 天</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="javascript:void(0);" data-theme="dark">
+                    <span class="align-middle"><i class="bx bx-moon me-2"></i>黑 夜</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="javascript:void(0);" data-theme="system">
+                    <span class="align-middle"><i class="bx bx-desktop me-2"></i>跟随系统</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- / Style Switcher-->
+
+            <!-- navbar button: Start -->
+            <li>
+            <?php if ($is_login== 1): ?>
+                <a href="/User/Index" class="btn btn-primary" 
+                ><span class="tf-icons bx bx-user me-md-1"></span
+                ><span class="d-none d-md-block">用户中心</span></a
+                >
+            <?php else: ?>
+                <a href="/User/Login" class="btn btn-primary" 
+                ><span class="tf-icons bx bx-user me-md-1"></span
+                ><span class="d-none d-md-block">登录 / 注册</span></a
+              >
+            <?php endif; ?>
+            </li>
+            <!-- navbar button: End -->
+          </ul>
+          <!-- Toolbar: End -->
+        </div>
+      </div>
+    </nav>
+    <!-- Navbar: End -->
+   <!-- Help Center Header: Start -->
+    <section class="section-py first-section-pt help-center-header" style="padding-top:3rem ">
+    </section>
+    <!-- Help Center Header: End -->
