@@ -96,7 +96,7 @@ Supervison
 
 ###  📞 YPay互动
 #### YPay开源技术交流群
-![输入图片说明](readme/pic/qrcode.jpg)
+![输入图片说明](https://gitee.com/umil/ypay/raw/master/readme/pic/qrcode.jpg)
 
 ---
 
