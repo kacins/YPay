@@ -63,7 +63,21 @@
                         </div>
                     </div>
 				{/if}
-                
+                {if condition="$config['captcha-type'] == '1'"}
+                    <div class="mb-3">
+                      <label class="form-label">验 证 码</label>
+                      <div class="input-group">
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="ordinary_captcha"
+                            placeholder="请 输 入 验 证 码"
+                        />
+                        <img id="codeimg" class="login-captcha"  alt="验证码" style="display:block;"/>
+                      </div>
+                    </div>
+
+                {/if}
                 <div class="mb-3">
                   <div class="form-check">
                     <input class="form-check-input" name="remember" type="checkbox" checked id="remember" />

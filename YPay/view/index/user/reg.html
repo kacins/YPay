@@ -53,7 +53,21 @@
                 <!--引入注册公共部分开始-->
                 {include file="public/regVerification"/}
                 <!--引入注册公共部分结束-->
-            
+                {if condition="$config['captcha-type'] == '1'"}
+                    <div class="mb-3">
+                      <label class="form-label">验 证 码</label>
+                      <div class="input-group">
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="ordinary_captcha"
+                            placeholder="请 输 入 验 证 码"
+                        />
+                        <img id="codeimg" class="login-captcha"  alt="验证码" style="display:block;"/>
+                      </div>
+                    </div>
+
+                {/if}
                 <div class="mb-3">
                   <div class="form-check">
                     <input class="form-check-input" type="checkbox" checked name="terms" />
