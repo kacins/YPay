@@ -12,7 +12,6 @@ use app\common\validate\YpayUser as V;
 use think\facade\Db;
 use think\api\Client;
 use app\common\model\AdminFrontLog as Log;
-use app\common\util\Wxpusher as wxpusher;
 use app\common\model\YpayDomain as domain;
 use app\common\model\YpayTicket as ticket;
 use app\common\service\Notice as notice;
@@ -102,8 +101,9 @@ class My extends \app\BaseController
     
         //注销账户
     public function cancellation(){
-       $res = Db::name('ypay_user')->where('id',S::getUserId())->delete();
-       if($res){
+       $user_res = Db::name('ypay_user')->where('id',S::getUserId())->delete();
+       $basic_res = Db::name('ypay_userbasic')->where('user_id',S::getUserId())->delete();
+       if($user_res && $basic_res){
           return json(['code'=>200]); 
        }
     }
@@ -120,59 +120,6 @@ class My extends \app\BaseController
     public function GeneratingKey()
     {
         return json(['key'=>S::goUserKey(),'code'=>1]);
-    }
-    
-    //获取WxPusher关注二维码
-    public function getWxPusherQrCode(){
-        $Token = getConfig()['wxpusher_appToken'];//获取WxPuserToken
-        $wxpusher = new wxpusher($Token);
-        $qrCode = $wxpusher->Qrcreate(S::getUserId(),1800);//获取二维码信息
-        //判断内容是否正确返回
-        if(is_array($qrCode)){
-            return json(['code'=>1,'msg'=>$qrCode['shortUrl']]);
-        }else{
-            return json(['code'=>2,'msg'=>$qrCode]);
-        }
-    }
-    
-    //判断WxPusherUID是否绑定
-    public function getWxPusherUID(){
-        $data = Request::param('','','strip_tags');//获取提交的数据
-        $user = M::where('id',S::getUserId())->find();//获取用户信息
-        //判断是绑定还是修改
-        if($data['operate'] == 'bind'){
-            if(!empty($user['wxpusher_uid'])){
-                return json(['code'=>1]);
-            } 
-        }else{
-            if($user['wxpusher_uid'] != $data['uid']){
-                return json(['code'=>1]);
-            }
-        }
-        
-        return json(['code'=>2]);
-    }
-    
-    //提交WxPusher数据
-    public function savaWxPuserUID(){
-        $data = Request::param('','','strip_tags');//获取提交的数据
-        $user = M::where('id',S::getUserId())->find();//获取用户信息
-        //判断是否手动填写了WxPuser_uid
-        if(!empty($data['wxpusher_uid'])){
-            try {
-               M::where('id',S::getUserId())->update(['wxpusher_uid' => $data['wxpusher_uid']]);
-               return json(['code'=>1,'msg'=>'绑 定 成 功!']);
-            } catch (Exception $e) {
-                return ['msg'=>'操作失败'.$e->getMessage(),'code'=>201];
-            }
-        }
-        
-        if(!empty($user['wxpusher_uid'])){
-            return json(['code'=>1,'msg'=>'绑 定 成 功!']);
-        }else{
-            return json(['code'=>2,'msg'=>'请 用 微 信 扫 码 关 注']);
-        }
-        
     }
     
     //获取解绑手机/邮箱验证码

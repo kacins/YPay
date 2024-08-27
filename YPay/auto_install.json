@@ -1,0 +1,11 @@
+{	
+	"php_ext":"fileinfo",			
+	"chmod":[],	
+	"success_url":"/index.php",				
+	"php_versions":"81",	
+	"db_config":"",	
+	"admin_username":"",
+	"admin_password":"",
+	"run_path":"/public",
+	"remove_file":[]
+}

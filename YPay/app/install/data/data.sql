@@ -742,13 +742,6 @@ CREATE TABLE `ypay_vip` (
   `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员套餐';
 
-
---
--- 触发器 `ypay_user`
---
-CREATE TRIGGER `basic_Insert` AFTER INSERT ON `ypay_user` FOR EACH ROW  INSERT INTO ypay_userbasic (user_id) VALUES (NEW.id);
-CREATE TRIGGER `basic_Delete` AFTER DELETE ON `ypay_user` FOR EACH ROW  DELETE FROM ypay_userbasic WHERE user_id = OLD.id;
-
 --
 -- 转储表的索引
 --

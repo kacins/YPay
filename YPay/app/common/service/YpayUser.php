@@ -182,10 +182,13 @@ class YpayUser
     {
         $model = M::find($id);
         $account = account::where('user_id',$id)->select();
+        $basic = basic::where('user_id',$id)->find();
+        
         if ($model->isEmpty()) return ['msg'=>'数据不存在','code'=>201];
         try{
            $model->delete();
            $account ->delete(1);
+           $basic -> delete();
         }catch (\Exception $e){
             return ['msg'=>'操作失败'.$e->getMessage(),'code'=>201];
         }
@@ -825,7 +828,8 @@ if (!empty($email) && preg_match( '/^[1-9][0-9]{4,10}@qq\.com$/i', $email ) ) {
         Cache::set('is_register','yes',60);
         
         try {
-            M::create($data);
+            $m = M::create($data);
+            basic::create(['user_id' => $m->id]);
         }catch (\Exception $e){
             return ['msg'=>'操作失败'.$e->getMessage(),'code'=>201];
         }
