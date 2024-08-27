@@ -80,9 +80,9 @@ Supervison
 
 ###  📱 系统演示
 
-演示前台：https://v1_open.ygit.net/
+演示前台：https://open.ygit.net/
 
-管理后台： https://v1_open.ygit.net/admin.php
+管理后台： https://open.ygit.net/admin.php
 
 账号：admin 密码：123456
 
@@ -90,13 +90,15 @@ Supervison
 
 ###  🔐 安装教程
 
+本系统可使用宝塔应用市场一键安装，为您省去更多烦恼，点击一下即可创建！！！
+
 想要快速安装，教程来助攻！<a href="https://doc.yfx.top/48rmwowb2q/xitonganzhuang.html" target="_blank">查看安装教程！</a>
 
 ---
 
 ###  📞 YPay互动
 #### YPay开源技术交流群
-![输入图片说明](readme/pic/qrcode.jpg)
+交流1群:661645679(已满) 交流2群:126194496 
 
 ---
 
