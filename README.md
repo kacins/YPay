@@ -10,7 +10,7 @@ YPay开源支付系统PHP版
 
 <div align="center" >
     <a href="https://www.yfx.top">
-        <img src="https://img.shields.io/badge/YPay-1.1.3-blue.svg" />
+        <img src="https://img.shields.io/badge/YPay-1.2.0-blue.svg" />
     </a>
     <a href="https://www.yfx.top">
         <img src="https://img.shields.io/badge/Licence-Apache2.0-green.svg?style=flat" />
@@ -41,7 +41,7 @@ YPay开源支付系统PHP版
 点击查看<a href="https://doc.yfx.top/48rmwowb2q/gengxinjilu.html" target="_blank">更新记录</a>
 
 
-### 用心做开源，我们也很需要你的鼓励！右上角Star🌟，120个Star🌟更新V1.2版本,等你点亮！
+### 用心做开源，我们也很需要你的鼓励！右上角Star🌟，150个Star🌟更新V1.2.1版本,等你点亮！
 
 ---
 
