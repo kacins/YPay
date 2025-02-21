@@ -9,8 +9,8 @@ YPay 标准版
 </div>
 
 <div align="center" >
-    <a href="https://www.yfx.top">
-        <img src="https://img.shields.io/badge/YPay-1.2.0-blue.svg" />
+    <a href="https://www.yfxw.cn">
+        <img src="https://img.shields.io/badge/YPay-1.7.0-blue.svg" />
     </a>
     <a href="https://www.yfx.top">
         <img src="https://img.shields.io/badge/Licence-Apache2.0-green.svg?style=flat" />
