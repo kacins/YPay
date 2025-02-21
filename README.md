@@ -27,9 +27,9 @@ YPay 标准版
 
 <div align="center">
 
-[官网](https://www.yfx.top/) |
+[官网](https://www.yfxw.cn/) |
 [在线体验](https://v7.ygit.net/) |
-[帮助文档](https://doc.yfx.top/) 
+[帮助文档](https://doc.yfxw.cn/) 
 
 </div>
 
