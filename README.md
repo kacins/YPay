@@ -4,7 +4,7 @@
 </div>
 <div align="center">
 
-YPay开源支付系统PHP版
+YPay 标准版
 
 </div>
 
