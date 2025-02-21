@@ -32,6 +32,11 @@ YPay 标准版
 [帮助文档](https://doc.yfxw.cn/) 
 
 </div>
+---
+
+###  📞 YPay互动
+#### YPay开源技术交流群
+https://t.me/+oAlh5wLlnzRmMzFl
 
 ---
 
@@ -91,12 +96,6 @@ Supervison
 本系统可使用宝塔应用市场一键安装，为您省去更多烦恼，点击一下即可创建！！！
 
 想要快速安装，教程来助攻！<a href="https://doc.yfx.top/48rmwowb2q/xitonganzhuang.html" target="_blank">查看安装教程！</a>
-
----
-
-###  📞 YPay互动
-#### YPay开源技术交流群
-https://t.me/+oAlh5wLlnzRmMzFl
 
 ---
 
