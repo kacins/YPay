@@ -37,7 +37,7 @@ YPay 标准版
 
 ###  📞 YPay互动
 #### YPay开源技术交流群
-https://t.me/+oAlh5wLlnzRmMzFl
+https://t.me/cnb_ais
 
 ---
 
